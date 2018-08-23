@@ -32,14 +32,19 @@ object Proc_PlanPruebas_AutoCastOff {
       TablaMaster.setAutoCast(false)
       TablaMaster.DataFramehuemul.setDataFrame(DF_RAW.DataFramehuemul.DataFrame, "DF_Original")
       
-      //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
+   //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
+      val a = huemulLib.spark.catalog.listTables(TablaMaster.GetCurrentDataBase()).collect()
+      if (a.filter { x => x.name.toUpperCase() == TablaMaster.TableName.toUpperCase()  }.length > 0) {
+        huemulLib.spark.sql(s"drop table if exists ${TablaMaster.GetTable()} ")
+      } 
+      
       val FullPath = new org.apache.hadoop.fs.Path(s"${TablaMaster.GetFullNameWithPath()}")
-      val fs = FileSystem.get(huemulLib.spark.sparkContext.hadoopConfiguration)       
+      val fs = FileSystem.get(huemulLib.spark.sparkContext.hadoopConfiguration) 
       if (fs.exists(FullPath))
         fs.delete(FullPath, true)
-      huemulLib.spark.sql(s"drop table if exists ${TablaMaster.GetTable()} ")
+        
    //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
-      
+        
       TablaMaster.TipoValor.SetMapping("TipoValor",true,"coalesce(new.TipoValor,'nulo')","coalesce(new.TipoValor,'nulo')")
       TablaMaster.IntValue.SetMapping("IntValue")
       TablaMaster.BigIntValue.SetMapping("BigIntValue")

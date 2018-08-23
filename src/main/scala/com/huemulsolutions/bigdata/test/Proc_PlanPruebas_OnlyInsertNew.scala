@@ -29,18 +29,16 @@ object Proc_PlanPruebas_OnlyInsertNew {
       if (!DF_RAW.open("DF_RAW", null, Ano.toInt, Mes.toInt, 1, 0, 0, 0,"")) {
         Control.RaiseError(s"Error al intentar abrir archivo de datos: ${DF_RAW.Error.ControlError_Message}")
       }
+      
       Control.NewStep("Mapeo de Campos")
       val TablaMaster = new tbl_DatosBasicosInsert(huemulLib, Control)      
       TablaMaster.DataFramehuemul.setDataFrame(DF_RAW.DataFramehuemul.DataFrame, "DF_Original")
       
-      //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
+   //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
       val a = huemulLib.spark.catalog.listTables(TablaMaster.GetCurrentDataBase()).collect()
       if (a.filter { x => x.name.toUpperCase() == TablaMaster.TableName.toUpperCase()  }.length > 0) {
-        println("elimine la tabla porque existía AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
         huemulLib.spark.sql(s"drop table if exists ${TablaMaster.GetTable()} ")
-      } else {
-        println("NO ELIMINE NADA DE TABLAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
-      }
+      } 
       
       val FullPath = new org.apache.hadoop.fs.Path(s"${TablaMaster.GetFullNameWithPath()}")
       val fs = FileSystem.get(huemulLib.spark.sparkContext.hadoopConfiguration) 

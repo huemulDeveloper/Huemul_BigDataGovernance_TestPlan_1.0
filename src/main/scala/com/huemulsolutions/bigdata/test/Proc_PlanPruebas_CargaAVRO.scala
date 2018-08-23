@@ -33,14 +33,18 @@ object Proc_PlanPruebas_CargaAVRO {
       val TablaMaster = new tbl_DatosBasicosAVRO(huemulLib, Control)      
       TablaMaster.DataFramehuemul.setDataFrame(DF_RAW.DataFramehuemul.DataFrame, "DF_Original")
       
-      //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
+   //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
+      val a = huemulLib.spark.catalog.listTables(TablaMaster.GetCurrentDataBase()).collect()
+      if (a.filter { x => x.name.toUpperCase() == TablaMaster.TableName.toUpperCase()  }.length > 0) {
+        huemulLib.spark.sql(s"drop table if exists ${TablaMaster.GetTable()} ")
+      } 
+      
       val FullPath = new org.apache.hadoop.fs.Path(s"${TablaMaster.GetFullNameWithPath()}")
-      val fs = FileSystem.get(huemulLib.spark.sparkContext.hadoopConfiguration)       
+      val fs = FileSystem.get(huemulLib.spark.sparkContext.hadoopConfiguration) 
       if (fs.exists(FullPath))
         fs.delete(FullPath, true)
-      huemulLib.spark.sql(s"drop table if exists ${TablaMaster.GetTable()} ")
-   //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
-      
+        
+   //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS  
       TablaMaster.TipoValor.SetMapping("TipoValor",true,"coalesce(new.TipoValor,'nulo')","coalesce(new.TipoValor,'nulo')")
       TablaMaster.IntValue.SetMapping("IntValue")
       TablaMaster.BigIntValue.SetMapping("BigIntValue")
@@ -55,12 +59,11 @@ object Proc_PlanPruebas_CargaAVRO {
       //TODO: cambiar el parámetro "true" por algo.UPDATE O algo.NOUPDATE (en replaceValueOnUpdate
       Control.NewStep("Ejecución")
       if (!TablaMaster.executeFull("DF_Final")) {
-        IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "No hay error en masterización", "No hay error en masterización", s"Si hay error en masterización", false)
+        IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "No hay error en masterización", "No hay error en masterización", s"Si hay error en masterización(${TablaMaster.Error_Code}): ${TablaMaster.Error_Text}", false)
         Control.RegisterTestPlanFeature("StorageType avro", IdTestPlan)
         Control.RegisterTestPlanFeature("Requiered OK", IdTestPlan)
         Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
         Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
-        Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
       
         Control.RaiseError(s"Error al masterizar (${TablaMaster.Error_Code}): ${TablaMaster.Error_Text}")
       } else {
@@ -69,7 +72,6 @@ object Proc_PlanPruebas_CargaAVRO {
         Control.RegisterTestPlanFeature("Requiered OK", IdTestPlan)
         Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
         Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
-        Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
       }
         
       
@@ -99,7 +101,7 @@ object Proc_PlanPruebas_CargaAVRO {
       
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Cero_Vacio - TieneRegistros", "Registro Cero_Vacio, debe tener 1 registro", "Cantidad = 1", s"Cantidad = ${Cantidad}", Cantidad == 1)
       Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
-      Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
+      Control.RegisterTestPlanFeature("StorageType avro", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
@@ -123,7 +125,7 @@ object Proc_PlanPruebas_CargaAVRO {
       Cantidad = if (Negativo_Maximo_Todos == null) 0 else Negativo_Maximo_Todos.count()
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - TieneRegistros", "Registro Negativo_Maximo, debe tener 1 registro", "Cantidad = 1", s"Cantidad = ${Cantidad}", Cantidad == 1)
       Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
-      Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
+      Control.RegisterTestPlanFeature("StorageType avro", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)      
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
@@ -145,7 +147,7 @@ object Proc_PlanPruebas_CargaAVRO {
       Cantidad = if (Negativo_Minimo_Todos == null) 0 else Negativo_Minimo_Todos.count()
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Minimo - TieneRegistros", "Registro Negativo_Minimo, debe tener 1 registro", "Cantidad = 1", s"Cantidad = ${Cantidad}", Cantidad == 1)
       Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
-      Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
+      Control.RegisterTestPlanFeature("StorageType avro", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
@@ -167,7 +169,7 @@ object Proc_PlanPruebas_CargaAVRO {
       Cantidad = if (Positivo_Minimo_Todos == null) 0 else Positivo_Minimo_Todos.count()
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Positivo_Minimo - TieneRegistros", "Registro Positivo_Minimo, debe tener 1 registro", "Cantidad = 1", s"Cantidad = ${Cantidad}", Cantidad == 1)
       Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
-      Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
+      Control.RegisterTestPlanFeature("StorageType avro", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
@@ -189,7 +191,7 @@ object Proc_PlanPruebas_CargaAVRO {
       Cantidad = if (Positivo_Maximo_Todos == null) 0 else Positivo_Maximo_Todos.count()
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Positivo_Maximo - TieneRegistros", "Registro Positivo_Maximo, debe tener 1 registro", "Cantidad = 1", s"Cantidad = ${Cantidad}", Cantidad == 1)
       Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
-      Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
+      Control.RegisterTestPlanFeature("StorageType avro", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
@@ -212,7 +214,7 @@ object Proc_PlanPruebas_CargaAVRO {
       Cantidad = if (ValorNull_Todos == null) 0 else ValorNull_Todos.count()
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValorNull - TieneRegistros", "Registro ValorNull, debe tener 1 registro", "Cantidad = 1", s"Cantidad = ${Cantidad}", Cantidad == 1)
       Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
-      Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
+      Control.RegisterTestPlanFeature("StorageType avro", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - Convierte string null a null", IdTestPlan)
@@ -235,7 +237,7 @@ object Proc_PlanPruebas_CargaAVRO {
       Cantidad = if (ValoresDefault_Todos == null) 0 else ValoresDefault_Todos.count()
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValoresDefault - TieneRegistros", "Registro ValoresDefault, debe tener 1 registro", "Cantidad = 1", s"Cantidad = ${Cantidad}", Cantidad == 1)
       Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
-      Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
+      Control.RegisterTestPlanFeature("StorageType avro", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)

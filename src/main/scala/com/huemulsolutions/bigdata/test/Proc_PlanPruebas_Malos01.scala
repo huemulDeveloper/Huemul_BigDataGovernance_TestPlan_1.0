@@ -20,7 +20,7 @@ object Proc_PlanPruebas_Malos01 {
     val Mes = huemulLib.arguments.GetValue("mes", null,"Debe especificar mes de proceso: ejemplo: mes=12")
     
     val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
-
+    var IdTestPlan: String = ""
     Control.AddParamInfo("TestPlanGroup", TestPlanGroup)
         
     try {
@@ -58,13 +58,16 @@ object Proc_PlanPruebas_Malos01 {
       /////////////////////////////////////////////////////////////////////////////////////////
       /////////////////////////////////////////////////////////////////////////////////////////
       //valida que respuesta sea negativa
-      Control.RegisterTestPlan(TestPlanGroup, "Malo01 - Error PK", "El proceso debe retornar false", "ValorexecuteFull = false", s"ValorexecuteFull = ${ValorexecuteFull}", !ValorexecuteFull)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Malo01 - Error PK", "El proceso debe retornar false", "ValorexecuteFull = false", s"ValorexecuteFull = ${ValorexecuteFull}", !ValorexecuteFull)
+      Control.RegisterTestPlanFeature("IsPK Error", IdTestPlan)
       
-      Control.RegisterTestPlan(TestPlanGroup, "Malo01 - Error PK 1018", "El proceso debe retornar cod. error 1018", "error_code=1018", s"error_code= ${TablaMaster.Error_Code}", TablaMaster.Error_Code == 1018)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Malo01 - Error PK 1018", "El proceso debe retornar cod. error 1018", "error_code=1018", s"error_code= ${TablaMaster.Error_Code}", TablaMaster.Error_Code == 1018)
+      Control.RegisterTestPlanFeature("IsPK Error", IdTestPlan)
       
       //valida que N° de registros con problemas de PK = 1
       val NumErrores_TipoValor = TablaMaster.DataFramehuemul.getDQResult().filter { x => x.DQ_Name == "PK" }
-      Control.RegisterTestPlan(TestPlanGroup, "Malo01 - Obtiene DQ PK", "N° registros devueltos de DQ pK = 1", "N° Reg = 1", s"N° Reg = ${NumErrores_TipoValor.length}", NumErrores_TipoValor.length == 1)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Malo01 - Obtiene DQ PK", "N° registros devueltos de DQ pK = 1", "N° Reg = 1", s"N° Reg = ${NumErrores_TipoValor.length}", NumErrores_TipoValor.length == 1)
+      Control.RegisterTestPlanFeature("IsPK Error", IdTestPlan)
       
       var PK_NumRowsTotal: Long = 0
       var PK_NumRowsError: Long = -1
@@ -72,8 +75,8 @@ object Proc_PlanPruebas_Malos01 {
         PK_NumRowsTotal = NumErrores_TipoValor(0).DQ_NumRowsTotal
         PK_NumRowsError = NumErrores_TipoValor(0).DQ_NumRowsError
       }
-      Control.RegisterTestPlan(TestPlanGroup, "Malo01 - N° PK duplicados", "N° registros duplicados, debe ser 1", "N° PK Duplicados = 1", s"N° PK Duplicados = ${PK_NumRowsError}", PK_NumRowsError == 1)
-      
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Malo01 - N° PK duplicados", "N° registros duplicados, debe ser 1", "N° PK Duplicados = 1", s"N° PK Duplicados = ${PK_NumRowsError}", PK_NumRowsError == 1)
+      Control.RegisterTestPlanFeature("IsPK Error", IdTestPlan)
       
       TablaMaster.DataFramehuemul.getDQResult().foreach { x => 
         println(s"DQ_Name:${x.DQ_Name}, BBDD_Name:${x.BBDD_Name}, Table_Name:${x.Table_Name}, ColumnName:${x.ColumnName}, DQ_NumRowsTotal:${x.DQ_NumRowsTotal}, DQ_NumRowsOK:${x.DQ_NumRowsOK}, DQ_NumRowsError:${x.DQ_NumRowsError}") 
@@ -88,6 +91,8 @@ object Proc_PlanPruebas_Malos01 {
       Control.FinishProcessOK
     } catch {
       case e: Exception => 
+        val IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ERROR", "ERROR DE PROGRAMA -  no deberia tener errror", "sin error", s"con error", false)
+        Control.RegisterTestPlanFeature("IsPK Error", IdTestPlan)
         Control.Control_Error.GetError(e, this.getClass.getSimpleName, null)
         Control.FinishProcessError()
     }

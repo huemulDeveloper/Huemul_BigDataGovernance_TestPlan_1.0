@@ -32,14 +32,20 @@ object Proc_PlanPruebas_CargaMaster {
       val TablaMaster = new tbl_DatosBasicos(huemulLib, Control)      
       TablaMaster.DataFramehuemul.setDataFrame(DF_RAW.DataFramehuemul.DataFrame, "DF_Original")
       
-      //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
+   //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
+      val a = huemulLib.spark.catalog.listTables(TablaMaster.GetCurrentDataBase()).collect()
+      if (a.filter { x => x.name.toUpperCase() == TablaMaster.TableName.toUpperCase()  }.length > 0) {
+        huemulLib.spark.sql(s"drop table if exists ${TablaMaster.GetTable()} ")
+      } 
+      
       val FullPath = new org.apache.hadoop.fs.Path(s"${TablaMaster.GetFullNameWithPath()}")
-      val fs = FileSystem.get(huemulLib.spark.sparkContext.hadoopConfiguration)       
+      val fs = FileSystem.get(huemulLib.spark.sparkContext.hadoopConfiguration) 
       if (fs.exists(FullPath))
         fs.delete(FullPath, true)
-      huemulLib.spark.sql(s"drop table if exists ${TablaMaster.GetTable()} ")
+        
    //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
-      
+        
+        
       TablaMaster.TipoValor.SetMapping("TipoValor",true,"coalesce(new.TipoValor,'nulo')","coalesce(new.TipoValor,'nulo')")
       TablaMaster.IntValue.SetMapping("IntValue")
       TablaMaster.BigIntValue.SetMapping("BigIntValue")
@@ -460,6 +466,7 @@ object Proc_PlanPruebas_CargaMaster {
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValorNull - timeStampValue", "Registro ValorNull, Campo timeStampValue", "Valor = null", s"Valor = ??", timeStampValue)
       Control.RegisterTestPlanFeature("Datos de tipo TimestampType", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - Convierte string null a null", IdTestPlan)
+      
       
       //**************************
       //****  C O M P A R A C I O N     P O S I T I V O   M A X I M O  *************
