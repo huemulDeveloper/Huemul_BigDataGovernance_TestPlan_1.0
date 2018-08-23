@@ -1,0 +1,154 @@
+package com.huemulsolutions.bigdata.test
+
+import com.huemulsolutions.bigdata.common._
+import com.huemulsolutions.bigdata.control._
+import com.huemulsolutions.bigdata.tables.master.tbl_DatosBasicos
+import com.huemulsolutions.bigdata.raw.raw_DatosBasicos
+import com.huemulsolutions.bigdata
+import org.apache.hadoop.fs.FileSystem
+import com.huemulsolutions.bigdata.tables.master.tbl_DatosBasicosErrores
+
+
+object Proc_PlanPruebas_Errores {
+  def main(args: Array[String]): Unit = {
+    val huemulLib = new huemul_Library("01 - Plan pruebas Proc_PlanPruebas_CargaMaster",args,globalSettings.Global)
+    val Control = new huemul_Control(huemulLib,null)
+    
+    val Ano = huemulLib.arguments.GetValue("ano", null,"Debe especificar ano de proceso: ejemplo: ano=2017")
+    val Mes = huemulLib.arguments.GetValue("mes", null,"Debe especificar mes de proceso: ejemplo: mes=12")
+    
+    val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
+
+    Control.AddParamInfo("TestPlanGroup", TestPlanGroup)
+        
+    try {
+      Control.NewStep("Define DataFrame Original")
+      val DF_RAW =  new raw_DatosBasicos(huemulLib, Control)
+      if (!DF_RAW.open("DF_RAW", null, Ano.toInt, Mes.toInt, 1, 0, 0, 0,"")) {
+        Control.RaiseError(s"Error al intentar abrir archivo de datos: ${DF_RAW.Error.ControlError_Message}")
+      }
+      Control.NewStep("Mapeo de Campos")
+      val TablaMaster = new tbl_DatosBasicosErrores(huemulLib, Control)      
+      TablaMaster.DataFramehuemul.setDataFrame(DF_RAW.DataFramehuemul.DataFrame, "DF_Original")
+      
+      //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
+      val FullPath = new org.apache.hadoop.fs.Path(s"${TablaMaster.GetFullNameWithPath()}")
+      val fs = FileSystem.get(huemulLib.spark.sparkContext.hadoopConfiguration)       
+      if (fs.exists(FullPath))
+        fs.delete(FullPath, true)
+      huemulLib.spark.sql(s"drop table if exists ${TablaMaster.GetTable()} ")
+   //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
+      
+      TablaMaster.TipoValor.SetMapping("TipoValor")
+      TablaMaster.Column_DQ_MaxDateTimeValue.SetMapping("timeStampValue")
+      TablaMaster.Column_DQ_MaxDecimalValue.SetMapping("DecimalValue")
+      TablaMaster.Column_DQ_MaxLen.SetMapping("StringValue")
+      TablaMaster.Column_DQ_MinDateTimeValue.SetMapping("timeStampValue")
+      TablaMaster.Column_DQ_MinDecimalValue.SetMapping("DecimalValue")
+      TablaMaster.Column_DQ_MinLen.SetMapping("StringValue")
+      TablaMaster.Column_IsUnique.SetMapping("StringValue")
+      TablaMaster.Column_NoMapeadoDefault.SetMapping("")
+      TablaMaster.Column_NotNull.SetMapping("IntValue")
+      TablaMaster.Column_OpcionalNoMapeado.SetMapping("IntValue")
+      
+      huemulLib.spark.sql("select StringValue, length(StringValue) as largo, case when StringValue is null then 1 else 0 end esNulo from DF_Original").show()
+      //TODO: cambiar el parámetro "true" por algo.UPDATE O algo.NOUPDATE (en replaceValueOnUpdate
+      Control.NewStep("Ejecución")
+      TablaMaster.executeFull("DF_Final")
+      
+      //Column_DQ_MinLen
+      var ErrorReg = TablaMaster.DataFramehuemul.getDQResult().filter { x => x.ColumnName == "Column_DQ_MinLen" && x.DQ_ErrorCode == 1020 }
+      if (ErrorReg == null || ErrorReg.length == 0)
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR Column_DQ_MinLen", "No hay error encontrado", "ErrorCode = 1020", s"SIN REGISTRO", false)
+      else {
+        val ErrorEncontrado = ErrorReg(0)
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR Column_DQ_MinLen Codigo", "Errores encontrados correctamente", "ErrorCode = 1020, N° registros con error: 3", s"ErrorCode = 1020, N° registros con error: ${ErrorEncontrado.DQ_NumRowsError}", ErrorEncontrado.DQ_NumRowsError == 3)
+      }
+      
+      //Column_DQ_MaxLen
+      ErrorReg = TablaMaster.DataFramehuemul.getDQResult().filter { x => x.ColumnName == "Column_DQ_MaxLen" && x.DQ_ErrorCode == 1020 }
+      if (ErrorReg == null || ErrorReg.length == 0)
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR Column_DQ_MaxLen", "No hay error encontrado", "ErrorCode = 1020", s"SIN REGISTRO", false)
+      else {
+        val ErrorEncontrado = ErrorReg(0)
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR Column_DQ_MaxLen Codigo", "Errores encontrados correctamente", "ErrorCode = 1020, N° registros con error: 2", s"ErrorCode = 1020, N° registros con error: ${ErrorEncontrado.DQ_NumRowsError}", ErrorEncontrado.DQ_NumRowsError == 2)
+      }
+      
+      //Column_DQ_MinDecimalValue
+      ErrorReg = TablaMaster.DataFramehuemul.getDQResult().filter { x => x.ColumnName == "Column_DQ_MinDecimalValue" && x.DQ_ErrorCode == 1021 }
+      if (ErrorReg == null || ErrorReg.length == 0)
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR Column_DQ_MinDecimalValue", "No hay error encontrado", "ErrorCode = 1021", s"SIN REGISTRO", false)
+      else {
+        val ErrorEncontrado = ErrorReg(0)
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR Column_DQ_MinDecimalValue Codigo", "Errores encontrados correctamente", "ErrorCode = 1021, N° registros con error: 2", s"ErrorCode = 1021, N° registros con error: ${ErrorEncontrado.DQ_NumRowsError}", ErrorEncontrado.DQ_NumRowsError == 2)
+      }
+      
+      //Column_DQ_MaxDecimalValue
+      ErrorReg = TablaMaster.DataFramehuemul.getDQResult().filter { x => x.ColumnName == "Column_DQ_MaxDecimalValue" && x.DQ_ErrorCode == 1021 }
+      if (ErrorReg == null || ErrorReg.length == 0)
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR Column_DQ_MaxDecimalValue", "No hay error encontrado", "ErrorCode = 1021", s"SIN REGISTRO", false)
+      else {
+        val ErrorEncontrado = ErrorReg(0)
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR Column_DQ_MaxDecimalValue Codigo", "Errores encontrados correctamente", "ErrorCode = 1021, N° registros con error: 1", s"ErrorCode = 1021, N° registros con error: ${ErrorEncontrado.DQ_NumRowsError}", ErrorEncontrado.DQ_NumRowsError == 1)
+      }
+      
+      //Column_DQ_MinDateTimeValue
+      ErrorReg = TablaMaster.DataFramehuemul.getDQResult().filter { x => x.ColumnName == "Column_DQ_MinDateTimeValue" && x.DQ_ErrorCode == 1022 }
+      if (ErrorReg == null || ErrorReg.length == 0)
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR Column_DQ_MinDateTimeValue", "No hay error encontrado", "ErrorCode = 1022", s"SIN REGISTRO", false)
+      else {
+        val ErrorEncontrado = ErrorReg(0)
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR Column_DQ_MinDateTimeValue Codigo", "Errores encontrados correctamente", "ErrorCode = 1022, N° registros con error: 3", s"ErrorCode = 1022, N° registros con error: ${ErrorEncontrado.DQ_NumRowsError}", ErrorEncontrado.DQ_NumRowsError == 3)
+      }
+      
+      //Column_DQ_MaxDateTimeValue
+      ErrorReg = TablaMaster.DataFramehuemul.getDQResult().filter { x => x.ColumnName == "Column_DQ_MaxDateTimeValue" && x.DQ_ErrorCode == 1022 }
+      if (ErrorReg == null || ErrorReg.length == 0)
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR Column_DQ_MaxDateTimeValue", "No hay error encontrado", "ErrorCode = 1022", s"SIN REGISTRO", false)
+      else {
+        val ErrorEncontrado = ErrorReg(0)
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR Column_DQ_MaxDateTimeValue Codigo", "Errores encontrados correctamente", "ErrorCode = 1022, N° registros con error: 2", s"ErrorCode = 1022, N° registros con error: ${ErrorEncontrado.DQ_NumRowsError}", ErrorEncontrado.DQ_NumRowsError == 2)
+      }
+      
+      //Column_NotNull
+      ErrorReg = TablaMaster.DataFramehuemul.getDQResult().filter { x => x.ColumnName == "Column_NotNull" && x.DQ_ErrorCode == 1023 }
+      if (ErrorReg == null || ErrorReg.length == 0)
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR Column_NotNull", "No hay error encontrado", "ErrorCode = 1023", s"SIN REGISTRO", false)
+      else {
+        val ErrorEncontrado = ErrorReg(0)
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR Column_NotNull Codigo", "Errores encontrados correctamente", "ErrorCode = 1023, N° registros con error: 1", s"ErrorCode = 1023, N° registros con error: ${ErrorEncontrado.DQ_NumRowsError}", ErrorEncontrado.DQ_NumRowsError == 1)
+      }
+      
+      //Column_IsUnique
+      ErrorReg = TablaMaster.DataFramehuemul.getDQResult().filter { x => x.ColumnName == "Column_IsUnique" && x.DQ_ErrorCode == 2006 }
+      if (ErrorReg == null || ErrorReg.length == 0)
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR Column_IsUnique", "No hay error encontrado", "ErrorCode = 2006", s"SIN REGISTRO", false)
+      else {
+        val ErrorEncontrado = ErrorReg(0)
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR Column_IsUnique Codigo", "Errores encontrados correctamente", "ErrorCode = 2006, N° registros Not Unique: 2", s"ErrorCode = 2006, N° registros con error: ${ErrorEncontrado.DQ_NumRowsError}", ErrorEncontrado.DQ_NumRowsError == 2)
+      }
+      
+      //N° Total de errores por DQ debe ser = 8
+      ErrorReg = TablaMaster.DataFramehuemul.getDQResult().filter { x => x.DQ_IsError }
+      if (ErrorReg == null || ErrorReg.length == 0)
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR N° DQ fallados", "No hay error encontrado", "Cantidad de errores DQ = 8", s"Cantidad de errores DQ = ${ErrorReg.length}", false)
+      else {
+        val ErrorEncontrado = ErrorReg.length
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR N° DQ Fallados cod", "Errores encontrados correctamente", "Cantidad de errores DQ = 8", s"Cantidad de errores DQ = ${ErrorEncontrado}", ErrorEncontrado == 8)
+      }
+      
+      println(s"detalle del 100% de DQ aplicado en esta prueba")
+      TablaMaster.DataFramehuemul.getDQResult().foreach { x => 
+        println(s"DQ_Name:[${x.DQ_Name}], ErrorCode:${x.DQ_ErrorCode} BBDD_Name:${x.BBDD_Name}, Table_Name:${x.Table_Name}, ColumnName:${x.ColumnName}, DQ_NumRowsTotal:${x.DQ_NumRowsTotal}, DQ_NumRowsOK:${x.DQ_NumRowsOK}, DQ_NumRowsError:${x.DQ_NumRowsError}")
+      }
+      
+      
+          Control.FinishProcessOK
+    } catch {
+      case e: Exception => 
+        Control.RegisterTestPlan(TestPlanGroup, "ERROR", "ERROR DE PROGRAMA -  no deberia tener errror", "sin error", s"con error", false)
+        Control.Control_Error.GetError(e, this.getClass.getSimpleName, null)
+        Control.FinishProcessError()
+    }
+  }
+}
