@@ -10,6 +10,8 @@ object App {
   def main(args : Array[String]) {
     Proc_PlanPruebas_CargaMaster.main(args)
     
+    Proc_PlanPruebas_NoMapped.main(args)
+    
     Proc_PlanPruebas_OnlyInsertNew.main(args)
     Proc_PlanPruebas_OnlyInsertUpdate.main(args)
      
