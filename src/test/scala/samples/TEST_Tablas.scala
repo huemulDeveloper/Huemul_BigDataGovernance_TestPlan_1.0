@@ -26,7 +26,7 @@ class AppTest {
     def TEST_tbl_DatosBasicosInsesrt() = assertTrue(TESTp_tbl_DatosBasicosInsert())
     
     @Test
-    def TEST_tbl_DatosBasicosNull() = assertTrue(TESTp_tbl_DatosBasicosNull())
+    def TEST_tbl_DatosBasicosErrores() = assertTrue(TESTp_tbl_DatosBasicosErrores())
     
     @Test
     def TEST_tbl_DatosBasicosUpdate() = assertTrue(TESTp_tbl_DatosBasicosUpdate())
@@ -99,10 +99,10 @@ class AppTest {
       return SinError
     }
 
-    /**Revisión de clase tbl_DatosBasicosNull
+    /**Revisión de clase tbl_DatosBasicosErrores
      * 
      */
-    def TESTp_tbl_DatosBasicosNull(): Boolean = {
+    def TESTp_tbl_DatosBasicosErrores(): Boolean = {
       var SinError = true
       
       try {
