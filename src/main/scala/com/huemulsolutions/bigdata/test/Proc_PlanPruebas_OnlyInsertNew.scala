@@ -125,6 +125,16 @@ object Proc_PlanPruebas_OnlyInsertNew {
                                                                                      ,case when StringValue = ""                          then true else false end as Cumple_StringValue
                                                                                      ,case when charValue = ""                            then true else false end as Cumple_charValue
                                                                                      ,case when timeStampValue = "1900-01-01 00:00:00.0"  then true else false end as Cumple_timeStampValue
+                                                                                     ,case when IntValue_old is null and          IntValue_fhChange is null and         IntValue_ProcessLog is not null and 
+                                                                                                BigIntValue_old is null and       BigIntValue_fhChange is null and      BigIntValue_ProcessLog is not null and 
+                                                                                                SmallIntValue_old is null and     SmallIntValue_fhChange is null and    SmallIntValue_ProcessLog is not null and 
+                                                                                                TinyIntValue_old is null and      TinyIntValue_fhChange is null and     TinyIntValue_ProcessLog is not null and 
+                                                                                                DecimalValue_old is null and      DecimalValue_fhChange is null and     DecimalValue_ProcessLog is not null and 
+                                                                                                RealValue_old is null and         RealValue_fhChange is null and        RealValue_ProcessLog is not null and 
+                                                                                                FloatValue_old is null and        FloatValue_fhChange is null and       FloatValue_ProcessLog is not null and 
+                                                                                                StringValue_old is null and       StringValue_fhChange is null and      StringValue_ProcessLog is not null and 
+                                                                                                charValue_old is null and         charValue_fhChange is null and        charValue_ProcessLog is not null and 
+                                                                                                timeStampValue_old is null and    timeStampValue_fhChange is null and   timeStampValue_ProcessLog is not null then true else false end as Cumple_MDM
                                                                                FROM DF_Final
                                                                                WHERE tipoValor = 'Cero-Vacio'""")
       
@@ -151,6 +161,16 @@ object Proc_PlanPruebas_OnlyInsertNew {
                                                                                      ,case when timeStampValue = "2017-12-31 00:00:00"      then true else false end as Cumple_timeStampValue
                                                                                      ,FloatValue - -cast(10.123 as float) as res
                                                                                      ,FloatValue 
+                                                                                     ,case when IntValue_old is null and          IntValue_fhChange is null and         IntValue_ProcessLog is not null and 
+                                                                                                BigIntValue_old is null and       BigIntValue_fhChange is null and      BigIntValue_ProcessLog is not null and 
+                                                                                                SmallIntValue_old is null and     SmallIntValue_fhChange is null and    SmallIntValue_ProcessLog is not null and 
+                                                                                                TinyIntValue_old is null and      TinyIntValue_fhChange is null and     TinyIntValue_ProcessLog is not null and 
+                                                                                                DecimalValue_old is null and      DecimalValue_fhChange is null and     DecimalValue_ProcessLog is not null and 
+                                                                                                RealValue_old is null and         RealValue_fhChange is null and        RealValue_ProcessLog is not null and 
+                                                                                                FloatValue_old is null and        FloatValue_fhChange is null and       FloatValue_ProcessLog is not null and 
+                                                                                                StringValue_old is null and       StringValue_fhChange is null and      StringValue_ProcessLog is not null and 
+                                                                                                charValue_old is null and         charValue_fhChange is null and        charValue_ProcessLog is not null and 
+                                                                                                timeStampValue_old is null and    timeStampValue_fhChange is null and   timeStampValue_ProcessLog is not null then true else false end as Cumple_MDM
                                                                                FROM DF_Final
                                                                                WHERE tipoValor = 'Negativo_Maximo'""")
       Cantidad = if (Negativo_Maximo_Todos == null) 0 else Negativo_Maximo_Todos.count()
@@ -173,6 +193,16 @@ object Proc_PlanPruebas_OnlyInsertNew {
                                                                                      ,case when StringValue = "TEXTO AA"                    then true else false end as Cumple_StringValue
                                                                                      ,case when charValue = "a"                             then true else false end as Cumple_charValue
                                                                                      ,case when timeStampValue = "2017-01-01 00:00:00"      then true else false end as Cumple_timeStampValue
+                                                                                     ,case when IntValue_old is null and          IntValue_fhChange is null and         IntValue_ProcessLog is not null and 
+                                                                                                BigIntValue_old is null and       BigIntValue_fhChange is null and      BigIntValue_ProcessLog is not null and 
+                                                                                                SmallIntValue_old is null and     SmallIntValue_fhChange is null and    SmallIntValue_ProcessLog is not null and 
+                                                                                                TinyIntValue_old is null and      TinyIntValue_fhChange is null and     TinyIntValue_ProcessLog is not null and 
+                                                                                                DecimalValue_old is null and      DecimalValue_fhChange is null and     DecimalValue_ProcessLog is not null and 
+                                                                                                RealValue_old is null and         RealValue_fhChange is null and        RealValue_ProcessLog is not null and 
+                                                                                                FloatValue_old is null and        FloatValue_fhChange is null and       FloatValue_ProcessLog is not null and 
+                                                                                                StringValue_old is null and       StringValue_fhChange is null and      StringValue_ProcessLog is not null and 
+                                                                                                charValue_old is null and         charValue_fhChange is null and        charValue_ProcessLog is not null and 
+                                                                                                timeStampValue_old is null and    timeStampValue_fhChange is null and   timeStampValue_ProcessLog is not null then true else false end as Cumple_MDM
                                                                                FROM DF_Final
                                                                                WHERE tipoValor = 'Negativo_Minimo'""")
       Cantidad = if (Negativo_Minimo_Todos == null) 0 else Negativo_Minimo_Todos.count()
@@ -195,6 +225,16 @@ object Proc_PlanPruebas_OnlyInsertNew {
                                                                                      ,case when StringValue = "TEXTO AA"                    then true else false end as Cumple_StringValue
                                                                                      ,case when charValue = "a"                             then true else false end as Cumple_charValue
                                                                                      ,case when timeStampValue = "2017-01-01 00:00:00"      then true else false end as Cumple_timeStampValue
+                                                                                     ,case when IntValue_old is null and          IntValue_fhChange is null and         IntValue_ProcessLog is not null and 
+                                                                                                BigIntValue_old is null and       BigIntValue_fhChange is null and      BigIntValue_ProcessLog is not null and 
+                                                                                                SmallIntValue_old is null and     SmallIntValue_fhChange is null and    SmallIntValue_ProcessLog is not null and 
+                                                                                                TinyIntValue_old is null and      TinyIntValue_fhChange is null and     TinyIntValue_ProcessLog is not null and 
+                                                                                                DecimalValue_old is null and      DecimalValue_fhChange is null and     DecimalValue_ProcessLog is not null and 
+                                                                                                RealValue_old is null and         RealValue_fhChange is null and        RealValue_ProcessLog is not null and 
+                                                                                                FloatValue_old is null and        FloatValue_fhChange is null and       FloatValue_ProcessLog is not null and 
+                                                                                                StringValue_old is null and       StringValue_fhChange is null and      StringValue_ProcessLog is not null and 
+                                                                                                charValue_old is null and         charValue_fhChange is null and        charValue_ProcessLog is not null and 
+                                                                                                timeStampValue_old is null and    timeStampValue_fhChange is null and   timeStampValue_ProcessLog is not null then true else false end as Cumple_MDM
                                                                                FROM DF_Final
                                                                                WHERE tipoValor = 'Positivo_Minimo'""")
       Cantidad = if (Positivo_Minimo_Todos == null) 0 else Positivo_Minimo_Todos.count()
@@ -217,6 +257,16 @@ object Proc_PlanPruebas_OnlyInsertNew {
                                                                                      ,case when StringValue = "TEXTO ZZZZZZ"                then true else false end as Cumple_StringValue
                                                                                      ,case when charValue = "z"                             then true else false end as Cumple_charValue
                                                                                      ,case when timeStampValue = "2017-12-31 00:00:00"      then true else false end as Cumple_timeStampValue
+                                                                                     ,case when IntValue_old is null and          IntValue_fhChange is null and         IntValue_ProcessLog is not null and 
+                                                                                                BigIntValue_old is null and       BigIntValue_fhChange is null and      BigIntValue_ProcessLog is not null and 
+                                                                                                SmallIntValue_old is null and     SmallIntValue_fhChange is null and    SmallIntValue_ProcessLog is not null and 
+                                                                                                TinyIntValue_old is null and      TinyIntValue_fhChange is null and     TinyIntValue_ProcessLog is not null and 
+                                                                                                DecimalValue_old is null and      DecimalValue_fhChange is null and     DecimalValue_ProcessLog is not null and 
+                                                                                                RealValue_old is null and         RealValue_fhChange is null and        RealValue_ProcessLog is not null and 
+                                                                                                FloatValue_old is null and        FloatValue_fhChange is null and       FloatValue_ProcessLog is not null and 
+                                                                                                StringValue_old is null and       StringValue_fhChange is null and      StringValue_ProcessLog is not null and 
+                                                                                                charValue_old is null and         charValue_fhChange is null and        charValue_ProcessLog is not null and 
+                                                                                                timeStampValue_old is null and    timeStampValue_fhChange is null and   timeStampValue_ProcessLog is not null then true else false end as Cumple_MDM
                                                                                FROM DF_Final
                                                                                WHERE tipoValor = 'Positivo_Maximo'""")
       Cantidad = if (Positivo_Maximo_Todos == null) 0 else Positivo_Maximo_Todos.count()
@@ -240,6 +290,16 @@ object Proc_PlanPruebas_OnlyInsertNew {
                                                                                      ,case when charValue IS NULL                        then true else false end as Cumple_charValue
                                                                                      ,case when timeStampValue IS NULL                   then true else false end as Cumple_timeStampValue
                                                                                      ,StringValue
+                                                                                     ,case when IntValue_old is null and          IntValue_fhChange is null and         IntValue_ProcessLog is not null and 
+                                                                                                BigIntValue_old is null and       BigIntValue_fhChange is null and      BigIntValue_ProcessLog is not null and 
+                                                                                                SmallIntValue_old is null and     SmallIntValue_fhChange is null and    SmallIntValue_ProcessLog is not null and 
+                                                                                                TinyIntValue_old is null and      TinyIntValue_fhChange is null and     TinyIntValue_ProcessLog is not null and 
+                                                                                                DecimalValue_old is null and      DecimalValue_fhChange is null and     DecimalValue_ProcessLog is not null and 
+                                                                                                RealValue_old is null and         RealValue_fhChange is null and        RealValue_ProcessLog is not null and 
+                                                                                                FloatValue_old is null and        FloatValue_fhChange is null and       FloatValue_ProcessLog is not null and 
+                                                                                                StringValue_old is null and       StringValue_fhChange is null and      StringValue_ProcessLog is not null and 
+                                                                                                charValue_old is null and         charValue_fhChange is null and        charValue_ProcessLog is not null and 
+                                                                                                timeStampValue_old is null and    timeStampValue_fhChange is null and   timeStampValue_ProcessLog is not null then true else false end as Cumple_MDM
                                                                                FROM DF_Final
                                                                                WHERE tipoValor = 'nulo'""")
       Cantidad = if (ValorNull_Todos == null) 0 else ValorNull_Todos.count()
@@ -249,6 +309,7 @@ object Proc_PlanPruebas_OnlyInsertNew {
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - Convierte string null a null", IdTestPlan)
+      Control.RegisterTestPlanFeature("SQLForInsert", IdTestPlan)
       val ValorNull = ValorNull_Todos.first()
       
       
@@ -287,6 +348,16 @@ object Proc_PlanPruebas_OnlyInsertNew {
                                                                                      ,case when StringValue = "TEXTO XXXXXX"                then true else false end as Cumple_StringValue
                                                                                      ,case when charValue = "X"                             then true else false end as Cumple_charValue
                                                                                      ,case when timeStampValue = "2017-12-30 00:00:00"      then true else false end as Cumple_timeStampValue
+                                                                                     ,case when IntValue_old is null and          IntValue_fhChange is null and         IntValue_ProcessLog is not null and 
+                                                                                                BigIntValue_old is null and       BigIntValue_fhChange is null and      BigIntValue_ProcessLog is not null and 
+                                                                                                SmallIntValue_old is null and     SmallIntValue_fhChange is null and    SmallIntValue_ProcessLog is not null and 
+                                                                                                TinyIntValue_old is null and      TinyIntValue_fhChange is null and     TinyIntValue_ProcessLog is not null and 
+                                                                                                DecimalValue_old is null and      DecimalValue_fhChange is null and     DecimalValue_ProcessLog is not null and 
+                                                                                                RealValue_old is null and         RealValue_fhChange is null and        RealValue_ProcessLog is not null and 
+                                                                                                FloatValue_old is null and        FloatValue_fhChange is null and       FloatValue_ProcessLog is not null and 
+                                                                                                StringValue_old is null and       StringValue_fhChange is null and      StringValue_ProcessLog is not null and 
+                                                                                                charValue_old is null and         charValue_fhChange is null and        charValue_ProcessLog is not null and 
+                                                                                                timeStampValue_old is null and    timeStampValue_fhChange is null and   timeStampValue_ProcessLog is not null then true else false end as Cumple_MDM
                                                                                FROM DF_Final
                                                                                WHERE tipoValor = 'Nuevos'""")
       Cantidad = if (Nuevos_Todos == null) 0 else Nuevos_Todos.count()
@@ -339,6 +410,11 @@ object Proc_PlanPruebas_OnlyInsertNew {
       var timeStampValue =  Cero_Vacio.getAs[Boolean]("Cumple_timeStampValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Cero_Vacio - timeStampValue", "Registro Cero_Vacio, Campo timeStampValue", "Valor = '1900-01-01 00:00:00.0'", s"Valor = ??", timeStampValue)
       Control.RegisterTestPlanFeature("Datos de tipo TimestampType", IdTestPlan)
+      var MDM =  Cero_Vacio.getAs[Boolean]("Cumple_MDM")
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Cero_Vacio - MDM", "Registro Cero_Vacio, Campo MDM", "Valor = true", s"Valor = ${MDM}", MDM)
+      Control.RegisterTestPlanFeature("MDM_EnableDTLog", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableOldValue", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableProcessLog", IdTestPlan)
       
       //**************************
       //****  C O M P A R A C I O N     N E G A T I V O   M A X I M O  *************
@@ -373,7 +449,11 @@ object Proc_PlanPruebas_OnlyInsertNew {
       timeStampValue =  Negativo_Maximo.getAs[Boolean]("Cumple_timeStampValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - timeStampValue", "Registro Negativo_Maximo, Campo timeStampValue", "Valor = '2017-12-31 00:00:00.0'", s"Valor = ??", timeStampValue)
       Control.RegisterTestPlanFeature("Datos de tipo TimestampType", IdTestPlan)
-      
+      MDM =  Negativo_Maximo.getAs[Boolean]("Cumple_MDM")
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - MDM", "Registro Negativo_Maximo, Campo MDM", "Valor = true", s"Valor = ${MDM}", MDM)
+      Control.RegisterTestPlanFeature("MDM_EnableDTLog", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableOldValue", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableProcessLog", IdTestPlan)
       
       //**************************
       //****  C O M P A R A C I O N     N E G A T I V O   M I N I M O  *************
@@ -408,7 +488,12 @@ object Proc_PlanPruebas_OnlyInsertNew {
       timeStampValue =  Negativo_Minimo.getAs[Boolean]("Cumple_timeStampValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Minimo - timeStampValue", "Registro Negativo_Minimo, Campo timeStampValue", "Valor = '2017-01-01 00:00:00.0'", s"Valor = ??", timeStampValue)
       Control.RegisterTestPlanFeature("Datos de tipo TimestampType", IdTestPlan)
-    
+      MDM =  Negativo_Minimo.getAs[Boolean]("Cumple_MDM")
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Minimo - MDM", "Registro Negativo_Minimo, Campo MDM", "Valor = true", s"Valor = ${MDM}", MDM)
+      Control.RegisterTestPlanFeature("MDM_EnableDTLog", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableOldValue", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableProcessLog", IdTestPlan)
+      
       //**************************
       //****  C O M P A R A C I O N     P O S I T I V O   M I N I M O  *************
       //**************************
@@ -442,7 +527,11 @@ object Proc_PlanPruebas_OnlyInsertNew {
       timeStampValue =  Positivo_Minimo.getAs[Boolean]("Cumple_timeStampValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Positivo_Minimo - timeStampValue", "Registro Positivo_Minimo, Campo timeStampValue", "Valor = '2017-01-01 00:00:00.0'", s"Valor = ??", timeStampValue)
       Control.RegisterTestPlanFeature("Datos de tipo TimestampType", IdTestPlan)
-      
+      MDM =  Positivo_Minimo.getAs[Boolean]("Cumple_MDM")
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Positivo_Minimo - MDM", "Registro Positivo_Minimo, Campo MDM", "Valor = true", s"Valor = ${MDM}", MDM)
+      Control.RegisterTestPlanFeature("MDM_EnableDTLog", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableOldValue", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableProcessLog", IdTestPlan)
      
       //**************************
       //****  C O M P A R A C I O N     P O S I T I V O   M A X I M O  *************
@@ -477,6 +566,11 @@ object Proc_PlanPruebas_OnlyInsertNew {
       timeStampValue =  Positivo_Maximo.getAs[Boolean]("Cumple_timeStampValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Positivo_Maximo - timeStampValue", "Registro Positivo_Maximo, Campo timeStampValue", "Valor = '2017-12-31 00:00:00.0'", s"Valor = ??", timeStampValue)
       Control.RegisterTestPlanFeature("Datos de tipo TimestampType", IdTestPlan)
+      MDM =  Positivo_Maximo.getAs[Boolean]("Cumple_MDM")
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Positivo_Maximo - MDM", "Registro Positivo_Maximo, Campo MDM", "Valor = true", s"Valor = ${MDM}", MDM)
+      Control.RegisterTestPlanFeature("MDM_EnableDTLog", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableOldValue", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableProcessLog", IdTestPlan)
       
       //**************************
       //****  C O M P A R A C I O N      N U L O S  *************
@@ -521,6 +615,11 @@ object Proc_PlanPruebas_OnlyInsertNew {
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValorNull - timeStampValue", "Registro ValorNull, Campo timeStampValue", "Valor = null", s"Valor = ??", timeStampValue)
       Control.RegisterTestPlanFeature("Datos de tipo TimestampType", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - Convierte string null a null", IdTestPlan)
+      MDM =  ValorNull.getAs[Boolean]("Cumple_MDM")
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValorNull - MDM", "Registro ValorNull, Campo MDM", "Valor = true", s"Valor = ${MDM}", MDM)
+      Control.RegisterTestPlanFeature("MDM_EnableDTLog", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableOldValue", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableProcessLog", IdTestPlan)
       
       //**************************
       //****  C O M P A R A C I O N     D E F A U L T   *************
@@ -600,7 +699,11 @@ object Proc_PlanPruebas_OnlyInsertNew {
       timeStampValue =  Nuevos.getAs[Boolean]("Cumple_timeStampValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Nuevos - timeStampValue", "Registro Nuevos, Campo timeStampValue", "Valor = '2017-12-31 00:00:00.0'", s"Valor = ??", timeStampValue)
       Control.RegisterTestPlanFeature("executeOnlyInsert", IdTestPlan)
-      
+      MDM =  Nuevos.getAs[Boolean]("Cumple_MDM")
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Nuevos - MDM", "Registro Nuevos, Campo MDM", "Valor = true", s"Valor = ${MDM}", MDM)
+      Control.RegisterTestPlanFeature("MDM_EnableDTLog", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableOldValue", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableProcessLog", IdTestPlan)
       
           Control.FinishProcessOK
     } catch {
