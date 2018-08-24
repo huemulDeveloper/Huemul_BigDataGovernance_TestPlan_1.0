@@ -58,6 +58,7 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
       TablaMaster.StringValue.SetMapping("StringValue")
       TablaMaster.charValue.SetMapping("charValue")
       TablaMaster.timeStampValue.SetMapping("timeStampValue")
+      TablaMaster.StringNoModificarValue.SetMapping("StringValue",false)
       
       Control.NewStep("PASO 1: INSERTA NORMAL")
       if (!TablaMaster.executeFull("DF_Final_Todo")) {
@@ -123,6 +124,7 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
                                                                                      ,case when RealValue = 0.0000                        then true else false end as Cumple_RealValue
                                                                                      ,case when FloatValue = 0.0000                       then true else false end as Cumple_FloatValue
                                                                                      ,case when StringValue = ""                          then true else false end as Cumple_StringValue
+                                                                                     ,case when StringNoModificarValue = ""                          then true else false end as Cumple_StringNoModificarValue
                                                                                      ,case when charValue = ""                            then true else false end as Cumple_charValue
                                                                                      ,case when timeStampValue = "1900-01-01 00:00:00.0"  then true else false end as Cumple_timeStampValue
                                                                                      ,case when IntValue_old is null and          IntValue_fhChange is null and         IntValue_ProcessLog is not null and 
@@ -158,6 +160,7 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
                                                                                      ,case when RealValue = -10.123                         then true else false end as Cumple_RealValue
                                                                                      ,case when FloatValue = cast(-10.123 as float)         then true else false end as Cumple_FloatValue
                                                                                      ,case when StringValue = "TEXTO ZZZZZZ"                then true else false end as Cumple_StringValue
+                                                                                     ,case when StringNoModificarValue = "TEXTO ZZZZZZ"                then true else false end as Cumple_StringNoModificarValue
                                                                                      ,case when charValue = "z"                             then true else false end as Cumple_charValue
                                                                                      ,case when timeStampValue = "2017-12-31 00:00:00"      then true else false end as Cumple_timeStampValue
                                                                                      ,FloatValue - -cast(10.123 as float) as res
@@ -193,6 +196,7 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
                                                                                      ,case when RealValue = -100.123                        then true else false end as Cumple_RealValue
                                                                                      ,case when FloatValue = cast(-100.123 as float)        then true else false end as Cumple_FloatValue
                                                                                      ,case when StringValue = "TEXTO AA"                    then true else false end as Cumple_StringValue
+                                                                                     ,case when StringNoModificarValue = "TEXTO AA"                    then true else false end as Cumple_StringNoModificarValue
                                                                                      ,case when charValue = "a"                             then true else false end as Cumple_charValue
                                                                                      ,case when timeStampValue = "2017-01-01 00:00:00"      then true else false end as Cumple_timeStampValue
                                                                                      ,case when IntValue_old is null and          IntValue_fhChange is null and         IntValue_ProcessLog is not null and 
@@ -226,6 +230,7 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
                                                                                      ,case when RealValue = 1.123                        then true else false end as Cumple_RealValue
                                                                                      ,case when FloatValue = cast(1.123  as float)         then true else false end as Cumple_FloatValue
                                                                                      ,case when StringValue = "TEXTO BB"                    then true else false end as Cumple_StringValue
+                                                                                     ,case when StringNoModificarValue = "TEXTO AA"                    then true else false end as Cumple_StringNoModificarValue
                                                                                      ,case when charValue = "B"                             then true else false end as Cumple_charValue
                                                                                      ,case when timeStampValue = "2017-02-03 00:00:00"      then true else false end as Cumple_timeStampValue
                                                                                      ,case when IntValue_old       = 10                     and          IntValue_fhChange is not null and         IntValue_ProcessLog is not null and 
@@ -259,6 +264,7 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
                                                                                      ,case when RealValue = 100.123                        then true else false end as Cumple_RealValue
                                                                                      ,case when FloatValue = cast(100.123  as float)        then true else false end as Cumple_FloatValue
                                                                                      ,case when StringValue = "TEXTO ZZZZZZ"                then true else false end as Cumple_StringValue
+                                                                                     ,case when StringNoModificarValue = "TEXTO ZZZZZZ"                then true else false end as Cumple_StringNoModificarValue
                                                                                      ,case when charValue = "z"                             then true else false end as Cumple_charValue
                                                                                      ,case when timeStampValue = "2017-12-31 00:00:00"      then true else false end as Cumple_timeStampValue
                                                                                      ,case when IntValue_old is null and          IntValue_fhChange is null and         IntValue_ProcessLog is not null and 
@@ -292,6 +298,7 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
                                                                                      ,case when RealValue IS NULL                        then true else false end as Cumple_RealValue
                                                                                      ,case when FloatValue IS NULL                       then true else false end as Cumple_FloatValue
                                                                                      ,case when StringValue IS NULL                      then true else false end as Cumple_StringValue
+                                                                                     ,case when StringNoModificarValue IS NULL                      then true else false end as Cumple_StringNoModificarValue
                                                                                      ,case when charValue IS NULL                        then true else false end as Cumple_charValue
                                                                                      ,case when timeStampValue IS NULL                   then true else false end as Cumple_timeStampValue
                                                                                      ,StringValue
@@ -315,6 +322,7 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - Convierte string null a null", IdTestPlan)
+      Control.RegisterTestPlanFeature("SQLForUpdate", IdTestPlan)
       val ValorNull = ValorNull_Todos.first()
       
       
@@ -362,6 +370,7 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
                                                                                      ,case when RealValue = 1000.123                        then true else false end as Cumple_RealValue
                                                                                      ,case when FloatValue = cast(1000.123  as float)        then true else false end as Cumple_FloatValue
                                                                                      ,case when StringValue = "TEXTO XXXXXX"                then true else false end as Cumple_StringValue
+                                                                                     ,case when StringNoModificarValue = "TEXTO XXXXXX"                then true else false end as Cumple_StringNoModificarValue
                                                                                      ,case when charValue = "X"                             then true else false end as Cumple_charValue
                                                                                      ,case when timeStampValue = "2017-12-30 00:00:00"      then true else false end as Cumple_timeStampValue
                                                                                      ,case when IntValue_old is null and          IntValue_fhChange is null and         IntValue_ProcessLog is not null and 
@@ -429,7 +438,13 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
       Control.RegisterTestPlanFeature("Datos de tipo TimestampType", IdTestPlan)
       var MDM =  Cero_Vacio.getAs[Boolean]("Cumple_MDM")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Cero_Vacio - MDM", "Registro Cero_Vacio, Campo MDM", "Valor = true", s"Valor = ${MDM}", MDM)
-      Control.RegisterTestPlanFeature("Datos Cumple_MDM", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableDTLog", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableOldValue", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableProcessLog", IdTestPlan)
+      var StringNoModificarValue =  Cero_Vacio.getAs[Boolean]("Cumple_StringNoModificarValue")
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Cero_Vacio - StringNoModificarValue", "Registro Cero_Vacio, Campo StringNoModificarValue", "Valor = ", s"Valor = ??", StringNoModificarValue)
+      Control.RegisterTestPlanFeature("ReplaceValueOnUpdate", IdTestPlan)
+      
       
       //**************************
       //****  C O M P A R A C I O N     N E G A T I V O   M A X I M O  *************
@@ -466,7 +481,12 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
       Control.RegisterTestPlanFeature("Datos de tipo TimestampType", IdTestPlan)
       MDM =  Negativo_Maximo.getAs[Boolean]("Cumple_MDM")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - MDM", "Registro Negativo_Maximo, Campo MDM", "Valor = true", s"Valor = ${MDM}", MDM)
-      Control.RegisterTestPlanFeature("Datos Cumple_MDM", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableDTLog", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableOldValue", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableProcessLog", IdTestPlan)
+      StringNoModificarValue =  Negativo_Maximo.getAs[Boolean]("Cumple_StringNoModificarValue")
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - StringNoModificarValue", "Registro Negativo_Maximo, Campo StringNoModificarValue", "Valor = TEXTO ZZZZZZ", s"Valor = ??", StringNoModificarValue)
+      Control.RegisterTestPlanFeature("ReplaceValueOnUpdate", IdTestPlan)
       
       
       //**************************
@@ -504,7 +524,12 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
       Control.RegisterTestPlanFeature("Datos de tipo TimestampType", IdTestPlan)
       MDM =  Negativo_Minimo.getAs[Boolean]("Cumple_MDM")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Minimo - MDM", "Registro Negativo_Minimo, Campo MDM", "Valor = true", s"Valor = ${MDM}", MDM)
-      Control.RegisterTestPlanFeature("Datos Cumple_MDM", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableDTLog", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableOldValue", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableProcessLog", IdTestPlan)
+      StringNoModificarValue =  Negativo_Minimo.getAs[Boolean]("Cumple_StringNoModificarValue")
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Minimo - StringNoModificarValue", "Registro Negativo_Minimo, Campo StringNoModificarValue", "Valor = TEXTO AA", s"Valor = ??", StringNoModificarValue)
+      Control.RegisterTestPlanFeature("ReplaceValueOnUpdate", IdTestPlan)
       
       //**************************
       //****  C O M P A R A C I O N     P O S I T I V O   M I N I M O  *************
@@ -541,7 +566,12 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
       Control.RegisterTestPlanFeature("Datos de tipo TimestampType", IdTestPlan)
       MDM =  Positivo_Minimo.getAs[Boolean]("Cumple_MDM")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Positivo_Minimo - MDM", "Registro Positivo_Minimo, Campo MDM", "Valor = true", s"Valor = ${MDM}", MDM)
-      Control.RegisterTestPlanFeature("Datos Cumple_MDM", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableDTLog", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableOldValue", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableProcessLog", IdTestPlan)
+      StringNoModificarValue =  Positivo_Minimo.getAs[Boolean]("Cumple_StringNoModificarValue")
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Positivo_Minimo - StringNoModificarValue", "Registro Positivo_Minimo, Campo StringNoModificarValue", "Valor = TEXTO AA", s"Valor = ??", StringNoModificarValue)
+      Control.RegisterTestPlanFeature("ReplaceValueOnUpdate", IdTestPlan)
       
      
       //**************************
@@ -579,7 +609,12 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
       Control.RegisterTestPlanFeature("Datos de tipo TimestampType", IdTestPlan)
       MDM =  Positivo_Maximo.getAs[Boolean]("Cumple_MDM")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Positivo_Maximo - MDM", "Registro Positivo_Maximo, Campo MDM", "Valor = true", s"Valor = ${MDM}", MDM)
-      Control.RegisterTestPlanFeature("Datos Cumple_MDM", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableDTLog", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableOldValue", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableProcessLog", IdTestPlan)
+      StringNoModificarValue =  Positivo_Maximo.getAs[Boolean]("Cumple_StringNoModificarValue")
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Positivo_Maximo - StringNoModificarValue", "Registro Positivo_Maximo, Campo StringNoModificarValue", "Valor = TEXTO ZZZZZZ", s"Valor = ??", StringNoModificarValue)
+      Control.RegisterTestPlanFeature("ReplaceValueOnUpdate", IdTestPlan)
       
       //**************************
       //****  C O M P A R A C I O N      N U L O S  *************
@@ -626,7 +661,12 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
       Control.RegisterTestPlanFeature("RAW - Convierte string null a null", IdTestPlan)
       MDM =  ValorNull.getAs[Boolean]("Cumple_MDM")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValorNull - MDM", "Registro ValorNull, Campo MDM", "Valor = true", s"Valor = ${MDM}", MDM)
-      Control.RegisterTestPlanFeature("Datos Cumple_MDM", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableDTLog", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableOldValue", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableProcessLog", IdTestPlan)
+      StringNoModificarValue =  ValorNull.getAs[Boolean]("Cumple_StringNoModificarValue")
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValorNull - StringNoModificarValue", "Registro ValorNull, Campo StringNoModificarValue", "Valor = null", s"Valor = ??", StringNoModificarValue)
+      Control.RegisterTestPlanFeature("ReplaceValueOnUpdate", IdTestPlan)
       
       //**************************
       //****  C O M P A R A C I O N     D E F A U L T   *************
@@ -672,7 +712,12 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
       Control.RegisterTestPlanFeature("DefaultValue tipo TimestampType", IdTestPlan)
       MDM =  ValoresDefault.getAs[Boolean]("Cumple_MDM")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValoresDefault - MDM", "Registro ValoresDefault, Campo MDM", "Valor = true", s"Valor = ${MDM}", MDM)
-      Control.RegisterTestPlanFeature("Datos Cumple_MDM", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableDTLog", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableOldValue", IdTestPlan)
+      Control.RegisterTestPlanFeature("MDM_EnableProcessLog", IdTestPlan)
+      StringNoModificarValue =  ValoresDefault.getAs[Boolean]("Cumple_StringNoModificarValue")
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValoresDefault - StringNoModificarValue", "Registro ValoresDefault, Campo StringNoModificarValue", "Valor = valor en string", s"Valor = ??", StringNoModificarValue)
+      Control.RegisterTestPlanFeature("ReplaceValueOnUpdate", IdTestPlan)
       
       
       
