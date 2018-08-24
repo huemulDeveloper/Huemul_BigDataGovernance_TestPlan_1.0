@@ -13,7 +13,7 @@ object App {
     Proc_PlanPruebas_NoMapped.main(args)
     
     Proc_PlanPruebas_OnlyInsertNew.main(args)
-    Proc_PlanPruebas_OnlyInsertUpdate.main(args)
+    Proc_PlanPruebas_OnlyUpdate.main(args)
      
     Proc_PlanPruebas_AutoCastOff.main(args)
     Proc_PlanPruebas_CargaAVRO.main(args)

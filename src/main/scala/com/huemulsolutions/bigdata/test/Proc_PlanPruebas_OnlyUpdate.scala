@@ -9,7 +9,7 @@ import org.apache.hadoop.fs.FileSystem
 import com.huemulsolutions.bigdata.tables.master.tbl_DatosBasicosUpdate
 
 
-object Proc_PlanPruebas_OnlyInsertUpdate {
+object Proc_PlanPruebas_OnlyUpdate {
   def main(args: Array[String]): Unit = {
     val huemulLib = new huemul_Library("04 - Plan pruebas - Actualiza un nuevo registros sin hacer nada mas",args,globalSettings.Global)
     val Control = new huemul_Control(huemulLib,null)
@@ -337,16 +337,7 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
                                                                                      ,case when StringDefaultValue = "valor en string"                then true else false end as Cumple_StringDefaultValue
                                                                                      ,case when charDefaultValue = cast('hola' as string)                             then true else false end as Cumple_charDefaultValue
                                                                                      ,case when timeStampDefaultValue = "2019-01-01"      then true else false end as Cumple_timeStampDefaultValue
-                                                                                     ,case when IntValue_old is null and          IntValue_fhChange is null and         IntValue_ProcessLog is not null and 
-                                                                                                BigIntValue_old is null and       BigIntValue_fhChange is null and      BigIntValue_ProcessLog is not null and 
-                                                                                                SmallIntValue_old is null and     SmallIntValue_fhChange is null and    SmallIntValue_ProcessLog is not null and 
-                                                                                                TinyIntValue_old is null and      TinyIntValue_fhChange is null and     TinyIntValue_ProcessLog is not null and 
-                                                                                                DecimalValue_old is null and      DecimalValue_fhChange is null and     DecimalValue_ProcessLog is not null and 
-                                                                                                RealValue_old is null and         RealValue_fhChange is null and        RealValue_ProcessLog is not null and 
-                                                                                                FloatValue_old is null and        FloatValue_fhChange is null and       FloatValue_ProcessLog is not null and 
-                                                                                                StringValue_old is null and       StringValue_fhChange is null and      StringValue_ProcessLog is not null and 
-                                                                                                charValue_old is null and         charValue_fhChange is null and        charValue_ProcessLog is not null and 
-                                                                                                timeStampValue_old is null and    timeStampValue_fhChange is null and   timeStampValue_ProcessLog is not null then true else false end as Cumple_MDM
+                                                                                     
 
                                                                                FROM (select distinct BigIntDefaultValue, IntDefaultValue, SmallIntDefaultValue, TinyIntDefaultValue, DecimalDefaultValue, RealDefaultValue, FloatDefaultValue, StringDefaultValue, charDefaultValue, timeStampDefaultValue   FROM DF_Final) a
                                                                                """)
@@ -710,11 +701,6 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValoresDefault - timeStampDefaultValue", "Registro ValoresDefault, Campo timeStampDefaultValue", "Valor = '2019-01-01'", s"Valor = ??", timeStampValue)
       Control.RegisterTestPlanFeature("Datos de tipo TimestampType", IdTestPlan)
       Control.RegisterTestPlanFeature("DefaultValue tipo TimestampType", IdTestPlan)
-      MDM =  ValoresDefault.getAs[Boolean]("Cumple_MDM")
-      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValoresDefault - MDM", "Registro ValoresDefault, Campo MDM", "Valor = true", s"Valor = ${MDM}", MDM)
-      Control.RegisterTestPlanFeature("MDM_EnableDTLog", IdTestPlan)
-      Control.RegisterTestPlanFeature("MDM_EnableOldValue", IdTestPlan)
-      Control.RegisterTestPlanFeature("MDM_EnableProcessLog", IdTestPlan)
       StringNoModificarValue =  ValoresDefault.getAs[Boolean]("Cumple_StringNoModificarValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValoresDefault - StringNoModificarValue", "Registro ValoresDefault, Campo StringNoModificarValue", "Valor = valor en string", s"Valor = ??", StringNoModificarValue)
       Control.RegisterTestPlanFeature("ReplaceValueOnUpdate", IdTestPlan)
@@ -731,5 +717,7 @@ object Proc_PlanPruebas_OnlyInsertUpdate {
         Control.Control_Error.GetError(e, this.getClass.getSimpleName, null)
         Control.FinishProcessError()
     }
+    
+    huemulLib.spark.stop()
   }
 }

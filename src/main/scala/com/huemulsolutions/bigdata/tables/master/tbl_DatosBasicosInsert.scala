@@ -26,34 +26,63 @@ class tbl_DatosBasicosInsert(HuemulLib: huemul_Library, Control: huemul_Control)
   
   val IntValue = new huemul_Columns(IntegerType,true,"datos integer")
   IntValue.Nullable = true
-  
+  IntValue.MDM_EnableDTLog = true
+  IntValue.MDM_EnableOldValue = true
+  IntValue.MDM_EnableProcessLog = true
   
   val BigIntValue = new huemul_Columns(LongType,true,"datos BigInt")
   BigIntValue.Nullable = true
+  BigIntValue.MDM_EnableDTLog = true
+  BigIntValue.MDM_EnableOldValue = true
+  BigIntValue.MDM_EnableProcessLog = true
   
   val SmallIntValue = new huemul_Columns(ShortType,true,"datos SmallInt")
   SmallIntValue.Nullable = true
+  SmallIntValue.MDM_EnableDTLog = true
+  SmallIntValue.MDM_EnableOldValue = true
+  SmallIntValue.MDM_EnableProcessLog = true
   
   val TinyIntValue = new huemul_Columns(ShortType,true,"datos TinyInt")
   TinyIntValue.Nullable = true
+  TinyIntValue.MDM_EnableDTLog = true
+  TinyIntValue.MDM_EnableOldValue = true
+  TinyIntValue.MDM_EnableProcessLog = true
   
   val DecimalValue = new huemul_Columns(DecimalType(10,4),true,"datos Decimal(10,4)")
   DecimalValue.Nullable = true
+  DecimalValue.MDM_EnableDTLog = true
+  DecimalValue.MDM_EnableOldValue = true
+  DecimalValue.MDM_EnableProcessLog = true
   
   val RealValue = new huemul_Columns(DoubleType,true,"datos Real")
   RealValue.Nullable = true
+  RealValue.MDM_EnableDTLog = true
+  RealValue.MDM_EnableOldValue = true
+  RealValue.MDM_EnableProcessLog = true
   
   val FloatValue = new huemul_Columns(FloatType,true,"datos Float")
   FloatValue.Nullable = true
+  FloatValue.MDM_EnableDTLog = true
+  FloatValue.MDM_EnableOldValue = true
+  FloatValue.MDM_EnableProcessLog = true
   
   val StringValue = new huemul_Columns(StringType,true,"datos String")
   StringValue.Nullable = true
+  StringValue.MDM_EnableDTLog = true
+  StringValue.MDM_EnableOldValue = true
+  StringValue.MDM_EnableProcessLog = true
   
   val charValue = new huemul_Columns(StringType,true,"datos Char")
   charValue.Nullable = true
+  charValue.MDM_EnableDTLog = true
+  charValue.MDM_EnableOldValue = true
+  charValue.MDM_EnableProcessLog = true
   
   val timeStampValue = new huemul_Columns(TimestampType,true,"datos TimeStamp")
   timeStampValue.Nullable = true
+  timeStampValue.MDM_EnableDTLog = true
+  timeStampValue.MDM_EnableOldValue = true
+  timeStampValue.MDM_EnableProcessLog = true
   
   
    val IntDefaultValue = new huemul_Columns(IntegerType,false,"datos default integer")

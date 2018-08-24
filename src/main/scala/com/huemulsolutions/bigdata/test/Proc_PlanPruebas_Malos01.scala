@@ -96,5 +96,7 @@ object Proc_PlanPruebas_Malos01 {
         Control.Control_Error.GetError(e, this.getClass.getSimpleName, null)
         Control.FinishProcessError()
     }
+    
+    huemulLib.spark.stop()
   }
 }

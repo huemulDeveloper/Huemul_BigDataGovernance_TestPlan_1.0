@@ -183,5 +183,7 @@ object Proc_PlanPruebas_Errores {
         Control.Control_Error.GetError(e, this.getClass.getSimpleName, null)
         Control.FinishProcessError()
     }
+    
+    huemulLib.spark.stop()
   }
 }

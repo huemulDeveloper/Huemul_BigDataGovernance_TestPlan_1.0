@@ -88,5 +88,7 @@ object Proc_PlanPruebas_NoMapped {
         Control.Control_Error.GetError(e, this.getClass.getSimpleName, null)
         Control.FinishProcessError()
     }
+    
+    huemulLib.spark.stop()
   }
 }
