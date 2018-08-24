@@ -85,6 +85,42 @@ class tbl_DatosBasicosUpdate(HuemulLib: huemul_Library, Control: huemul_Control)
   timeStampValue.MDM_EnableOldValue = true
   timeStampValue.MDM_EnableProcessLog = true
   
+  val StringNoModificarValue = new huemul_Columns(StringType,true,"datos String solo inserta, no modifica")
+  StringNoModificarValue.Nullable = true
+
+  
+  
+  val IntDefaultValue = new huemul_Columns(IntegerType,false,"datos default integer")
+  IntDefaultValue.DefaultValue = "10000"
+  
+  val BigIntDefaultValue = new huemul_Columns(LongType,false,"datos default BigInt")
+  BigIntDefaultValue.DefaultValue = "10000"
+  
+  val SmallIntDefaultValue = new huemul_Columns(ShortType,false,"datos default SmallInt")
+  SmallIntDefaultValue.DefaultValue = "10000"
+  
+  val TinyIntDefaultValue = new huemul_Columns(ShortType,false,"datos default TinyInt")
+  TinyIntDefaultValue.DefaultValue = "10000"
+  
+  val DecimalDefaultValue = new huemul_Columns(DecimalType(10,4),false,"datos default Decimal(10,4)")
+  DecimalDefaultValue.DefaultValue = "10000.345"
+  
+  val RealDefaultValue = new huemul_Columns(DoubleType,false,"datos default Real")
+  RealDefaultValue.DefaultValue = "10000.456"
+  
+  val FloatDefaultValue = new huemul_Columns(FloatType,false,"datos default Float")
+  FloatDefaultValue.DefaultValue = "10000.567"
+  
+  val StringDefaultValue = new huemul_Columns(StringType,false,"datos default String")
+  StringDefaultValue.DefaultValue = "'valor en string'"
+  
+  val charDefaultValue = new huemul_Columns(StringType,false,"datos default Char")
+  charDefaultValue.DefaultValue = "cast('hola' as string)"
+  
+  val timeStampDefaultValue = new huemul_Columns(TimestampType,false,"datos default TimeStamp")
+  timeStampDefaultValue.DefaultValue = "'2019-01-01'"
+  
+  
   this.ApplyTableDefinition()
   
 }
