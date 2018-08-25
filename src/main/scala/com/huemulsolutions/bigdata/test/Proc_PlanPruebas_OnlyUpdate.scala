@@ -386,8 +386,6 @@ object Proc_PlanPruebas_OnlyUpdate {
       Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
       
       
-      val Nuevos = Nuevos_Todos.first()
-      
       /*Valida las siguientes funcionalidades:
        * -- Subir datos de tipos numéricos enteros, decimales, texto y fecha, validar que los datos suban correctamente
        * -- Validar la funcionalidad SQL_Update
@@ -701,10 +699,6 @@ object Proc_PlanPruebas_OnlyUpdate {
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValoresDefault - timeStampDefaultValue", "Registro ValoresDefault, Campo timeStampDefaultValue", "Valor = '2019-01-01'", s"Valor = ??", timeStampValue)
       Control.RegisterTestPlanFeature("Datos de tipo TimestampType", IdTestPlan)
       Control.RegisterTestPlanFeature("DefaultValue tipo TimestampType", IdTestPlan)
-      StringNoModificarValue =  ValoresDefault.getAs[Boolean]("Cumple_StringNoModificarValue")
-      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValoresDefault - StringNoModificarValue", "Registro ValoresDefault, Campo StringNoModificarValue", "Valor = valor en string", s"Valor = ??", StringNoModificarValue)
-      Control.RegisterTestPlanFeature("ReplaceValueOnUpdate", IdTestPlan)
-      
       
       
       
@@ -713,7 +707,8 @@ object Proc_PlanPruebas_OnlyUpdate {
           Control.FinishProcessOK
     } catch {
       case e: Exception => 
-        val IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ERROR", "ERROR DE PROGRAMA -  no deberia tener errror", "sin error", s"con error", false)
+        val IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ERROR", "ERROR DE PROGRAMA -  no deberia tener errror", "sin error", s"con error: ${e.getMessage}", false)
+        Control.RegisterTestPlanFeature("executeOnlyUpdate", IdTestPlan)
         Control.Control_Error.GetError(e, this.getClass.getSimpleName, null)
         Control.FinishProcessError()
     }

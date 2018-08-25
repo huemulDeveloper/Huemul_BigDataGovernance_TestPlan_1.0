@@ -61,12 +61,7 @@ object Proc_PlanPruebas_NoMapped {
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "NoMapped - Error de Mapeo", "El proceso debe retornar false", "ValorexecuteFull = false", s"ValorexecuteFull = ${ValorexecuteFull}", !ValorexecuteFull)
       Control.RegisterTestPlanFeature("MappedName", IdTestPlan)
       
-      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "NoMapped - Error Mapped 1032", "El proceso debe retornar cod. error 1032", "error_code=1032", s"error_code= ${TablaMaster.Error_Code}", TablaMaster.Error_Code == 1032)
-      Control.RegisterTestPlanFeature("MappedName", IdTestPlan)
-      
-      //valida que N° de registros con problemas de PK = 1
-      val CantidadErrores = TablaMaster.DataFramehuemul.getDQResult().length
-      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "NoMapped - Cantidad Errores", "N° Errores = 1", "N° Reg = 1", s"N° Reg = ${CantidadErrores}", CantidadErrores == 1)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "NoMapped - Error Mapped 1016", "El proceso debe retornar cod. error 1016", "error_code=1016", s"error_code= ${TablaMaster.Error_Code}", TablaMaster.Error_Code == 1016)
       Control.RegisterTestPlanFeature("MappedName", IdTestPlan)
       
      
@@ -83,7 +78,7 @@ object Proc_PlanPruebas_NoMapped {
       Control.FinishProcessOK
     } catch {
       case e: Exception => 
-        val IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ERROR", "ERROR DE PROGRAMA -  no deberia tener errror", "sin error", s"con error", false)
+        val IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ERROR", "ERROR DE PROGRAMA -  no deberia tener errror", "sin error", s"con error: ${e.getMessage}", false)
         Control.RegisterTestPlanFeature("MappedName", IdTestPlan)
         Control.Control_Error.GetError(e, this.getClass.getSimpleName, null)
         Control.FinishProcessError()

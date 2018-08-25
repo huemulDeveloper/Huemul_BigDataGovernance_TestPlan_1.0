@@ -35,7 +35,7 @@ object Proc_PlanPruebas_Malos01 {
       
       //TablaMaster.DF_from_SQL("DF_Original", "select * from DF_RAW")
       
-      TablaMaster.TipoValor.SetMapping("TipoValor")
+      TablaMaster.TipoValor.SetMapping("TipoValor",true,"coalesce(new.TipoValor,'nulo')","coalesce(new.TipoValor,'nulo')")
       TablaMaster.IntValue.SetMapping("IntValue")
       TablaMaster.BigIntValue.SetMapping("BigIntValue")
       TablaMaster.SmallIntValue.SetMapping("SmallIntValue")
@@ -91,7 +91,7 @@ object Proc_PlanPruebas_Malos01 {
       Control.FinishProcessOK
     } catch {
       case e: Exception => 
-        val IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ERROR", "ERROR DE PROGRAMA -  no deberia tener errror", "sin error", s"con error", false)
+        val IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ERROR", "ERROR DE PROGRAMA -  no deberia tener errror", "sin error", s"con error: ${e.getMessage}", false)
         Control.RegisterTestPlanFeature("IsPK Error", IdTestPlan)
         Control.Control_Error.GetError(e, this.getClass.getSimpleName, null)
         Control.FinishProcessError()

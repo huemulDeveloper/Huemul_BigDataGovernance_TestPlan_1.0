@@ -11,12 +11,12 @@ import com.huemulsolutions.bigdata.tables.huemulType_StorageType._
 
 
 class tbl_DatosBasicosInsert(HuemulLib: huemul_Library, Control: huemul_Control) extends huemul_Table(HuemulLib,Control) with Serializable {
-  this.TableType = huemulType_Tables.Master
-  this.DataBase = HuemulLib.GlobalSettings.MASTER_DataBase
-  this.Description = "Plan pruebas: verificar que todos los tipos de datos sean interpretados de forma correcta (carga 1 vez, luego solo inserta datos)"
-  this.GlobalPaths = HuemulLib.GlobalSettings.MASTER_BigFiles_Path
-  this.LocalPath = "planPruebas/"
-  this.StorageType = huemulType_StorageType.PARQUET
+  this.setTableType(huemulType_Tables.Master)
+  this.setDataBase(HuemulLib.GlobalSettings.MASTER_DataBase)
+  this.setDescription("Plan pruebas: verificar que todos los tipos de datos sean interpretados de forma correcta (carga 1 vez, luego solo inserta datos)")
+  this.setGlobalPaths(HuemulLib.GlobalSettings.MASTER_BigFiles_Path)
+  this.setLocalPath("planPruebas/")
+  this.setStorageType(huemulType_StorageType.PARQUET)
   
   val TipoValor = new huemul_Columns(StringType,true,"Nombre del tipo de valor")
   TipoValor.IsPK = true

@@ -81,7 +81,7 @@ object Proc_PlanPruebas_AutoCastOff {
       Control.FinishProcessOK
     } catch {
       case e: Exception => 
-        val IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Error Insperado", "Error Inesperado", "error Inesperado", s"error Inesperado", false)
+        val IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ERROR", "ERROR DE PROGRAMA -  no deberia tener errror", "sin error", s"con error: ${e.getMessage}", false)
         Control.RegisterTestPlanFeature("AutoCast Apagado", IdTestPlan)
         Control.Control_Error.GetError(e, this.getClass.getSimpleName, null)
         Control.FinishProcessError()

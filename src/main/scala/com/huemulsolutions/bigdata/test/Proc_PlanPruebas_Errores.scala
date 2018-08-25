@@ -44,7 +44,7 @@ object Proc_PlanPruebas_Errores {
         
    //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
         
-      TablaMaster.TipoValor.SetMapping("TipoValor")
+      TablaMaster.TipoValor.SetMapping("TipoValor",true,"coalesce(new.TipoValor,'nulo')","coalesce(new.TipoValor,'nulo')")
       TablaMaster.Column_DQ_MaxDateTimeValue.SetMapping("timeStampValue")
       TablaMaster.Column_DQ_MaxDecimalValue.SetMapping("DecimalValue")
       TablaMaster.Column_DQ_MaxLen.SetMapping("StringValue")
@@ -54,7 +54,7 @@ object Proc_PlanPruebas_Errores {
       TablaMaster.Column_IsUnique.SetMapping("StringValue")
       TablaMaster.Column_NoMapeadoDefault.SetMapping("")
       TablaMaster.Column_NotNull.SetMapping("IntValue")
-      TablaMaster.Column_OpcionalNoMapeado.SetMapping("IntValue")
+      
       
       huemulLib.spark.sql("select StringValue, length(StringValue) as largo, case when StringValue is null then 1 else 0 end esNulo from DF_Original").show()
       //TODO: cambiar el parámetro "true" por algo.UPDATE O algo.NOUPDATE (en replaceValueOnUpdate
@@ -178,7 +178,7 @@ object Proc_PlanPruebas_Errores {
           Control.FinishProcessOK
     } catch {
       case e: Exception => 
-        val IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ERROR", "ERROR DE PROGRAMA -  no deberia tener errror", "sin error", s"con error", false)
+        val IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ERROR", "ERROR DE PROGRAMA -  no deberia tener errror", "sin error", s"con error: ${e.getMessage}", false)
         Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
         Control.Control_Error.GetError(e, this.getClass.getSimpleName, null)
         Control.FinishProcessError()

@@ -12,12 +12,12 @@ import org.apache.spark.sql.types.DecimalType
 
 
 class tbl_DatosBasicosAVRO(HuemulLib: huemul_Library, Control: huemul_Control) extends huemul_Table(HuemulLib,Control) with Serializable {
-  this.TableType = huemulType_Tables.Master
-  this.DataBase = HuemulLib.GlobalSettings.MASTER_DataBase
-  this.Description = "Plan pruebas: verificar que tabla creada con JSON se guarde correctamente"
-  this.GlobalPaths = HuemulLib.GlobalSettings.MASTER_BigFiles_Path
-  this.LocalPath = "planPruebas/"
-  this.StorageType = huemulType_StorageType.AVRO
+  this.setTableType(huemulType_Tables.Master)
+  this.setDataBase(HuemulLib.GlobalSettings.MASTER_DataBase)
+  this.setDescription("Plan pruebas: verificar que tabla creada con JSON se guarde correctamente")
+  this.setGlobalPaths(HuemulLib.GlobalSettings.MASTER_BigFiles_Path)
+  this.setLocalPath("planPruebas/")
+  this.setStorageType(huemulType_StorageType.AVRO)
   
   val TipoValor = new huemul_Columns(StringType,true,"Nombre del tipo de valor")
   TipoValor.IsPK = true

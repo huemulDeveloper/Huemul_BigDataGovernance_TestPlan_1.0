@@ -12,12 +12,12 @@ import org.apache.spark.sql.types.DecimalType
 
 
 class tbl_DatosBasicos(HuemulLib: huemul_Library, Control: huemul_Control) extends huemul_Table(HuemulLib,Control) with Serializable {
-  this.TableType = huemulType_Tables.Master
-  this.DataBase = HuemulLib.GlobalSettings.MASTER_DataBase
-  this.Description = "Plan pruebas: verificar que todos los tipos de datos sean interpretados de forma correcta"
-  this.GlobalPaths = HuemulLib.GlobalSettings.MASTER_BigFiles_Path
-  this.LocalPath = "planPruebas/"
-  this.StorageType = huemulType_StorageType.PARQUET
+  this.setTableType(huemulType_Tables.Master)
+  this.setDataBase(HuemulLib.GlobalSettings.MASTER_DataBase)
+  this.setDescription("Plan pruebas: verificar que todos los tipos de datos sean interpretados de forma correcta")
+  this.setGlobalPaths(HuemulLib.GlobalSettings.MASTER_BigFiles_Path)
+  this.setLocalPath("planPruebas/")
+  this.setStorageType(huemulType_StorageType.PARQUET)
   
   val TipoValor = new huemul_Columns(StringType,true,"Nombre del tipo de valor")
   TipoValor.IsPK = true
