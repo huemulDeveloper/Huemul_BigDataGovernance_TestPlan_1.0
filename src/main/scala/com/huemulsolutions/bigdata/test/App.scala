@@ -1,6 +1,8 @@
 package com.huemulsolutions.bigdata.test
 
-import org.apache.spark.sql.SparkSession
+
+import com.huemulsolutions.bigdata.common._
+import com.huemulsolutions.bigdata.control._
 
 /**
  * @author ${user.name}
@@ -8,6 +10,23 @@ import org.apache.spark.sql.SparkSession
 object App {
 
   def main(args : Array[String]) {
+    val huemulLib = new huemul_Library("Pruebas Inicialización de Clases",args,globalSettings.Global)
+    val Control = new huemul_Control(huemulLib,null)
+    
+    /*
+    println(s"${huemulLib.huemul_getDateForLog()}")
+    val resultado = huemulLib.ExecuteJDBC_NoResulSet(huemulLib.GlobalSettings.GetPath(huemulLib, huemulLib.GlobalSettings.POSTGRE_Setting), "insert into tempSeba values (10) ")
+    println(s"${huemulLib.huemul_getDateForLog()}")
+    
+    
+    val resultado2 = huemulLib.ExecuteJDBC_WithResult(huemulLib.GlobalSettings.GetPath(huemulLib, huemulLib.GlobalSettings.POSTGRE_Setting), "select * from tempSeba ")
+    println(s"${huemulLib.huemul_getDateForLog()}")
+    println(s"N° de registros resultantes: ${resultado2.ResultSet.length}")
+    resultado2.ResultSet.foreach { x => println(s"campo 0: ${x.get(0)} ") }
+    resultado2.ResultSet.foreach { x => println(s"campo campo: ${x.getAs("campo")} ") }
+    * 
+    */
+  
     Proc_PlanPruebas_CargaMaster.main(args)
     
     Proc_PlanPruebas_InsertLimitError.main(args)
