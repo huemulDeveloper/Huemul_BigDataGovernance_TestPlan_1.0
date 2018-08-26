@@ -18,6 +18,7 @@ class tbl_DatosBasicos(HuemulLib: huemul_Library, Control: huemul_Control) exten
   this.setGlobalPaths(HuemulLib.GlobalSettings.MASTER_BigFiles_Path)
   this.setLocalPath("planPruebas/")
   this.setStorageType(huemulType_StorageType.PARQUET)
+  this.setDQ_MaxNewRecords_Num(4)
   
   val TipoValor = new huemul_Columns(StringType,true,"Nombre del tipo de valor")
   TipoValor.IsPK = true
