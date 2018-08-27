@@ -3,6 +3,7 @@ package com.huemulsolutions.bigdata.test
 
 import com.huemulsolutions.bigdata.common._
 import com.huemulsolutions.bigdata.control._
+import com.huemulsolutions.bigdata.test.Proc_PlanPruebas_PermisosUpdate
 
 /**
  * @author ${user.name}
@@ -27,6 +28,12 @@ object App {
     * 
     */
   
+    Proc_PlanPruebas_PermisosFull.main(args)
+    Proc_PlanPruebas_PermisosInsert.main(args)
+    Proc_PlanPruebas_PermisosUpdate.main(args)
+    
+    Proc_PlanPruebas_InsertLimitErrorPorc.main(args)
+    
     Proc_PlanPruebas_CargaMaster.main(args)
     
     Proc_PlanPruebas_InsertLimitError.main(args)
