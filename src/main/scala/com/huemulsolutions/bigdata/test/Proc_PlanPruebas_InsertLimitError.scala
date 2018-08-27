@@ -103,7 +103,7 @@ object Proc_PlanPruebas_InsertLimitError {
       case e: Exception => 
         val IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ERROR", "ERROR DE PROGRAMA -  no deberia tener errror", "sin error", s"con error: ${e.getMessage}", false)
         Control.RegisterTestPlanFeature("DQ_MaxNewRecords_Num", IdTestPlan)
-        Control.Control_Error.GetError(e, this.getClass.getSimpleName, null)
+        Control.Control_Error.GetError(e, this.getClass.getSimpleName, 1)
         Control.FinishProcessError()
     }
     

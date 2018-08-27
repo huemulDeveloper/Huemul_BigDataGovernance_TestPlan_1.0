@@ -83,7 +83,7 @@ object Proc_PlanPruebas_AutoCastOff {
       case e: Exception => 
         val IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ERROR", "ERROR DE PROGRAMA -  no deberia tener errror", "sin error", s"con error: ${e.getMessage}", false)
         Control.RegisterTestPlanFeature("AutoCast Apagado", IdTestPlan)
-        Control.Control_Error.GetError(e, this.getClass.getSimpleName, null)
+        Control.Control_Error.GetError(e, this.getClass.getSimpleName, 1)
         Control.FinishProcessError()
     }
     
