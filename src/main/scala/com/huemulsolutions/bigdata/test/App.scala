@@ -3,7 +3,7 @@ package com.huemulsolutions.bigdata.test
 
 import com.huemulsolutions.bigdata.common._
 import com.huemulsolutions.bigdata.control._
-import com.huemulsolutions.bigdata.test.Proc_PlanPruebas_PermisosUpdate
+//import com.huemulsolutions.bigdata.test.Proc_PlanPruebas_PermisosUpdate
 
 /**
  * @author ${user.name}
