@@ -6,7 +6,12 @@ import com.huemulsolutions.bigdata.tables.master.tbl_DatosBasicos
 import com.huemulsolutions.bigdata.raw.raw_DatosBasicos
 import com.huemulsolutions.bigdata
 import org.apache.hadoop.fs.FileSystem
-
+import com.huemulsolutions.bigdata.dataquality.huemul_DataQuality
+import com.huemulsolutions.bigdata.dataquality.huemulType_DQQueryLevel
+import com.huemulsolutions.bigdata.dataquality.huemulType_DQNotification.huemulType_DQNotification
+import com.huemulsolutions.bigdata.dataquality.huemulType_DQNotification
+import scala.collection.mutable._
+import org.apache.spark.sql.types._
 
 object Proc_PlanPruebas_CargaMaster {
   def main(args: Array[String]): Unit = {
@@ -514,8 +519,97 @@ object Proc_PlanPruebas_CargaMaster {
       Control.RegisterTestPlanFeature("Datos de tipo TimestampType", IdTestPlan)
       Control.RegisterTestPlanFeature("DefaultValue tipo TimestampType", IdTestPlan)
       
+      //******************************************************************
+      //DataQuality solo warning, sin errores
+      //******************************************************************
       
-          Control.FinishProcessOK
+      val DQRules = new ArrayBuffer[huemul_DataQuality]()
+      val DQ_ComparaAgrupado = new huemul_DataQuality(null,"Suma Double = Suma Decimal","sum(DecimalValue) = sum(RealValue)",2,huemulType_DQQueryLevel.Aggregate)
+      DQRules.append(DQ_ComparaAgrupado)
+      val DQ_ComparaFila = new huemul_DataQuality(null,"coalesce(Double,0) = coalesce(Decimal,0)","coalesce(DecimalValue,0) = coalesce(RealValue,0)",3)
+      DQRules.append(DQ_ComparaFila)
+      
+      val DQ_ComparaAgrupado_LanzaWarning = new huemul_DataQuality(null,"Suma Double is null","sum(DecimalValue) is null",4,huemulType_DQQueryLevel.Aggregate, huemulType_DQNotification.WARNING)
+      DQRules.append(DQ_ComparaAgrupado_LanzaWarning)
+      val DQ_ComparaFila_LanzaWarning = new huemul_DataQuality(null,"Double <> Decimal","DecimalValue <> RealValue",5,huemulType_DQQueryLevel.Row, huemulType_DQNotification.WARNING)
+      DQRules.append(DQ_ComparaFila_LanzaWarning)
+      
+      val DQResultManual = TablaMaster.DataFramehuemul.DF_RunDataQuality(DQRules, null, TablaMaster)
+      
+      val conError = Control.RegisterTestPlan(TestPlanGroup, "DQ - debe tener error", "ejecuta la validación, no debe tener error", "IsError = false", s"IsErorr = ${DQResultManual.isError}${DQResultManual.Error_Code} ${DQResultManual.Description}", DQResultManual.isError == false)
+      Control.RegisterTestPlanFeature("DQManual_Notification_Warning", conError)
+      Control.RegisterTestPlanFeature("DQManual_Notification_Error", conError)
+      Control.RegisterTestPlanFeature("DQManual_Aggregate", conError)
+      Control.RegisterTestPlanFeature("DQManual_Row", conError)
+      val NumDQ = Control.RegisterTestPlan(TestPlanGroup, "DQ - N° Ejecuciones", "ejecuta la validación, debe tener 6 ejecuciones", "N° Ejecuciones = 4", s"N° Ejecuciones = ${DQResultManual.getDQResult().length}", DQResultManual.getDQResult().length == 4)
+      Control.RegisterTestPlanFeature("DQManual_Notification_Warning", NumDQ)
+      Control.RegisterTestPlanFeature("DQManual_Notification_Error", NumDQ)
+      Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ)
+      Control.RegisterTestPlanFeature("DQManual_Row", NumDQ)
+      
+      val NumDQ_conError = Control.RegisterTestPlan(TestPlanGroup, "DQ - N° Ejecuciones con Error", "ejecuta la validación, debe tener 2 ejecuciones con error (warnings)", "N° Ejecuciones = 2", s"N° Ejecuciones = ${DQResultManual.getDQResult().filter { x => x.DQ_IsError} .length}", DQResultManual.getDQResult().filter { x => x.DQ_IsError} .length == 2)
+      Control.RegisterTestPlanFeature("DQManual_Notification_Warning", NumDQ_conError)
+      Control.RegisterTestPlanFeature("DQManual_Notification_Error", NumDQ_conError)
+      Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ_conError)
+      Control.RegisterTestPlanFeature("DQManual_Row", NumDQ_conError)
+      
+      
+      
+      //******************************************************************
+      //DataQuality con errores y tolerancia %
+      //******************************************************************
+      
+      val DQRulesConError = new ArrayBuffer[huemul_DataQuality]()
+      val DQ_ComparaAgrupado_conError = new huemul_DataQuality(null,"Suma Double > Suma Decimal","sum(DecimalValue) > sum(RealValue)",6,huemulType_DQQueryLevel.Aggregate)
+      DQRulesConError.append(DQ_ComparaAgrupado_conError)
+      val DQ_ComparaFila_conError = new huemul_DataQuality(null,"Double > Decimal","DecimalValue > RealValue",7)
+      DQRulesConError.append(DQ_ComparaFila_conError)
+     
+      val DQ_ComparaFila_Tolerancia = new huemul_DataQuality(null,"DecimalValue > 0.2","DecimalValue > 0",8)
+      DQ_ComparaFila_Tolerancia.setTolerance(null, Decimal.apply(0.66)) 
+      DQRulesConError.append(DQ_ComparaFila_Tolerancia)
+      
+      val DQ_ComparaFila_ToleranciaSinError = new huemul_DataQuality(null,"DecimalValue > 0.1","DecimalValue > 0.1",9)
+      DQ_ComparaFila_ToleranciaSinError.setTolerance(null,Decimal.apply(0.67))
+      DQRulesConError.append(DQ_ComparaFila_ToleranciaSinError)
+      
+      
+      val DQ_ComparaFila_ToleranciaRow = new huemul_DataQuality(null,"DecimalValue > 0.2","DecimalValue > 0",10)
+      DQ_ComparaFila_ToleranciaRow.setTolerance(2, null) 
+      DQRulesConError.append(DQ_ComparaFila_ToleranciaRow)
+      
+      val DQ_ComparaFila_ToleranciaSinErrorRow = new huemul_DataQuality(null,"DecimalValue > 0.1","DecimalValue > 0.1",11)
+      DQ_ComparaFila_ToleranciaSinErrorRow.setTolerance(5,null)
+      DQRulesConError.append(DQ_ComparaFila_ToleranciaSinErrorRow)
+      
+      
+      val DQResultManual_Errores = TablaMaster.DataFramehuemul.DF_RunDataQuality(DQRulesConError, null, TablaMaster)
+      
+      val NumDQ_ErrorCode = Control.RegisterTestPlan(TestPlanGroup, "DQ - codigo error = 8", "ejecuta la validación, debe tener un error de codigo 8", "error_code = 8", s"error_code = ?", DQResultManual_Errores.getDQResult().filter { x => x.DQ_ErrorCode == 8} .length == 1)
+      Control.RegisterTestPlanFeature("DQManual_Notification_Warning", NumDQ_ErrorCode)
+      Control.RegisterTestPlanFeature("DQManual_Notification_Error", NumDQ_ErrorCode)
+      Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ_ErrorCode)
+      Control.RegisterTestPlanFeature("DQManual_Row", NumDQ_ErrorCode)
+      
+      val NumDQ_ErrorCode10 = Control.RegisterTestPlan(TestPlanGroup, "DQ - codigo error = 10", "ejecuta la validación, debe tener un error de codigo 10", "error_code = 10", s"error_code = ?", DQResultManual_Errores.getDQResult().filter { x => x.DQ_ErrorCode == 10} .length == 1)
+      Control.RegisterTestPlanFeature("DQManual_Notification_Warning", NumDQ_ErrorCode10)
+      Control.RegisterTestPlanFeature("DQManual_Notification_Error", NumDQ_ErrorCode10)
+      Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ_ErrorCode10)
+      Control.RegisterTestPlanFeature("DQManual_Row", NumDQ_ErrorCode10)
+      
+      val NumDQ_ErrorCodeSinError = Control.RegisterTestPlan(TestPlanGroup, "DQ - DecimalValue > 0.1 sin error", "ejecuta la validación, no debe tener error", "DecimalValue > 0.1 sin error", s"DecimalValue > 0.1 ?", DQResultManual_Errores.getDQResult().filter { x => x.DQ_SQLFormula == "DecimalValue > 0.1"}(0).DQ_IsError == false )
+      Control.RegisterTestPlanFeature("DQManual_Notification_Warning", NumDQ_ErrorCodeSinError)
+      Control.RegisterTestPlanFeature("DQManual_Notification_Error", NumDQ_ErrorCodeSinError)
+      Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ_ErrorCodeSinError)
+      Control.RegisterTestPlanFeature("DQManual_Row", NumDQ_ErrorCodeSinError)
+     
+      val NumDQ_conErrores = Control.RegisterTestPlan(TestPlanGroup, "DQ - N° Ejecuciones con Error (V2)", "ejecuta la validación, debe tener 4 ejecuciones con error (warnings) (v2)", "N° Ejecuciones = 4", s"N° Ejecuciones = ${DQResultManual_Errores.getDQResult().filter { x => x.DQ_IsError} .length}", DQResultManual_Errores.getDQResult().filter { x => x.DQ_IsError} .length == 4)
+      Control.RegisterTestPlanFeature("DQManual_Notification_Warning", NumDQ_conErrores)
+      Control.RegisterTestPlanFeature("DQManual_Notification_Error", NumDQ_conErrores)
+      Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ_conErrores)
+      Control.RegisterTestPlanFeature("DQManual_Row", NumDQ_conErrores)
+      
+      Control.FinishProcessOK
     } catch {
       case e: Exception => 
         val IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ERROR", "ERROR DE PROGRAMA -  no deberia tener errror", "sin error", s"con error: ${e.getMessage}", false)
