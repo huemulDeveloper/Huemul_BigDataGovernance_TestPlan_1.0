@@ -114,7 +114,6 @@ object Proc_PlanPruebas_CargaNoTrim {
       Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
-      Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
       val Cero_Vacio = Cero_Vacio_Todos.first()
       
       Control.NewStep("DF Plan de pruebas: Negativo_Maximo ")
@@ -139,7 +138,6 @@ object Proc_PlanPruebas_CargaNoTrim {
       Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)      
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
-      Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
       val Negativo_Maximo = Negativo_Maximo_Todos.first()
       
       Control.NewStep("DF Plan de pruebas: Negativo_Minimo ")
@@ -162,7 +160,6 @@ object Proc_PlanPruebas_CargaNoTrim {
       Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
-      Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
       val Negativo_Minimo = Negativo_Minimo_Todos.first()
       
       Control.NewStep("DF Plan de pruebas: Positivo_Minimo ")
@@ -185,7 +182,6 @@ object Proc_PlanPruebas_CargaNoTrim {
       Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
-      Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
       val Positivo_Minimo = Positivo_Minimo_Todos.first()
       
       Control.NewStep("DF Plan de pruebas: Positivo_Maximo ")
@@ -208,7 +204,6 @@ object Proc_PlanPruebas_CargaNoTrim {
       Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
-      Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
       val Positivo_Maximo = Positivo_Maximo_Todos.first()
       
       Control.NewStep("DF Plan de pruebas: Null ")
@@ -256,7 +251,6 @@ object Proc_PlanPruebas_CargaNoTrim {
       Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
-      Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
       Control.RegisterTestPlanFeature("DefaultValue", IdTestPlan)
       val ValoresDefault = ValoresDefault_Todos.first()
       
