@@ -49,7 +49,7 @@ class raw_DatosBasicos(huemulLib: huemul_Library, Control: huemul_Control) exten
    * dia: dia de los archivos recibidos <br>
    * Retorna: true si todo está OK, false si tuvo algún problema <br>
   */
-  def open(Alias: String, ControlParent: huemul_Control, ano: Integer, mes: Integer, dia: Integer, hora: Integer, min: Integer, seg: Integer, TipoArchivo: String): Boolean = {
+  def open(Alias: String, ControlParent: huemul_Control, ano: Integer, mes: Integer, dia: Integer, hora: Integer, min: Integer, seg: Integer, TipoArchivo: String, ApplyTrim: Boolean = true): Boolean = {
     val control = new huemul_Control(huemulLib, ControlParent, false)
     //Setea parámetros
     control.AddParamInfo("Ano", ano.toString())
@@ -67,7 +67,7 @@ class raw_DatosBasicos(huemulLib: huemul_Library, Control: huemul_Control) exten
       /**/    //Agregar filtros o cambiar forma de leer archivo en este lugar
       val rowRDD = this.DataRDD
             .filter { x => x != this.Log.DataFirstRow  }
-            .map { x => this.ConvertSchema(x) }
+            .map { x => this.ConvertSchema(x, ApplyTrim) }
             
       control.NewStep("Transformando a dataframe")      
       //Crea DataFrame en Data.DataDF
