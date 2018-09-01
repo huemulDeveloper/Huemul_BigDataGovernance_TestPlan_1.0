@@ -19,106 +19,106 @@ class tbl_DatosBasicosUpdate(HuemulLib: huemul_BigDataGovernance, Control: huemu
   this.setStorageType(huemulType_StorageType.PARQUET)
   
   val TipoValor = new huemul_Columns(StringType,true,"Nombre del tipo de valor")
-  TipoValor.IsPK = true
-  TipoValor.DQ_MinLen = 2
-  TipoValor.DQ_MaxLen = 50
-  TipoValor.Nullable = true
+  TipoValor.setIsPK ( true)
+  TipoValor.setDQ_MinLen ( 2)
+  TipoValor.setDQ_MaxLen ( 50)
+  TipoValor.setNullable ( true)
   
   
   val IntValue = new huemul_Columns(IntegerType,true,"datos integer")
-  IntValue.Nullable = true
-  IntValue.MDM_EnableDTLog = true
-  IntValue.MDM_EnableOldValue = true
-  IntValue.MDM_EnableProcessLog = true
+  IntValue.setNullable ( true)
+  IntValue.setMDM_EnableDTLog ( true)
+  IntValue.setMDM_EnableOldValue ( true)
+  IntValue.setMDM_EnableProcessLog ( true)
   
   val BigIntValue = new huemul_Columns(LongType,true,"datos BigInt")
-  BigIntValue.Nullable = true
-  BigIntValue.MDM_EnableDTLog = true
-  BigIntValue.MDM_EnableOldValue = true
-  BigIntValue.MDM_EnableProcessLog = true
+  BigIntValue.setNullable ( true)
+  BigIntValue.setMDM_EnableDTLog ( true)
+  BigIntValue.setMDM_EnableOldValue ( true)
+  BigIntValue.setMDM_EnableProcessLog ( true)
   
   val SmallIntValue = new huemul_Columns(ShortType,true,"datos SmallInt")
-  SmallIntValue.Nullable = true
-  SmallIntValue.MDM_EnableDTLog = true
-  SmallIntValue.MDM_EnableOldValue = true
-  SmallIntValue.MDM_EnableProcessLog = true
+  SmallIntValue.setNullable ( true)
+  SmallIntValue.setMDM_EnableDTLog ( true)
+  SmallIntValue.setMDM_EnableOldValue ( true)
+  SmallIntValue.setMDM_EnableProcessLog ( true)
   
   val TinyIntValue = new huemul_Columns(ShortType,true,"datos TinyInt")
-  TinyIntValue.Nullable = true
-  TinyIntValue.MDM_EnableDTLog = true
-  TinyIntValue.MDM_EnableOldValue = true
-  TinyIntValue.MDM_EnableProcessLog = true
+  TinyIntValue.setNullable ( true)
+  TinyIntValue.setMDM_EnableDTLog ( true)
+  TinyIntValue.setMDM_EnableOldValue ( true)
+  TinyIntValue.setMDM_EnableProcessLog ( true)
   
   val DecimalValue = new huemul_Columns(DecimalType(10,4),true,"datos Decimal(10,4)")
-  DecimalValue.Nullable = true
-  DecimalValue.MDM_EnableDTLog = true
-  DecimalValue.MDM_EnableOldValue = true
-  DecimalValue.MDM_EnableProcessLog = true
+  DecimalValue.setNullable ( true)
+  DecimalValue.setMDM_EnableDTLog ( true)
+  DecimalValue.setMDM_EnableOldValue ( true)
+  DecimalValue.setMDM_EnableProcessLog ( true)
   
   val RealValue = new huemul_Columns(DoubleType,true,"datos Real")
-  RealValue.Nullable = true
-  RealValue.MDM_EnableDTLog = true
-  RealValue.MDM_EnableOldValue = true
-  RealValue.MDM_EnableProcessLog = true
+  RealValue.setNullable ( true)
+  RealValue.setMDM_EnableDTLog ( true)
+  RealValue.setMDM_EnableOldValue ( true)
+  RealValue.setMDM_EnableProcessLog ( true)
   
   val FloatValue = new huemul_Columns(FloatType,true,"datos Float")
-  FloatValue.Nullable = true
-  FloatValue.MDM_EnableDTLog = true
-  FloatValue.MDM_EnableOldValue = true
-  FloatValue.MDM_EnableProcessLog = true
+  FloatValue.setNullable ( true)
+  FloatValue.setMDM_EnableDTLog ( true)
+  FloatValue.setMDM_EnableOldValue ( true)
+  FloatValue.setMDM_EnableProcessLog ( true)
   
   val StringValue = new huemul_Columns(StringType,true,"datos String")
-  StringValue.Nullable = true
-  StringValue.MDM_EnableDTLog = true
-  StringValue.MDM_EnableOldValue = true
-  StringValue.MDM_EnableProcessLog = true
+  StringValue.setNullable ( true)
+  StringValue.setMDM_EnableDTLog ( true)
+  StringValue.setMDM_EnableOldValue ( true)
+  StringValue.setMDM_EnableProcessLog ( true)
   
   val charValue = new huemul_Columns(StringType,true,"datos Char")
-  charValue.Nullable = true
-  charValue.MDM_EnableDTLog = true
-  charValue.MDM_EnableOldValue = true
-  charValue.MDM_EnableProcessLog = true
+  charValue.setNullable ( true)
+  charValue.setMDM_EnableDTLog ( true)
+  charValue.setMDM_EnableOldValue ( true)
+  charValue.setMDM_EnableProcessLog ( true)
   
   val timeStampValue = new huemul_Columns(TimestampType,true,"datos TimeStamp")
-  timeStampValue.Nullable = true
-  timeStampValue.MDM_EnableDTLog = true
-  timeStampValue.MDM_EnableOldValue = true
-  timeStampValue.MDM_EnableProcessLog = true
+  timeStampValue.setNullable ( true)
+  timeStampValue.setMDM_EnableDTLog ( true)
+  timeStampValue.setMDM_EnableOldValue ( true)
+  timeStampValue.setMDM_EnableProcessLog ( true)
   
   val StringNoModificarValue = new huemul_Columns(StringType,true,"datos String solo inserta, no modifica")
-  StringNoModificarValue.Nullable = true
+  StringNoModificarValue.setNullable ( true)
 
   
   
   val IntDefaultValue = new huemul_Columns(IntegerType,false,"datos default integer")
-  IntDefaultValue.DefaultValue = "10000"
+  IntDefaultValue.setDefaultValue ( "10000")
   
   val BigIntDefaultValue = new huemul_Columns(LongType,false,"datos default BigInt")
-  BigIntDefaultValue.DefaultValue = "10000"
+  BigIntDefaultValue.setDefaultValue ( "10000")
   
   val SmallIntDefaultValue = new huemul_Columns(ShortType,false,"datos default SmallInt")
-  SmallIntDefaultValue.DefaultValue = "10000"
+  SmallIntDefaultValue.setDefaultValue ( "10000")
   
   val TinyIntDefaultValue = new huemul_Columns(ShortType,false,"datos default TinyInt")
-  TinyIntDefaultValue.DefaultValue = "10000"
+  TinyIntDefaultValue.setDefaultValue ( "10000")
   
   val DecimalDefaultValue = new huemul_Columns(DecimalType(10,4),false,"datos default Decimal(10,4)")
-  DecimalDefaultValue.DefaultValue = "10000.345"
+  DecimalDefaultValue.setDefaultValue ( "10000.345")
   
   val RealDefaultValue = new huemul_Columns(DoubleType,false,"datos default Real")
-  RealDefaultValue.DefaultValue = "10000.456"
+  RealDefaultValue.setDefaultValue ( "10000.456")
   
   val FloatDefaultValue = new huemul_Columns(FloatType,false,"datos default Float")
-  FloatDefaultValue.DefaultValue = "10000.567"
+  FloatDefaultValue.setDefaultValue ( "10000.567")
   
   val StringDefaultValue = new huemul_Columns(StringType,false,"datos default String")
-  StringDefaultValue.DefaultValue = "'valor en string'"
+  StringDefaultValue.setDefaultValue ( "'valor en string'")
   
   val charDefaultValue = new huemul_Columns(StringType,false,"datos default Char")
-  charDefaultValue.DefaultValue = "cast('hola' as string)"
+  charDefaultValue.setDefaultValue ( "cast('hola' as string)")
   
   val timeStampDefaultValue = new huemul_Columns(TimestampType,false,"datos default TimeStamp")
-  timeStampDefaultValue.DefaultValue = "'2019-01-01'"
+  timeStampDefaultValue.setDefaultValue ( "'2019-01-01'")
   
   
   this.ApplyTableDefinition()
