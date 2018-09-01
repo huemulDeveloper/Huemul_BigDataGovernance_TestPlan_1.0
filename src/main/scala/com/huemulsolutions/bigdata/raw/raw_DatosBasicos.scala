@@ -62,7 +62,7 @@ class raw_DatosBasicos(huemulLib: huemul_BigDataGovernance, Control: huemul_Cont
    * dia: dia de los archivos recibidos <br>
    * Retorna: true si todo está OK, false si tuvo algún problema <br>
   */
-  def open(Alias: String, ControlParent: huemul_Control, ano: Integer, mes: Integer, dia: Integer, hora: Integer, min: Integer, seg: Integer, TipoArchivo: String, ApplyTrim: Boolean = true): Boolean = {
+  def open(Alias: String, ControlParent: huemul_Control, ano: Integer, mes: Integer, dia: Integer, hora: Integer, min: Integer, seg: Integer, TipoArchivo: String, AplicarTrim: Boolean = true): Boolean = {
     val control = new huemul_Control(huemulLib, ControlParent, false)
     //Setea parámetros
     control.AddParamInfo("Ano", ano.toString())
@@ -78,9 +78,12 @@ class raw_DatosBasicos(huemulLib: huemul_BigDataGovernance, Control: huemul_Cont
    
       control.NewStep("Aplicando Filtro")
       /**/    //Agregar filtros o cambiar forma de leer archivo en este lugar
+      this.ApplyTrim = AplicarTrim
+     // this.allColumnsAsString(false)
       val rowRDD = this.DataRDD
             .filter { x => x != this.Log.DataFirstRow  }
-            .map { x => this.ConvertSchema(x, ApplyTrim) }
+            .map { x => this.ConvertSchema(x) }
+        
             
       control.NewStep("Transformando a dataframe")      
       //Crea DataFrame en Data.DataDF

@@ -30,6 +30,7 @@ object Proc_PlanPruebas_CargaMaster {
       
       Control.NewStep("Define DataFrame Original")
       val DF_RAW =  new raw_DatosBasicos(huemulLib, Control)
+      
       if (!DF_RAW.open("DF_RAW", null, Ano.toInt, Mes.toInt, 1, 0, 0, 0,"")) {
         Control.RaiseError(s"Error al intentar abrir archivo de datos: ${DF_RAW.Error.ControlError_Message}")
       }
