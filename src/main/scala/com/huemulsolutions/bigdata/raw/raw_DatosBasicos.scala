@@ -9,8 +9,10 @@ import com.huemulsolutions.bigdata.test.globalSettings;
 import com.huemulsolutions.bigdata.control._
 import com.huemulsolutions.bigdata.common._
 import com.huemulsolutions.bigdata.control._
+import org.apache.spark.sql.types._
+import scalaz.std.math.bigInt
 
-class raw_DatosBasicos(huemulLib: huemul_Library, Control: huemul_Control) extends huemul_DataLake(huemulLib, Control) with Serializable  {
+class raw_DatosBasicos(huemulLib: huemul_BigDataGovernance, Control: huemul_Control) extends huemul_DataLake(huemulLib, Control) with Serializable  {
    this.LogicalName = "DatosBasicos"
    this.Description = "Datos Básicos por cada tipo de dato, para plan de pruebas"
    this.GroupName = "HuemulPlanPruebas"
@@ -30,14 +32,25 @@ class raw_DatosBasicos(huemulLib: huemul_Library, Control: huemul_Control) exten
     //Columns Info CHARACTER
     FormatSetting.DataSchemaConf.ColSeparatorType = huemulType_Separator.CHARACTER  //POSITION;CHARACTER
     FormatSetting.DataSchemaConf.ColSeparator = "\\|"    //SET FOR CARACTER
-    FormatSetting.DataSchemaConf.HeaderColumnsString = "TipoValor;IntValue;BigIntValue;SmallIntValue;TinyIntValue;DecimalValue;RealValue;FloatValue;StringValue;charValue;timeStampValue" //siempre con ; 
+    //FormatSetting.DataSchemaConf.setHeaderColumnsString("TipoValor;IntValue;BigIntValue;SmallIntValue;TinyIntValue;DecimalValue;RealValue;FloatValue;StringValue;charValue;timeStampValue") //siempre con ; 
+    FormatSetting.DataSchemaConf.AddColumns("TipoValor", "TipoValor_ti", StringType)
+    FormatSetting.DataSchemaConf.AddColumns("IntValue", "IntValue_ti", IntegerType)
+    FormatSetting.DataSchemaConf.AddColumns("BigIntValue", "BigIntValue_ti", LongType, "con descripción mia")
+    FormatSetting.DataSchemaConf.AddColumns("SmallIntValue", "SmallIntValue_ti", ShortType)
+    FormatSetting.DataSchemaConf.AddColumns("TinyIntValue", "TinyIntValue_ti", ShortType)
+    FormatSetting.DataSchemaConf.AddColumns("DecimalValue", "DecimalValue_ti", DecimalType(10,4))
+    FormatSetting.DataSchemaConf.AddColumns("RealValue", "RealValue_ti", DoubleType)
+    FormatSetting.DataSchemaConf.AddColumns("FloatValue", "FloatValue_ti", FloatType)
+    FormatSetting.DataSchemaConf.AddColumns("StringValue", "StringValue_ti", StringType)
+    FormatSetting.DataSchemaConf.AddColumns("charValue", "charValue_ti", StringType)
+    FormatSetting.DataSchemaConf.AddColumns("timeStampValue", "timeStampValue_ti", TimestampType)
     
     //Log Info
     FormatSetting.LogSchemaConf.ColSeparatorType = huemulType_Separator.CHARACTER  //POSITION;CHARACTER;NONE
     FormatSetting.LogNumRows_FieldName = null
     //Fields Info for CHARACTER
     FormatSetting.LogSchemaConf.ColSeparator = ";"    //SET FOR CARACTER
-    FormatSetting.LogSchemaConf.HeaderColumnsString = "VACIO" //Fielda;Fieldb;fieldc
+    FormatSetting.LogSchemaConf.setHeaderColumnsString("VACIO") //Fielda;Fieldb;fieldc
     
     this.SettingByDate.append(FormatSetting)
   
@@ -98,7 +111,7 @@ object raw_DatosBasicos {
   def main(args : Array[String]) {
     
     //Creación API
-    val huemulLib  = new huemul_Library(s"BigData Fabrics - ${this.getClass.getSimpleName}", args, globalSettings.Global)
+    val huemulLib  = new huemul_BigDataGovernance(s"BigData Fabrics - ${this.getClass.getSimpleName}", args, globalSettings.Global)
     val Control = new huemul_Control(huemulLib, null)
     /*************** PARAMETROS **********************/
     
@@ -113,7 +126,7 @@ object raw_DatosBasicos {
     
     val MyName: String = this.getClass.getSimpleName
     //Cambiar los parametros:             nombre tabla hive   ,   package base , package específico
-    DF_RAW.GenerateInitialCode(MyName, "sbif_institucion_mes","bigdata.fabrics","sbif.bancos")       
+    //DF_RAW.GenerateInitialCode(MyName, "sbif_institucion_mes","bigdata.fabrics","sbif.bancos")       
     
     Control.FinishProcessOK
   }  

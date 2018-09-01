@@ -53,8 +53,8 @@
     
     <dependency>
 	  <groupId>com.huemulsolutions.bigdata</groupId>
-	  <artifactId>datagovernance</artifactId>
-	  <version>0.9.2</version>
+	  <artifactId>huemul-bigdatagovernance</artifactId>
+	  <version>1.0</version>
 	</dependency>
 
     <!-- Test -->

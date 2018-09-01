@@ -11,8 +11,8 @@ import com.huemulsolutions.bigdata.control._
 object App {
 
   def main(args : Array[String]) {
-    val huemulLib = new huemul_Library("Pruebas Inicialización de Clases",args,globalSettings.Global)
-    val Control = new huemul_Control(huemulLib,null)
+    //val huemulLib = new huemul_BigDataGovernance("Pruebas Inicialización de Clases",args,globalSettings.Global)
+    //val Control = new huemul_Control(huemulLib,null)
     
     /*
     println(s"${huemulLib.huemul_getDateForLog()}")

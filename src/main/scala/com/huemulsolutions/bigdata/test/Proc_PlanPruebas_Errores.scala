@@ -11,7 +11,7 @@ import com.huemulsolutions.bigdata.tables.master.tbl_DatosBasicosErrores
 
 object Proc_PlanPruebas_Errores {
   def main(args: Array[String]): Unit = {
-    val huemulLib = new huemul_Library("01 - Plan pruebas Proc_PlanPruebas_CargaMaster",args,globalSettings.Global)
+    val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Proc_PlanPruebas_CargaMaster",args,globalSettings.Global)
     val Control = new huemul_Control(huemulLib,null)
     
     val Ano = huemulLib.arguments.GetValue("ano", null,"Debe especificar ano de proceso: ejemplo: ano=2017")
@@ -184,6 +184,6 @@ object Proc_PlanPruebas_Errores {
         Control.FinishProcessError()
     }
     
-    huemulLib.spark.stop()
+    huemulLib.close()
   }
 }

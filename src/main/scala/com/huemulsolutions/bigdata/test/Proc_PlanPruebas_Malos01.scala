@@ -13,7 +13,7 @@ import com.huemulsolutions.bigdata
  */
 object Proc_PlanPruebas_Malos01 {
   def main(args: Array[String]): Unit = {
-    val huemulLib = new huemul_Library("01 - Plan pruebas Malos01",args,globalSettings.Global)
+    val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Malos01",args,globalSettings.Global)
     val Control = new huemul_Control(huemulLib,null)
     
     val Ano = huemulLib.arguments.GetValue("ano", null,"Debe especificar ano de proceso: ejemplo: ano=2017")
@@ -97,6 +97,6 @@ object Proc_PlanPruebas_Malos01 {
         Control.FinishProcessError()
     }
     
-    huemulLib.spark.stop()
+    huemulLib.close()
   }
 }

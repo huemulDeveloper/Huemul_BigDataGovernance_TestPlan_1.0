@@ -1,4 +1,4 @@
-package com.huemulsolutions.bigdata.test
+package samples
 
 
 import com.huemulsolutions.bigdata.common._

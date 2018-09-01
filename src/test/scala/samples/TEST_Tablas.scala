@@ -6,15 +6,23 @@ import com.huemulsolutions.bigdata.tables.master._
 import com.huemulsolutions.bigdata.test._
 import com.huemulsolutions.bigdata.common._
 import com.huemulsolutions.bigdata.control._
+import com.huemulsolutions.bigdata.raw.raw_DatosBasicos
+import com.huemulsolutions.bigdata.common.huemul_BigDataGovernance
+import com.huemulsolutions.bigdata.tables._
 
 @Test
 class AppTest {
     val args: Array[String] = new Array[String](1)
     args(0) = "Environment=production,RegisterInControl=false,TestPlanMode=true"
       
-    val huemulLib = new huemul_Library("Pruebas Inicialización de Clases",args,globalSettings.Global)
+    val huemulLib = new huemul_BigDataGovernance("Pruebas Inicialización de Clases",args,globalSettings.Global)
     val Control = new huemul_Control(huemulLib,null)
       
+    @Test
+    def pruebita() = assertTrue(genera()
+      
+    )
+    
       
     @Test
     def TEST_tbl_DatosBasicos() = assertTrue(TESTp_tbl_DatosBasicos())
@@ -31,7 +39,12 @@ class AppTest {
     @Test
     def TEST_tbl_DatosBasicosUpdate() = assertTrue(TESTp_tbl_DatosBasicosUpdate())
     
-    
+    def genera(): Boolean = {
+      val a = new raw_DatosBasicos(huemulLib, Control)
+      
+      a.GenerateInitialCode("package", "objectName", "tbl_algo", "test/", huemulType_Tables.Reference, true)
+      return true
+    }
     
     /**Revisión de clase tbl_DatosBasicos
      * 
