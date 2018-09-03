@@ -20,8 +20,8 @@ object Proc_PlanPruebas_CargaMaster_mes_2 {
     val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Proc_PlanPruebas_CargaMaster_mes_2",args,globalSettings.Global)
     val Control = new huemul_Control(huemulLib,null)
     
-    val Ano = huemulLib.arguments.GetValue("ano", null,"Debe especificar ano de proceso: ejemplo: ano=2017")
-    val Mes = huemulLib.arguments.GetValue("mes", null,"Debe especificar mes de proceso: ejemplo: mes=12")
+    val Ano = "2018" //huemulLib.arguments.GetValue("ano", null,"Debe especificar ano de proceso: ejemplo: ano=2017")
+    val Mes = "10"//huemulLib.arguments.GetValue("mes", null,"Debe especificar mes de proceso: ejemplo: mes=12")
     
     val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
 
@@ -63,7 +63,9 @@ object Proc_PlanPruebas_CargaMaster_mes_2 {
         Control.RegisterTestPlanFeature("Requiered OK", IdTestPlan)
         Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
         Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
-        Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
+        Control.RegisterTestPlanFeature("PartitionField", IdTestPlan)
+        Control.RegisterTestPlanFeature("Transaction", IdTestPlan)
+        Control.RegisterTestPlanFeature("IsFK", IdTestPlan)
       
         Control.RaiseError(s"Error al masterizar (${TablaMaster.Error_Code}): ${TablaMaster.Error_Text}")
       } else {
@@ -71,7 +73,9 @@ object Proc_PlanPruebas_CargaMaster_mes_2 {
         Control.RegisterTestPlanFeature("Requiered OK", IdTestPlan)
         Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
         Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
-        Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
+        Control.RegisterTestPlanFeature("PartitionField", IdTestPlan)
+        Control.RegisterTestPlanFeature("Transaction", IdTestPlan)
+        Control.RegisterTestPlanFeature("IsFK", IdTestPlan)
       }
         
       
@@ -101,7 +105,8 @@ object Proc_PlanPruebas_CargaMaster_mes_2 {
       
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Cero_Vacio - TieneRegistros", "Registro Cero_Vacio, debe tener 1 registro", "Cantidad = 1", s"Cantidad = ${Cantidad}", Cantidad == 1)
       Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
-      Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
+      Control.RegisterTestPlanFeature("PartitionField", IdTestPlan)
+        Control.RegisterTestPlanFeature("Transaction", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
@@ -125,7 +130,8 @@ object Proc_PlanPruebas_CargaMaster_mes_2 {
       Cantidad = if (Negativo_Maximo_Todos == null) 0 else Negativo_Maximo_Todos.count()
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - TieneRegistros", "Registro Negativo_Maximo, debe tener 1 registro", "Cantidad = 1", s"Cantidad = ${Cantidad}", Cantidad == 1)
       Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
-      Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
+      Control.RegisterTestPlanFeature("PartitionField", IdTestPlan)
+        Control.RegisterTestPlanFeature("Transaction", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)      
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
@@ -147,7 +153,8 @@ object Proc_PlanPruebas_CargaMaster_mes_2 {
       Cantidad = if (Negativo_Minimo_Todos == null) 0 else Negativo_Minimo_Todos.count()
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Minimo - TieneRegistros", "Registro Negativo_Minimo, debe tener 1 registro", "Cantidad = 1", s"Cantidad = ${Cantidad}", Cantidad == 1)
       Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
-      Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
+      Control.RegisterTestPlanFeature("PartitionField", IdTestPlan)
+        Control.RegisterTestPlanFeature("Transaction", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
@@ -169,7 +176,8 @@ object Proc_PlanPruebas_CargaMaster_mes_2 {
       Cantidad = if (Positivo_Minimo_Todos == null) 0 else Positivo_Minimo_Todos.count()
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Positivo_Minimo - TieneRegistros", "Registro Positivo_Minimo, debe tener 1 registro", "Cantidad = 1", s"Cantidad = ${Cantidad}", Cantidad == 1)
       Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
-      Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
+      Control.RegisterTestPlanFeature("PartitionField", IdTestPlan)
+        Control.RegisterTestPlanFeature("Transaction", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
@@ -191,7 +199,8 @@ object Proc_PlanPruebas_CargaMaster_mes_2 {
       Cantidad = if (Positivo_Maximo_Todos == null) 0 else Positivo_Maximo_Todos.count()
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Positivo_Maximo - TieneRegistros", "Registro Positivo_Maximo, debe tener 1 registro", "Cantidad = 1", s"Cantidad = ${Cantidad}", Cantidad == 1)
       Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
-      Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
+      Control.RegisterTestPlanFeature("PartitionField", IdTestPlan)
+        Control.RegisterTestPlanFeature("Transaction", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
@@ -214,7 +223,8 @@ object Proc_PlanPruebas_CargaMaster_mes_2 {
       Cantidad = if (ValorNull_Todos == null) 0 else ValorNull_Todos.count()
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValorNull - TieneRegistros", "Registro ValorNull, debe tener 1 registro", "Cantidad = 1", s"Cantidad = ${Cantidad}", Cantidad == 1)
       Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
-      Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
+      Control.RegisterTestPlanFeature("PartitionField", IdTestPlan)
+        Control.RegisterTestPlanFeature("Transaction", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - Convierte string null a null", IdTestPlan)
@@ -542,6 +552,9 @@ object Proc_PlanPruebas_CargaMaster_mes_2 {
       
       val datos = huemulLib.spark.sql(s"""select periodo_mes, count(1) from  ${TablaMaster.GetTable()} group by periodo_mes""")
       datos.show()
+      val NumDQ_Transaction = Control.RegisterTestPlan(TestPlanGroup, "DQ - 2 periodos cargados", "Tablas transaction con 2 periodos cargados", "len del arreglo = 2", s"len del arreglo = ${datos.count()}", datos.count() == 2)
+      
+      
       
       Control.FinishProcessOK
     } catch {

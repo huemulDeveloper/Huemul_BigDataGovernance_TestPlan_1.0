@@ -32,11 +32,15 @@ object App {
     Proc_PlanPruebas_PermisosInsert.main(args)
     Proc_PlanPruebas_PermisosUpdate.main(args)
     
-    Proc_PlanPruebas_InsertLimitErrorPorc.main(args)
+    
     
     Proc_PlanPruebas_CargaMaster.main(args)
+    Proc_PlanPruebas_CargaMaster_mes.main(args)
+    Proc_PlanPruebas_CargaMaster_mes_2.main(args)
     
+    Proc_PlanPruebas_InsertLimitErrorPorc.main(args)
     Proc_PlanPruebas_InsertLimitError.main(args)
+    
     Proc_PlanPruebas_NoMapped.main(args)
     
     Proc_PlanPruebas_OnlyInsertNew.main(args)
@@ -48,6 +52,7 @@ object App {
    
     Proc_PlanPruebas_Errores.main(args)
     Proc_PlanPruebas_Malos01.main(args)
+    Proc_PlanPruebas_CargaNoTrim.main(args)
     
     
   }
