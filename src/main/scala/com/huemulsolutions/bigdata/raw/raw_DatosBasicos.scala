@@ -30,9 +30,20 @@ class raw_DatosBasicos(huemulLib: huemul_BigDataGovernance, Control: huemul_Cont
     FormatSetting.ContactName = "Sebastián Rodríguez"
     
     //Columns Info CHARACTER
+    
+    //PLAN EJECUCION 1:
+    /*
     FormatSetting.DataSchemaConf.ColSeparatorType = huemulType_Separator.CHARACTER  //POSITION;CHARACTER
     FormatSetting.DataSchemaConf.ColSeparator = "\\|"    //SET FOR CARACTER
-    //FormatSetting.DataSchemaConf.setHeaderColumnsString("TipoValor;IntValue;BigIntValue;SmallIntValue;TinyIntValue;DecimalValue;RealValue;FloatValue;StringValue;charValue;timeStampValue") //siempre con ; 
+    FormatSetting.DataSchemaConf.setHeaderColumnsString("TipoValor;IntValue;BigIntValue;SmallIntValue;TinyIntValue;DecimalValue;RealValue;FloatValue;StringValue;charValue;timeStampValue") //siempre con ;
+    *  
+    */
+    
+    //PLAN EJECUCION 2:
+    /*
+    FormatSetting.DataSchemaConf.ColSeparatorType = huemulType_Separator.CHARACTER  //POSITION;CHARACTER
+    FormatSetting.DataSchemaConf.ColSeparator = "\\|"    //SET FOR CARACTER
+    
     FormatSetting.DataSchemaConf.AddColumns("TipoValor", "TipoValor_ti", StringType)
     FormatSetting.DataSchemaConf.AddColumns("IntValue", "IntValue_ti", IntegerType)
     FormatSetting.DataSchemaConf.AddColumns("BigIntValue", "BigIntValue_ti", LongType, "con descripción mia")
@@ -44,6 +55,24 @@ class raw_DatosBasicos(huemulLib: huemul_BigDataGovernance, Control: huemul_Cont
     FormatSetting.DataSchemaConf.AddColumns("StringValue", "StringValue_ti", StringType)
     FormatSetting.DataSchemaConf.AddColumns("charValue", "charValue_ti", StringType)
     FormatSetting.DataSchemaConf.AddColumns("timeStampValue", "timeStampValue_ti", TimestampType)
+    * 
+    */
+    
+    //PLAN EJECUCION 3:
+    FormatSetting.DataSchemaConf.ColSeparatorType = huemulType_Separator.POSITION  //POSITION;CHARACTER
+    
+    FormatSetting.DataSchemaConf.AddColumns("TipoValor", "TipoValor_ti", StringType,"",0,15)
+    FormatSetting.DataSchemaConf.AddColumns("IntValue", "IntValue_ti", IntegerType,"",16,24)
+    FormatSetting.DataSchemaConf.AddColumns("BigIntValue", "BigIntValue_ti", LongType, "con descripción mia",25,36)
+    FormatSetting.DataSchemaConf.AddColumns("SmallIntValue", "SmallIntValue_ti", ShortType,"",37,50)
+    FormatSetting.DataSchemaConf.AddColumns("TinyIntValue", "TinyIntValue_ti", ShortType,"",51,63)
+    FormatSetting.DataSchemaConf.AddColumns("DecimalValue", "DecimalValue_ti", DecimalType(10,4),"",64,76)
+    FormatSetting.DataSchemaConf.AddColumns("RealValue", "RealValue_ti", DoubleType,"",77,86)
+    FormatSetting.DataSchemaConf.AddColumns("FloatValue", "FloatValue_ti", FloatType,"",87,97)
+    FormatSetting.DataSchemaConf.AddColumns("StringValue", "StringValue_ti", StringType,"",98,110)
+    FormatSetting.DataSchemaConf.AddColumns("charValue", "charValue_ti", StringType,"",111,120)
+    FormatSetting.DataSchemaConf.AddColumns("timeStampValue", "timeStampValue_ti", TimestampType,"",121,140)
+    
     
     //Log Info
     FormatSetting.LogSchemaConf.ColSeparatorType = huemulType_Separator.CHARACTER  //POSITION;CHARACTER;NONE
@@ -124,7 +153,8 @@ object raw_DatosBasicos {
       println("************************************************************")
       println("**********  E  R R O R   E N   P R O C E S O   *************")
       println("************************************************************")
-    }
+    } else
+      DF_RAW.DataFramehuemul.DataFrame.show()
       
     
     val MyName: String = this.getClass.getSimpleName
