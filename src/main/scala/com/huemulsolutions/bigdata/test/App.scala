@@ -28,15 +28,18 @@ object App {
     * 
     */
   
+    Proc_PlanPruebas_CargaMaster_SelectiveUpdate.main(args)
+
     Proc_PlanPruebas_PermisosFull.main(args)
     Proc_PlanPruebas_PermisosInsert.main(args)
     Proc_PlanPruebas_PermisosUpdate.main(args)
     
-    
+    Proc_PlanPruebas_CargaMaster_SelectiveUpdate.main(args)
     
     Proc_PlanPruebas_CargaMaster.main(args)
     Proc_PlanPruebas_CargaMaster_mes.main(args)
     Proc_PlanPruebas_CargaMaster_mes_2.main(args)
+    Proc_PlanPruebas_CargaMaster_mes_paso_2_selective.main(args)
     
     Proc_PlanPruebas_InsertLimitErrorPorc.main(args)
     Proc_PlanPruebas_InsertLimitError.main(args)
