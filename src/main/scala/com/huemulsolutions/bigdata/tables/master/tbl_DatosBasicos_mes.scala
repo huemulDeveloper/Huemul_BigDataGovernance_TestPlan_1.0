@@ -20,6 +20,7 @@ class tbl_DatosBasicos_mes(HuemulLib: huemul_BigDataGovernance, Control: huemul_
   this.setStorageType(huemulType_StorageType.PARQUET)
   this.setDQ_MaxNewRecords_Num(4)
   this.setPartitionField("periodo_mes")
+  this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   
   val periodo_mes = new huemul_Columns(StringType,true,"periodo")
   periodo_mes.setIsPK ( true)

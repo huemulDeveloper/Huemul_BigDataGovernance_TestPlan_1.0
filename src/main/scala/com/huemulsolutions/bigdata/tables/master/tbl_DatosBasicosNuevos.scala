@@ -19,6 +19,7 @@ class tbl_DatosBasicosNuevos(HuemulLib: huemul_BigDataGovernance, Control: huemu
   this.setLocalPath("planPruebas/")
   this.setStorageType(huemulType_StorageType.PARQUET)
   this.setDQ_MaxNewRecords_Num(4)
+  this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   
   val TipoValor = new huemul_Columns(StringType,true,"Nombre del tipo de valor")
   TipoValor.setIsPK ( true)

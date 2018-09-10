@@ -7,6 +7,7 @@ import com.huemulsolutions.bigdata.tables._
 import com.huemulsolutions.bigdata.tables.huemulType_Tables._
 import org.apache.spark.sql.types.DataTypes._
 import org.apache.spark.sql.types.DecimalType
+import com.huemulsolutions.bigdata.control.huemulType_Frequency.huemulType_Frequency
 
 
 
@@ -17,6 +18,7 @@ class tbl_DatosBasicosUpdate(HuemulLib: huemul_BigDataGovernance, Control: huemu
   this.setGlobalPaths(HuemulLib.GlobalSettings.MASTER_BigFiles_Path)
   this.setLocalPath("planPruebas/")
   this.setStorageType(huemulType_StorageType.PARQUET)
+  this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   
   val TipoValor = new huemul_Columns(StringType,true,"Nombre del tipo de valor")
   TipoValor.setIsPK ( true)

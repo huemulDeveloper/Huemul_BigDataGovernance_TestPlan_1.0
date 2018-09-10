@@ -17,6 +17,7 @@ class tbl_DatosBasicosInsert(HuemulLib: huemul_BigDataGovernance, Control: huemu
   this.setGlobalPaths(HuemulLib.GlobalSettings.MASTER_BigFiles_Path)
   this.setLocalPath("planPruebas/")
   this.setStorageType(huemulType_StorageType.PARQUET)
+  this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   
   val TipoValor = new huemul_Columns(StringType,true,"Nombre del tipo de valor")
   TipoValor.setIsPK ( true)

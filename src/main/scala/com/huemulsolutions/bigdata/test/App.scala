@@ -34,7 +34,6 @@ object App {
     Proc_PlanPruebas_PermisosInsert.main(args)
     Proc_PlanPruebas_PermisosUpdate.main(args)
     
-    Proc_PlanPruebas_CargaMaster_SelectiveUpdate.main(args)
     
     Proc_PlanPruebas_CargaMaster.main(args)
     Proc_PlanPruebas_CargaMaster_mes.main(args)

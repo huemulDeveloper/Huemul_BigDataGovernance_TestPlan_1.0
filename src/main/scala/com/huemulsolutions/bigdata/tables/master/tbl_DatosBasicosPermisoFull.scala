@@ -20,6 +20,7 @@ class tbl_DatosBasicosPermisoFull(HuemulLib: huemul_BigDataGovernance, Control: 
   this.setStorageType(huemulType_StorageType.PARQUET)
   this.setDQ_MaxNewRecords_Num(4)
   this.WhoCanRun_executeFull_addAccess("com.huemulsolutions.bigdata.test", "Proc_PlanPruebas_PermisosFull")
+  this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   
   val TipoValor = new huemul_Columns(StringType,true,"Nombre del tipo de valor")
   TipoValor.setIsPK ( true)
