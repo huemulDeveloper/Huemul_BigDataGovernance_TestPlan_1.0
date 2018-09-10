@@ -14,14 +14,14 @@ import com.huemulsolutions.bigdata
 object Proc_PlanPruebas_PermisosUpdate {
   def main(args: Array[String]): Unit = {
     val huemulLib = new huemul_BigDataGovernance("01 - getWhoCanRun_executeOnlyUpdate",args,globalSettings.Global)
-    val Control = new huemul_Control(huemulLib,null)
+    val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
     
     val Ano = huemulLib.arguments.GetValue("ano", null,"Debe especificar ano de proceso: ejemplo: ano=2017")
     val Mes = huemulLib.arguments.GetValue("mes", null,"Debe especificar mes de proceso: ejemplo: mes=12")
     
     val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
     var IdTestPlan: String = ""
-    Control.AddParamInfo("TestPlanGroup", TestPlanGroup)
+    Control.AddParamInformation("TestPlanGroup", TestPlanGroup)
         
     try {
       Control.NewStep("Define DataFrame Original")

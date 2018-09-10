@@ -11,9 +11,9 @@ import com.huemulsolutions.bigdata.common._
 import com.huemulsolutions.bigdata.control._
 import org.apache.spark.sql.types._
 import scalaz.std.math.bigInt
+import com.huemulsolutions.bigdata.control.huemulType_Frequency.huemulType_Frequency
 
 class raw_DatosBasicos(huemulLib: huemul_BigDataGovernance, Control: huemul_Control) extends huemul_DataLake(huemulLib, Control) with Serializable  {
-   this.LogicalName = "DatosBasicos"
    this.Description = "Datos Básicos por cada tipo de dato, para plan de pruebas"
    this.GroupName = "HuemulPlanPruebas"
    
@@ -92,10 +92,10 @@ class raw_DatosBasicos(huemulLib: huemul_BigDataGovernance, Control: huemul_Cont
    * Retorna: true si todo está OK, false si tuvo algún problema <br>
   */
   def open(Alias: String, ControlParent: huemul_Control, ano: Integer, mes: Integer, dia: Integer, hora: Integer, min: Integer, seg: Integer, TipoArchivo: String, AplicarTrim: Boolean = true): Boolean = {
-    val control = new huemul_Control(huemulLib, ControlParent, false)
+    val control = new huemul_Control(huemulLib, ControlParent, huemulType_Frequency.MONTHLY, false)
     //Setea parámetros
-    control.AddParamInfo("Ano", ano.toString())
-    control.AddParamInfo("Mes", mes.toString())
+    control.AddParamYear("Ano", ano)
+    control.AddParamMonth("Mes", mes)
     
     control.NewStep("Abriendo raw")
        
@@ -144,7 +144,7 @@ object raw_DatosBasicos {
     
     //Creación API
     val huemulLib  = new huemul_BigDataGovernance(s"BigData Fabrics - ${this.getClass.getSimpleName}", args, globalSettings.Global)
-    val Control = new huemul_Control(huemulLib, null)
+    val Control = new huemul_Control(huemulLib, null, huemulType_Frequency.MONTHLY)
     /*************** PARAMETROS **********************/
     
     //Inicializa clase RAW  

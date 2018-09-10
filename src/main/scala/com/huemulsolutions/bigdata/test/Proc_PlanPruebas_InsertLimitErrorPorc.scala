@@ -11,14 +11,14 @@ import com.huemulsolutions.bigdata.tables.master._
 object Proc_PlanPruebas_InsertLimitErrorPorc {
   def main(args: Array[String]): Unit = {
     val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas error en insert por límite de filas",args,globalSettings.Global)
-    val Control = new huemul_Control(huemulLib,null)
+    val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
     //huemulLib.spark
     val Ano = huemulLib.arguments.GetValue("ano", null,"Debe especificar ano de proceso: ejemplo: ano=2017")
     val Mes = huemulLib.arguments.GetValue("mes", null,"Debe especificar mes de proceso: ejemplo: mes=12")
     
     val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
 
-    Control.AddParamInfo("TestPlanGroup", TestPlanGroup)
+    Control.AddParamInformation("TestPlanGroup", TestPlanGroup)
         
     try {
       var IdTestPlan: String = null

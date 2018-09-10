@@ -16,14 +16,14 @@ import org.apache.spark.sql.types._
 object Proc_PlanPruebas_CargaMaster {
   def main(args: Array[String]): Unit = {
     val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Proc_PlanPruebas_CargaMaster",args,globalSettings.Global)
-    val Control = new huemul_Control(huemulLib,null)
+    val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
     
     val Ano = huemulLib.arguments.GetValue("ano", null,"Debe especificar ano de proceso: ejemplo: ano=2017")
     val Mes = huemulLib.arguments.GetValue("mes", null,"Debe especificar mes de proceso: ejemplo: mes=12")
     
     val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
 
-    Control.AddParamInfo("TestPlanGroup", TestPlanGroup)
+    Control.AddParamInformation("TestPlanGroup", TestPlanGroup)
         
     try {
       var IdTestPlan: String = null

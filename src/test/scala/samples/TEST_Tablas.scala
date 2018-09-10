@@ -16,7 +16,7 @@ class AppTest {
     args(0) = "Environment=production,RegisterInControl=false,TestPlanMode=true"
       
     val huemulLib = new huemul_BigDataGovernance("Pruebas Inicialización de Clases",args,globalSettings.Global)
-    val Control = new huemul_Control(huemulLib,null)
+    val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
       
     @Test
     def pruebita() = assertTrue(genera()
@@ -42,7 +42,7 @@ class AppTest {
     def genera(): Boolean = {
       val a = new raw_DatosBasicos(huemulLib, Control)
       
-      a.GenerateInitialCode("package", "objectName", "tbl_algo", "test/", huemulType_Tables.Reference, true)
+      a.GenerateInitialCode("package", "objectName", "tbl_algo", "test/", huemulType_Tables.Reference, huemulType_Frequency.MONTHLY)
       return true
     }
     
