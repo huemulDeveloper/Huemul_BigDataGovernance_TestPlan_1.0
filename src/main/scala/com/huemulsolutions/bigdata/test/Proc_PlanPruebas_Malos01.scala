@@ -65,10 +65,12 @@ object Proc_PlanPruebas_Malos01 {
       Control.RegisterTestPlanFeature("IsPK Error", IdTestPlan)
       
       //valida que N° de registros con problemas de PK = 1
-      val NumErrores_TipoValor = TablaMaster.DataFramehuemul.getDQResult().filter { x => x.DQ_Name == "PK" }
+      val NumErrores_TipoValor = TablaMaster.DataFramehuemul.getDQResult().filter { x => x.DQ_ErrorCode == 1018 }
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Malo01 - Obtiene DQ PK", "N° registros devueltos de DQ pK = 1", "N° Reg = 1", s"N° Reg = ${NumErrores_TipoValor.length}", NumErrores_TipoValor.length == 1)
       Control.RegisterTestPlanFeature("IsPK Error", IdTestPlan)
       
+      /* //esta prueba fue comentada, antes entregaba el N° de registros con error, ahora no
+       * //esta será una modificación de versión 1.2
       var PK_NumRowsTotal: Long = 0
       var PK_NumRowsError: Long = -1
       if (NumErrores_TipoValor.length == 1) {
@@ -77,6 +79,7 @@ object Proc_PlanPruebas_Malos01 {
       }
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Malo01 - N° PK duplicados", "N° registros duplicados, debe ser 1", "N° PK Duplicados = 1", s"N° PK Duplicados = ${PK_NumRowsError}", PK_NumRowsError == 1)
       Control.RegisterTestPlanFeature("IsPK Error", IdTestPlan)
+      */
       
       TablaMaster.DataFramehuemul.getDQResult().foreach { x => 
         println(s"DQ_Name:${x.DQ_Name}, BBDD_Name:${x.BBDD_Name}, Table_Name:${x.Table_Name}, ColumnName:${x.ColumnName}, DQ_NumRowsTotal:${x.DQ_NumRowsTotal}, DQ_NumRowsOK:${x.DQ_NumRowsOK}, DQ_NumRowsError:${x.DQ_NumRowsError}") 
