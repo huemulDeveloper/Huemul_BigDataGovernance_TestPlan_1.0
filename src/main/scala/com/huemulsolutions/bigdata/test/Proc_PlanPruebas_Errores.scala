@@ -152,9 +152,15 @@ object Proc_PlanPruebas_Errores {
         Control.RegisterTestPlanFeature("IsUnique", IdTestPlan)
       }
       else {
+        IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ERROR Column_IsUnique Codigo", "Errores encontrados correctamente", "ErrorCode = 2006, N° errores = 1", s"ErrorCode = 2006, N° errores = ${ErrorReg.length}", ErrorReg.length == 1)
+        Control.RegisterTestPlanFeature("IsUnique", IdTestPlan)
+        /*
+         * comentado, descomentar cuando se agregue la captura de los registros que no fueron únicos.
         val ErrorEncontrado = ErrorReg(0)
         IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ERROR Column_IsUnique Codigo", "Errores encontrados correctamente", "ErrorCode = 2006, N° registros Not Unique: 2", s"ErrorCode = 2006, N° registros con error: ${ErrorEncontrado.DQ_NumRowsError}", ErrorEncontrado.DQ_NumRowsError == 2)
         Control.RegisterTestPlanFeature("IsUnique", IdTestPlan)
+        * 
+        */
       }
       
       //N° Total de errores por DQ debe ser = 8
