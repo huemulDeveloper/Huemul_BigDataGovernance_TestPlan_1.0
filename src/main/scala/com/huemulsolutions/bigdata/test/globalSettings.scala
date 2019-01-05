@@ -7,15 +7,18 @@ object globalSettings {
    val Global: huemul_GlobalPath  = new huemul_GlobalPath()
    Global.GlobalEnvironments = "production, experimental"
    
-   Global.POSTGRE_Setting.append(new huemul_KeyValuePath("production","jdbc:postgresql://35.188.65.185:5432/postgres?user=postgres&password=huemul-control&currentSchema=public"))
-   Global.POSTGRE_Setting.append(new huemul_KeyValuePath("experimental","jdbc:postgresql://{{000.000.000.000}}:5432/{{database_name}}?user={{user_name}}&password={{password}}&currentSchema=public"))
+   Global.CONTROL_Driver = "com.mysql.jdbc.Driver"
+   
+   Global.CONTROL_Setting.append(new huemul_KeyValuePath("production","jdbc:mysql://35.188.104.37:3306/control?user=root&password=mysql-control"))
+   Global.CONTROL_Setting.append(new huemul_KeyValuePath("experimental","jdbc:postgresql://35.239.23.150:5432/postgres?user=postgres&password=control-postgres&currentSchema=public"))
  
-   Global.IMPALA_Setting.append(new huemul_KeyValuePath("production","jdbc:postgresql://35.188.65.185:5432/postgres?user=postgres&password=huemul-control&currentSchema=public"))
-   Global.IMPALA_Setting.append(new huemul_KeyValuePath("experimental","jdbc:postgresql://{{000.000.000.000}}:5432/{{database_name}}?user={{user_name}}&password={{password}}&currentSchema=public"))
+   Global.ImpalaEnabled = false
+   Global.IMPALA_Setting.append(new huemul_KeyValuePath("production","jdbc:postgresql://control-postgre.postgres.database.azure.com:5432/postgres?user=control@control-postgre&password=developer.CODE6471&currentSchema=public"))
+   Global.IMPALA_Setting.append(new huemul_KeyValuePath("experimental","jdbc:postgresql://control-postgre.postgres.database.azure.com:5432/postgres?user=control@control-postgre&password=developer.CODE6471&currentSchema=public"))
    
    //TEMPORAL SETTING
    Global.TEMPORAL_Path.append(new huemul_KeyValuePath("production","hdfs:///user/data/production/temp/"))
-   Global.TEMPORAL_Path.append(new huemul_KeyValuePath("experimental","hdfs://hdfs:///user/data/experimental/temp/"))
+   Global.TEMPORAL_Path.append(new huemul_KeyValuePath("experimental","hdfs:///user/data/experimental/temp/"))
      
    //RAW SETTING
    Global.RAW_SmallFiles_Path.append(new huemul_KeyValuePath("production","hdfs:///user/data/production/raw/"))
