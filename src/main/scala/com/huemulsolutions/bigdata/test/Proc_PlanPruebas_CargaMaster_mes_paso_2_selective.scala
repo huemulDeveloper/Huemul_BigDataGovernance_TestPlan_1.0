@@ -38,9 +38,11 @@ object Proc_PlanPruebas_CargaMaster_mes_paso_2_selective {
       
       val periodo_mes = huemulLib.ReplaceWithParams("{{YYYY}}-{{MM}}-{{DD}}", Ano.toInt, Mes.toInt, 1, 0, 0, 0, null)
       
-      TablaMaster.DF_from_SQL("DF_Original", s"""select 'Cero-Vacio' as TipoValor, 45 as IntValue, '${periodo_mes}' as periodo_mes   """) 
+      TablaMaster.DF_from_SQL("DF_Original2", s"""select 'Cero-Vacio' as TipoValor, 45 as IntValue, '${periodo_mes}' as periodo_mes union all select 'Negativo_Maximo' as TipoValor, -11 as IntValue, '${periodo_mes}' as periodo_mes  """) 
       
       huemulLib.spark.sql(s"select * from ${TablaMaster.GetTable()}").show(100)
+      huemulLib.spark.sql(s"select * from DF_Original2").show(100)
+     
       TablaMaster.periodo_mes.SetMapping("periodo_mes")
       TablaMaster.TipoValor.SetMapping("TipoValor")
       TablaMaster.IntValue.SetMapping("IntValue")
@@ -103,7 +105,7 @@ object Proc_PlanPruebas_CargaMaster_mes_paso_2_selective {
       
       Control.NewStep("DF Plan de pruebas: Negativo_Maximo ")
       val Negativo_Maximo_Todos = huemulLib.DF_ExecuteQuery("Negativo_Maximo_Todos", s"""SELECT case when BigIntValue = -10                      then true else false end as Cumple_BigIntValue
-                                                                                     ,case when IntValue = -10                         then true else false end as Cumple_IntValue
+                                                                                     ,case when IntValue = -11                         then true else false end as Cumple_IntValue
                                                                                      ,case when SmallIntValue = -10                         then true else false end as Cumple_SmallIntValue
                                                                                      ,case when TinyIntValue = -10                          then true else false end as Cumple_TinyIntValue
                                                                                      ,case when DecimalValue = -10.1230                     then true else false end as Cumple_DecimalValue
