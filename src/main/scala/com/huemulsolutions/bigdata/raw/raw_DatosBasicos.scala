@@ -121,6 +121,7 @@ class raw_DatosBasicos(huemulLib: huemul_BigDataGovernance, Control: huemul_Cont
       //****VALIDACION DQ*****
       //**********************
       
+      control.NewStep("Validando cantidad de filas")      
       //validacion cantidad de filas
       val validanumfilas = this.DataFramehuemul.DQ_NumRowsInterval(this, 6,7)  
       if (validanumfilas.isError) control.RaiseError(s"user: Numero de Filas fuera del rango. ${validanumfilas.Description}")
