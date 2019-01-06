@@ -9,7 +9,7 @@ object globalSettings {
    
    Global.CONTROL_Driver = "com.mysql.jdbc.Driver"
    
-   Global.CONTROL_Setting.append(new huemul_KeyValuePath("production","jdbc:mysql://35.188.104.37:3306/control?user=root&password=mysql-control"))
+   Global.CONTROL_Setting.append(new huemul_KeyValuePath("production","jdbc:mysql://35.225.74.156:3306/control?user=root&password=mysql-control2"))
    Global.CONTROL_Setting.append(new huemul_KeyValuePath("experimental","jdbc:postgresql://35.239.23.150:5432/postgres?user=postgres&password=control-postgres&currentSchema=public"))
  
    Global.ImpalaEnabled = false
