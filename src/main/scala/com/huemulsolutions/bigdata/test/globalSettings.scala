@@ -7,10 +7,10 @@ object globalSettings {
    val Global: huemul_GlobalPath  = new huemul_GlobalPath()
    Global.GlobalEnvironments = "production, experimental"
    
-   Global.CONTROL_Driver = "com.mysql.jdbc.Driver"
+   //Global.CONTROL_Driver = "com.mysql.jdbc.Driver"
    
-   Global.CONTROL_Setting.append(new huemul_KeyValuePath("production","jdbc:mysql://35.225.74.156:3306/control?user=root&password=mysql-control2"))
-   Global.CONTROL_Setting.append(new huemul_KeyValuePath("experimental","jdbc:postgresql://35.239.23.150:5432/postgres?user=postgres&password=control-postgres&currentSchema=public"))
+   Global.CONTROL_Setting.append(new huemul_KeyValuePath("production","jdbc:postgresql://localhost:5432/huemul_control?user=ambari&password=bigdata&currentSchema=public"))
+   Global.CONTROL_Setting.append(new huemul_KeyValuePath("experimental","jdbc:mysql://35.225.74.156:3306/control?user=root&password=mysql-control2"))
  
    Global.ImpalaEnabled = false
    Global.IMPALA_Setting.append(new huemul_KeyValuePath("production","jdbc:postgresql://control-postgre.postgres.database.azure.com:5432/postgres?user=control@control-postgre&password=developer.CODE6471&currentSchema=public"))
@@ -78,6 +78,17 @@ object globalSettings {
    
    Global.SANDBOX_BigFiles_Path.append(new huemul_KeyValuePath("production","hdfs:///user/data/production/sandbox/"))
    Global.SANDBOX_BigFiles_Path.append(new huemul_KeyValuePath("experimental","hdfs:///user/data/experimental/sandbox/"))
+   
+   
+   //DQ_ERROR SETTING
+   Global.DQ_SaveErrorDetails = true
+   Global.DQError_DataBase.append(new huemul_KeyValuePath("production","production_DQError"))
+   Global.DQError_DataBase.append(new huemul_KeyValuePath("experimental","experimental_DQError"))
+   
+   Global.DQError_Path.append(new huemul_KeyValuePath("production","hdfs:///user/data/production/dqerror/"))
+   Global.DQError_Path.append(new huemul_KeyValuePath("experimental","hdfs:///user/data/experimental/dqerror/"))
+   
+   
 
 }
 
