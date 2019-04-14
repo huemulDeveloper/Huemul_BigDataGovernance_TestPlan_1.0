@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.huemulsolutions.bigdata</groupId>
   <artifactId>datagovernance.planpruebas</artifactId>
-  <version>1.0</version>
+  <version>1.2</version>
   <name>DataGovernancePlanPruebas</name>
   <description></description>
   <inceptionYear>2016</inceptionYear>
@@ -54,7 +54,7 @@
     <dependency>
 	  <groupId>com.huemulsolutions.bigdata</groupId>
 	  <artifactId>huemul-bigdatagovernance</artifactId>
-	  <version>1.0</version>
+	  <version>1.2</version>
 	</dependency>
 
     <!-- Test -->
