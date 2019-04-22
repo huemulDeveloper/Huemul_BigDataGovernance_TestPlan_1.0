@@ -19,6 +19,10 @@ class tbl_DatosBasicosInsert(HuemulLib: huemul_BigDataGovernance, Control: huemu
   this.setStorageType(huemulType_StorageType.PARQUET)
   this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   
+    //Agrega version 1.3
+  this.setNumPartitions(2)
+
+  
   val TipoValor = new huemul_Columns(StringType,true,"Nombre del tipo de valor")
   TipoValor.setIsPK ( true)
   TipoValor.setDQ_MinLen ( 2)

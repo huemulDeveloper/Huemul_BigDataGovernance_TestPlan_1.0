@@ -22,6 +22,10 @@ class tbl_DatosBasicosPermisoFull(HuemulLib: huemul_BigDataGovernance, Control: 
   this.WhoCanRun_executeFull_addAccess("com.huemulsolutions.bigdata.test", "Proc_PlanPruebas_PermisosFull")
   this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   
+  //Agrega version 1.3
+  this.setNumPartitions(2)
+
+  
   val TipoValor = new huemul_Columns(StringType,true,"Nombre del tipo de valor")
   TipoValor.setIsPK ( true)
   TipoValor.setDQ_MinLen ( 2)

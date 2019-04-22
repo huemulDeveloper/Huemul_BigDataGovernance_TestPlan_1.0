@@ -22,6 +22,9 @@ class tbl_DatosBasicos_mes(HuemulLib: huemul_BigDataGovernance, Control: huemul_
   this.setPartitionField("periodo_mes")
   this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   
+  //Agrega version 1.3
+  this.setNumPartitions(2)
+  
   val periodo_mes = new huemul_Columns(StringType,true,"periodo")
   periodo_mes.setIsPK ( true)
 
