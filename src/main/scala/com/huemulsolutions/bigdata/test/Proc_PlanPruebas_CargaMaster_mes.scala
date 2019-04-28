@@ -15,6 +15,11 @@ import org.apache.spark.sql.types._
 import com.huemulsolutions.bigdata.tables.master.tbl_DatosBasicos_mes
 import org.apache.spark.sql.functions._
 
+//OJO:
+//el resultado de suma de double con valores nulos da distinto a sumar los valores sin nulos (el decimal 15 da diferente)
+//por otro lado, un float cuando se compara linea a linea con un decimal el resultado es distinto.
+//la recomendación es usar solo datos decimal.
+
 object Proc_PlanPruebas_CargaMaster_mes {
   def main(args: Array[String]): Unit = {
     val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Proc_PlanPruebas_CargaMaster_mes",args,globalSettings.Global)
@@ -467,19 +472,19 @@ object Proc_PlanPruebas_CargaMaster_mes {
       //******************************************************************
       
       val DQRules = new ArrayBuffer[huemul_DataQuality]()
-      val DQ_ComparaAgrupado = new huemul_DataQuality(null,"Suma Double = Suma Decimal","sum(DecimalValue) = sum(RealValue)",2,huemulType_DQQueryLevel.Aggregate)
+      val DQ_ComparaAgrupado = new huemul_DataQuality(null,"Suma Float = Suma Decimal","sum(DecimalValue) = sum(FloatValue)",2,huemulType_DQQueryLevel.Aggregate)
       DQRules.append(DQ_ComparaAgrupado)
       val DQ_ComparaFila = new huemul_DataQuality(null,"coalesce(Double,0) = coalesce(Decimal,0)","coalesce(DecimalValue,0) = coalesce(RealValue,0)",3)
       DQRules.append(DQ_ComparaFila)
       
       val DQ_ComparaAgrupado_LanzaWarning = new huemul_DataQuality(null,"Suma Double is null","sum(DecimalValue) is null",4,huemulType_DQQueryLevel.Aggregate, huemulType_DQNotification.WARNING)
       DQRules.append(DQ_ComparaAgrupado_LanzaWarning)
-      val DQ_ComparaFila_LanzaWarning = new huemul_DataQuality(null,"Double <> Decimal","DecimalValue <> RealValue",5,huemulType_DQQueryLevel.Row, huemulType_DQNotification.WARNING)
+      val DQ_ComparaFila_LanzaWarning = new huemul_DataQuality(null,"Double <> Decimal","DecimalValue <> FloatValue",5,huemulType_DQQueryLevel.Row, huemulType_DQNotification.WARNING)
       DQRules.append(DQ_ComparaFila_LanzaWarning)
       
       val DQResultManual = TablaMaster.DataFramehuemul.DF_RunDataQuality(DQRules, null, TablaMaster)
       
-      val conError = Control.RegisterTestPlan(TestPlanGroup, "DQ - debe tener error", "ejecuta la validación, no debe tener error", "IsError = false", s"IsErorr = ${DQResultManual.isError}${DQResultManual.Error_Code} ${DQResultManual.Description}", DQResultManual.isError == false)
+      val conError = Control.RegisterTestPlan(TestPlanGroup, "DQ - no debe tener error", "ejecuta la validación, no debe tener error", "IsError = false", s"IsErorr = ${DQResultManual.isError} (errorcode: ${DQResultManual.Error_Code}) ${DQResultManual.Description}", DQResultManual.isError == false)
       Control.RegisterTestPlanFeature("DQManual_Notification_Warning", conError)
       Control.RegisterTestPlanFeature("DQManual_Notification_Error", conError)
       Control.RegisterTestPlanFeature("DQManual_Aggregate", conError)
@@ -503,9 +508,9 @@ object Proc_PlanPruebas_CargaMaster_mes {
       //******************************************************************
       
       val DQRulesConError = new ArrayBuffer[huemul_DataQuality]()
-      val DQ_ComparaAgrupado_conError = new huemul_DataQuality(null,"Suma Double > Suma Decimal","sum(DecimalValue) > sum(RealValue)",6,huemulType_DQQueryLevel.Aggregate)
+      val DQ_ComparaAgrupado_conError = new huemul_DataQuality(null,"Suma Double > Suma Decimal","sum(DecimalValue) > sum(FloatValue)",6,huemulType_DQQueryLevel.Aggregate)
       DQRulesConError.append(DQ_ComparaAgrupado_conError)
-      val DQ_ComparaFila_conError = new huemul_DataQuality(null,"Double > Decimal","DecimalValue > RealValue",7)
+      val DQ_ComparaFila_conError = new huemul_DataQuality(null,"Double > Decimal","DecimalValue > FloatValue",7)
       DQRulesConError.append(DQ_ComparaFila_conError)
      
       val DQ_ComparaFila_Tolerancia = new huemul_DataQuality(null,"DecimalValue > 0.2","DecimalValue > 0",8)
