@@ -65,7 +65,7 @@ object Proc_PlanPruebas_CargaMaster_SelectiveUpdate {
       TablaMaster.timeStampValue.SetMapping("timeStampValue")
       //TODO: cambiar el parámetro "true" por algo.UPDATE O algo.NOUPDATE (en replaceValueOnUpdate
       Control.NewStep("Ejecución")
-      if (!TablaMaster.executeFull("DF_Final")) {
+      if (!TablaMaster.executeFull("DF_Final", org.apache.spark.storage.StorageLevel.DISK_ONLY)) {
         IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "No hay error en masterización", "No hay error en masterización", s"Si hay error en masterización", false)
         Control.RegisterTestPlanFeature("Requiered OK", IdTestPlan)
         Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
@@ -87,7 +87,7 @@ object Proc_PlanPruebas_CargaMaster_SelectiveUpdate {
       TablaMaster2.TipoValor.SetMapping("codTipoValor")
       TablaMaster2.IntValue.SetMapping("valIntValue")
       Control.NewStep("executeSelectiveUpdate")
-      if (!TablaMaster2.executeSelectiveUpdate("DF_Final",null)) {
+      if (!TablaMaster2.executeSelectiveUpdate("DF_Final",null, org.apache.spark.storage.StorageLevel.DISK_ONLY)) {
         IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "No hay error en masterización", "No hay error en masterización", s"Si hay error en masterización", false)
         Control.RegisterTestPlanFeature("executeSelectiveUpdate", IdTestPlan)
      

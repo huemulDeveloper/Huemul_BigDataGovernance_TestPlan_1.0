@@ -61,7 +61,7 @@ object Proc_PlanPruebas_OnlyUpdate {
       TablaMaster.StringNoModificarValue.SetMapping("StringValue",false)
       
       Control.NewStep("PASO 1: INSERTA NORMAL")
-      if (!TablaMaster.executeFull("DF_Final_Todo")) {
+      if (!TablaMaster.executeFull("DF_Final_Todo", org.apache.spark.storage.StorageLevel.DISK_ONLY)) {
         IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "No hay error en masterización", "No hay error en masterización", s"Si hay error en masterización", false)
         Control.RegisterTestPlanFeature("Requiered OK", IdTestPlan)
         Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
@@ -87,7 +87,7 @@ object Proc_PlanPruebas_OnlyUpdate {
       
       //TODO: cambiar el parámetro "true" por algo.UPDATE O algo.NOUPDATE (en replaceValueOnUpdate
       Control.NewStep("PASO 2: SOLO ACTUALIZA 1 REGISTRO, MARCA 0 COMO ELIMINADO, NO INSERTA NADA")
-      if (!TablaMaster.executeOnlyUpdate("DF_Final_DF")) {
+      if (!TablaMaster.executeOnlyUpdate("DF_Final_DF", org.apache.spark.storage.StorageLevel.DISK_ONLY)) {
         IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "No hay error en masterización", "No hay error en masterización", s"Si hay error en masterización", false)
         Control.RegisterTestPlanFeature("Requiered OK", IdTestPlan)
         Control.RegisterTestPlanFeature("IsPK", IdTestPlan)

@@ -60,7 +60,7 @@ object Proc_PlanPruebas_InsertLimitErrorPorc {
       TablaMaster.timeStampValue.SetMapping("timeStampValue")
       
       Control.NewStep("PASO 1: INSERTA NORMAL")
-      if (!TablaMaster.executeFull("DF_Final_Todo")) {
+      if (!TablaMaster.executeFull("DF_Final_Todo", org.apache.spark.storage.StorageLevel.DISK_ONLY)) {
         IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "No hay error en masterización", "No hay error en masterización", s"Si hay error en masterización", false)
         Control.RegisterTestPlanFeature("DQ_MaxNewRecords_Perc", IdTestPlan)     
         Control.RaiseError(s"Error al masterizar (${TablaMaster.Error_Code}): ${TablaMaster.Error_Text}")
@@ -82,7 +82,7 @@ object Proc_PlanPruebas_InsertLimitErrorPorc {
       Control.RegisterTestPlanFeature("DQ_MaxNewRecords_Perc", IdTestPlan)
         
       Control.NewStep("PASO 1: INSERTA NUEVOS")
-      if (!TablaMaster.executeOnlyInsert("DF_Final_Todo")) {
+      if (!TablaMaster.executeOnlyInsert("DF_Final_Todo", org.apache.spark.storage.StorageLevel.DISK_ONLY)) {
         IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "Si hay error en masterización", "Si hay error en masterización", s"Si hay error en masterización", true)
         Control.RegisterTestPlanFeature("DQ_MaxNewRecords_Perc", IdTestPlan)     
       } else {
