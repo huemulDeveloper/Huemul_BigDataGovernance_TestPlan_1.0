@@ -81,6 +81,8 @@ object Proc_PlanPruebas_CargaMaster {
         Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
       }
         
+      //Siguiente prueba: con cache de datos
+      TablaMaster.DataFramehuemul.DataFrame.cache()
       
       /////////////////////////////////////////////////////////////////////////////////////////
       /////////////////////////////////////////////////////////////////////////////////////////
