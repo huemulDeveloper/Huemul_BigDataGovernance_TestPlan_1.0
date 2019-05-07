@@ -58,7 +58,7 @@ object Proc_PlanPruebas_AutoCastOff {
       TablaMaster.timeStampValue.SetMapping("timeStampValue")
       //TODO: cambiar el parámetro "true" por algo.UPDATE O algo.NOUPDATE (en replaceValueOnUpdate
       Control.NewStep("Ejecución")
-      if (!TablaMaster.executeFull("DF_Final")) {
+      if (!TablaMaster.executeFull("DF_Final", org.apache.spark.storage.StorageLevel.MEMORY_ONLY)) {
         
         IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Error Esperado", "Error por tipos de datos", "con error", s"con error", true)
         Control.RegisterTestPlanFeature("AutoCast Apagado", IdTestPlan)

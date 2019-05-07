@@ -49,7 +49,7 @@ object Proc_PlanPruebas_NoMapped {
       //TODO: cambiar el parámetro "true" por algo.UPDATE O algo.NOUPDATE (en replaceValueOnUpdate
       Control.NewStep("Ejecución")
       
-      val ValorexecuteFull = TablaMaster.executeFull("DF_Final")
+      val ValorexecuteFull = TablaMaster.executeFull("DF_Final", org.apache.spark.storage.StorageLevel.MEMORY_ONLY)
       
       
       /////////////////////////////////////////////////////////////////////////////////////////

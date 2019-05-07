@@ -49,7 +49,7 @@ object Proc_PlanPruebas_CargaMaster_mes_paso_2_selective {
      
       //TODO: cambiar el parámetro "true" por algo.UPDATE O algo.NOUPDATE (en replaceValueOnUpdate
       Control.NewStep("Ejecución")
-      if (!TablaMaster.executeSelectiveUpdate("DF_Final",periodo_mes)) {
+      if (!TablaMaster.executeSelectiveUpdate("DF_Final",periodo_mes, org.apache.spark.storage.StorageLevel.MEMORY_ONLY)) {
         IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "No hay error en masterización", "No hay error en masterización", s"Si hay error en masterización", false)
         Control.RegisterTestPlanFeature("Requiered OK", IdTestPlan)
         Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
@@ -550,7 +550,7 @@ object Proc_PlanPruebas_CargaMaster_mes_paso_2_selective {
       TablaMaster4.TipoValor.SetMapping("codTipoValor")
       TablaMaster4.IntValue.SetMapping("valIntValue")
       Control.NewStep("executeSelectiveUpdate")
-      if (!TablaMaster4.executeSelectiveUpdate("DF_Final",null)) {
+      if (!TablaMaster4.executeSelectiveUpdate("DF_Final",null, org.apache.spark.storage.StorageLevel.MEMORY_ONLY)) {
         println(s"error: ${TablaMaster4.Error_Code} ${TablaMaster4.Error_Text}")
         IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "Si hay error en masterización", "si hay error en masterización (1017)", s"Si hay error en masterización (${TablaMaster4.Error_Code})", TablaMaster4.Error_Code == 1017)
         Control.RegisterTestPlanFeature("executeSelectiveUpdate", IdTestPlan)
@@ -568,7 +568,7 @@ object Proc_PlanPruebas_CargaMaster_mes_paso_2_selective {
       TablaMaster5.TipoValor.SetMapping("codTipoValor")
       TablaMaster5.IntValue.SetMapping("valIntValue")
       Control.NewStep("executeSelectiveUpdate")
-      if (!TablaMaster5.executeSelectiveUpdate("DF_Final",null)) {
+      if (!TablaMaster5.executeSelectiveUpdate("DF_Final",null, org.apache.spark.storage.StorageLevel.MEMORY_ONLY)) {
         println(s"error: ${TablaMaster5.Error_Code} ${TablaMaster5.Error_Text}")
         IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "Si hay error en masterización", "si hay error en masterización (1044)", s"Si hay error en masterización (${TablaMaster5.Error_Code})", TablaMaster5.Error_Code == 1044)
         Control.RegisterTestPlanFeature("executeSelectiveUpdate", IdTestPlan)

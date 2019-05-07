@@ -65,7 +65,7 @@ object Proc_PlanPruebas_CargaMaster {
       TablaMaster.timeStampValue.SetMapping("timeStampValue")
       //TODO: cambiar el parámetro "true" por algo.UPDATE O algo.NOUPDATE (en replaceValueOnUpdate
       Control.NewStep("Ejecución")
-      if (!TablaMaster.executeFull("DF_Final")) {
+      if (!TablaMaster.executeFull("DF_Final", org.apache.spark.storage.StorageLevel.MEMORY_ONLY )) {
         IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "No hay error en masterización", "No hay error en masterización", s"Si hay error en masterización", false)
         Control.RegisterTestPlanFeature("Requiered OK", IdTestPlan)
         Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
@@ -81,6 +81,8 @@ object Proc_PlanPruebas_CargaMaster {
         Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
       }
         
+      //Siguiente prueba: con cache de datos
+      //TablaMaster.DataFramehuemul.DataFrame.cache()
       
       /////////////////////////////////////////////////////////////////////////////////////////
       /////////////////////////////////////////////////////////////////////////////////////////

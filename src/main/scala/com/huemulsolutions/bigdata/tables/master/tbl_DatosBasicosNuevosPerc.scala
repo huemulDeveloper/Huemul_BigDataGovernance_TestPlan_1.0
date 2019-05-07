@@ -21,6 +21,10 @@ class tbl_DatosBasicosNuevosPerc(HuemulLib: huemul_BigDataGovernance, Control: h
   this.setDQ_MaxNewRecords_Perc(Decimal.apply(0.3))
   this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   
+  //Agrega version 1.3
+  this.setNumPartitions(2)
+
+  
   val TipoValor = new huemul_Columns(StringType,true,"Nombre del tipo de valor")
   TipoValor.setIsPK ( true)
   TipoValor.setDQ_MinLen ( 2)

@@ -21,6 +21,10 @@ class tbl_DatosBasicos(HuemulLib: huemul_BigDataGovernance, Control: huemul_Cont
   this.setDQ_MaxNewRecords_Num(4)
   this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   
+  //Agrega version 1.3
+  this.setNumPartitions(2)
+
+  
   val TipoValor = new huemul_Columns(StringType,true,"Nombre del tipo de valor")
   TipoValor.setIsPK ( true)
   TipoValor.setDQ_MinLen ( 2)

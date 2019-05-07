@@ -59,7 +59,7 @@ object Proc_PlanPruebas_Errores {
       huemulLib.spark.sql("select StringValue, length(StringValue) as largo, case when StringValue is null then 1 else 0 end esNulo from DF_Original").show()
       //TODO: cambiar el parámetro "true" por algo.UPDATE O algo.NOUPDATE (en replaceValueOnUpdate
       Control.NewStep("Ejecución")
-      TablaMaster.executeFull("DF_Final")
+      TablaMaster.executeFull("DF_Final", org.apache.spark.storage.StorageLevel.MEMORY_ONLY)
       var IdTestPlan: String = ""
       //Column_DQ_MinLen
       var ErrorReg = TablaMaster.DataFramehuemul.getDQResult().filter { x => x.ColumnName == "Column_DQ_MinLen" && x.DQ_ErrorCode == 1020 }
