@@ -69,6 +69,7 @@ object Proc_PlanPruebas_Malos01 {
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Malo01 - Obtiene DQ PK", "N° registros devueltos de DQ pK = 1", "N° Reg = 1", s"N° Reg = ${NumErrores_TipoValor.length}", NumErrores_TipoValor.length == 1)
       Control.RegisterTestPlanFeature("IsPK Error", IdTestPlan)
       
+      
       /* //esta prueba fue comentada, antes entregaba el N° de registros con error, ahora no
        * //esta será una modificación de versión 1.2
       var PK_NumRowsTotal: Long = 0
