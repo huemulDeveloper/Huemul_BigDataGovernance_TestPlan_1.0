@@ -713,6 +713,9 @@ object Proc_PlanPruebas_OnlyUpdate {
         Control.FinishProcessError()
     }
     
+    if (Control.TestPlan_CurrentIsOK(null))
+      println("Proceso OK")
+    
     huemulLib.close()
   }
 }

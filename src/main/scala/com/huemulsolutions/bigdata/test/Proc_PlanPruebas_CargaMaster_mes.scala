@@ -566,6 +566,9 @@ object Proc_PlanPruebas_CargaMaster_mes {
         Control.FinishProcessError()
     }
     
+    if (Control.TestPlan_CurrentIsOK(null))
+      println("Proceso OK")
+    
     huemulLib.close()
   }
 }

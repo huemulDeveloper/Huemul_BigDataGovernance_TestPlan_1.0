@@ -56,6 +56,18 @@ object App {
     Proc_PlanPruebas_Malos01.main(args)
     Proc_PlanPruebas_CargaNoTrim.main(args)
     
+    //Validación que todo está OK
+    val huemulLib = new huemul_BigDataGovernance("Pruebas Inicialización de Clases",args,globalSettings.Global)
+    val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
+    
+    val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
+
+    if (Control.TestPlan_IsOkById(TestPlanGroup, 18))
+      println ("TODO OK")
+      
+    huemulLib.close()
+    
+    
     
   }
 
