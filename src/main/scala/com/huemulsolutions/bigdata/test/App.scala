@@ -28,6 +28,8 @@ object App {
     * 
     */
   
+    
+    
     Proc_PlanPruebas_CargaMaster_SelectiveUpdate.main(args)
 
     Proc_PlanPruebas_PermisosFull.main(args)
@@ -49,12 +51,14 @@ object App {
     Proc_PlanPruebas_OnlyUpdate.main(args)
      
     Proc_PlanPruebas_AutoCastOff.main(args)
-    Proc_PlanPruebas_CargaAVRO.main(args)
+    //Proc_PlanPruebas_CargaAVRO.main(args)
     
    
     Proc_PlanPruebas_Errores.main(args)
     Proc_PlanPruebas_Malos01.main(args)
     Proc_PlanPruebas_CargaNoTrim.main(args)
+     
+    
     
     //Validación que todo está OK
     val huemulLib = new huemul_BigDataGovernance("Pruebas Inicialización de Clases",args,globalSettings.Global)
@@ -62,8 +66,10 @@ object App {
     
     val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
 
-    if (Control.TestPlan_IsOkById(TestPlanGroup, 18))
+    if (Control.TestPlan_IsOkById(TestPlanGroup, 17))
       println ("TODO OK")
+    else
+      println ("ERRORES")
       
     huemulLib.close()
     
