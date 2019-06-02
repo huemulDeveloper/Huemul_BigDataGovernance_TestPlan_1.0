@@ -537,6 +537,9 @@ object Proc_PlanPruebas_CargaNoTrim {
         Control.FinishProcessError()
     }
     
+    if (Control.TestPlan_CurrentIsOK(null))
+      println("Proceso OK")
+    
     huemulLib.close()
   }
 }

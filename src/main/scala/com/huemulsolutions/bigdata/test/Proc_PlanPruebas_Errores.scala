@@ -59,7 +59,7 @@ object Proc_PlanPruebas_Errores {
       huemulLib.spark.sql("select StringValue, length(StringValue) as largo, case when StringValue is null then 1 else 0 end esNulo from DF_Original").show()
       //TODO: cambiar el parámetro "true" por algo.UPDATE O algo.NOUPDATE (en replaceValueOnUpdate
       Control.NewStep("Ejecución")
-      TablaMaster.executeFull("DF_Final", org.apache.spark.storage.StorageLevel.MEMORY_ONLY)
+      TablaMaster.executeFull("DF_Final", org.apache.spark.storage.StorageLevel.MEMORY_ONLY_SER)
       var IdTestPlan: String = ""
       //Column_DQ_MinLen
       var ErrorReg = TablaMaster.DataFramehuemul.getDQResult().filter { x => x.ColumnName == "Column_DQ_MinLen" && x.DQ_ErrorCode == 1020 }
@@ -180,6 +180,35 @@ object Proc_PlanPruebas_Errores {
         println(s"DQ_Name:[${x.DQ_Name}], ErrorCode:${x.DQ_ErrorCode} BBDD_Name:${x.BBDD_Name}, Table_Name:${x.Table_Name}, ColumnName:${x.ColumnName}, DQ_NumRowsTotal:${x.DQ_NumRowsTotal}, DQ_NumRowsOK:${x.DQ_NumRowsOK}, DQ_NumRowsError:${x.DQ_NumRowsError}")
       }
       
+      val errores = huemulLib.spark.sql(s"select dq_error_columnname, cast(count(1) as int) as Cantidad from production_dqerror.tbl_datosbasicoserrores_dq where dq_control_id = '${Control.Control_Id}' group by dq_error_columnname ").collect
+      var cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname") == "Column_DQ_MaxDateTimeValue" }(0).getAs[Int]("Cantidad") 
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores en tabla _dq Column_DQ_MaxDateTimeValue", "errores en columna Column_DQ_MaxDateTimeValue", "Cantidad con errores = 2", s"Cantidad con errores = ${cantidad}", cantidad == 2)
+      Control.RegisterTestPlanFeature("ControlErrores", IdTestPlan)
+      
+      cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname") == "Column_DQ_MaxDecimalValue" }(0).getAs[Int]("Cantidad") 
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores en tabla _dq Column_DQ_MaxDecimalValue", "errores en columna Column_DQ_MaxDecimalValue", "Cantidad con errores = 1", s"Cantidad con errores = ${cantidad}", cantidad == 1)
+      Control.RegisterTestPlanFeature("ControlErrores", IdTestPlan)
+      
+      cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname") == "Column_DQ_MaxLen" }(0).getAs[Int]("Cantidad") 
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores en tabla _dq Column_DQ_MaxLen", "errores en columna Column_DQ_MaxLen", "Cantidad con errores = 2", s"Cantidad con errores = ${cantidad}", cantidad == 2)
+      Control.RegisterTestPlanFeature("ControlErrores", IdTestPlan)
+
+      cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname") == "Column_DQ_MinDateTimeValue" }(0).getAs[Int]("Cantidad") 
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores en tabla _dq Column_DQ_MinDateTimeValue", "errores en columna Column_DQ_MinDateTimeValue", "Cantidad con errores = 3", s"Cantidad con errores = ${cantidad}", cantidad == 3)
+      Control.RegisterTestPlanFeature("ControlErrores", IdTestPlan)
+
+      cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname") == "Column_DQ_MinDecimalValue" }(0).getAs[Int]("Cantidad") 
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores en tabla _dq Column_DQ_MinDecimalValue", "errores en columna Column_DQ_MinDecimalValue", "Cantidad con errores = 2", s"Cantidad con errores = ${cantidad}", cantidad == 2)
+      Control.RegisterTestPlanFeature("ControlErrores", IdTestPlan)
+
+      cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname") == "Column_DQ_MinLen" }(0).getAs[Int]("Cantidad") 
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores en tabla _dq Column_DQ_MinLen", "errores en columna Column_DQ_MinLen", "Cantidad con errores = 3", s"Cantidad con errores = ${cantidad}", cantidad == 3)
+      Control.RegisterTestPlanFeature("ControlErrores", IdTestPlan)
+
+      cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname") == "Column_NotNull" }(0).getAs[Int]("Cantidad") 
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores en tabla _dq Column_NotNull", "errores en columna Column_NotNull", "Cantidad con errores = 1", s"Cantidad con errores = ${cantidad}", cantidad == 1)
+      Control.RegisterTestPlanFeature("ControlErrores", IdTestPlan)
+
       
           Control.FinishProcessOK
     } catch {
@@ -190,6 +219,9 @@ object Proc_PlanPruebas_Errores {
         Control.FinishProcessError()
     }
     
+    if (Control.TestPlan_CurrentIsOK(16))
+      println("Proceso OK")
+      
     huemulLib.close()
   }
 }

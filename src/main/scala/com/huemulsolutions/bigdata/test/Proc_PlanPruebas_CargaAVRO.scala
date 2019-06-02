@@ -510,6 +510,9 @@ object Proc_PlanPruebas_CargaAVRO {
         Control.FinishProcessError()
     }
     
+    if (Control.TestPlan_CurrentIsOK(null))
+      println("Proceso OK")
+      
     huemulLib.close()
   }
 }

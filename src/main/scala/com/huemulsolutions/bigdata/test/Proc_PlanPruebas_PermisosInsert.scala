@@ -55,6 +55,9 @@ object Proc_PlanPruebas_PermisosInsert {
         Control.FinishProcessError()
     }
     
+    if (Control.TestPlan_CurrentIsOK(null))
+      println("Proceso OK")
+    
     huemulLib.close()
   }
 }

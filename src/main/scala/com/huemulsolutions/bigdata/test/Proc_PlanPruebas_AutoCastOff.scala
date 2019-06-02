@@ -87,6 +87,9 @@ object Proc_PlanPruebas_AutoCastOff {
         Control.FinishProcessError()
     }
     
+    if (Control.TestPlan_CurrentIsOK(null))
+      println("Proceso OK")
+    
     huemulLib.close()
   }
 }

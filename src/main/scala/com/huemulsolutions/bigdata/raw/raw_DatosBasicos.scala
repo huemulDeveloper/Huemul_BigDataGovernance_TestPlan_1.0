@@ -10,14 +10,14 @@ import com.huemulsolutions.bigdata.control._
 import com.huemulsolutions.bigdata.common._
 import com.huemulsolutions.bigdata.control._
 import org.apache.spark.sql.types._
+
 import scalaz.std.math.bigInt
 import com.huemulsolutions.bigdata.control.huemulType_Frequency.huemulType_Frequency
 
 class raw_DatosBasicos(huemulLib: huemul_BigDataGovernance, Control: huemul_Control) extends huemul_DataLake(huemulLib, Control) with Serializable  {
    this.Description = "Datos Básicos por cada tipo de dato, para plan de pruebas"
    this.GroupName = "HuemulPlanPruebas"
-   
-   
+      
    val FormatSetting = new huemul_DataLakeSetting(huemulLib)
     FormatSetting.StartDate = huemulLib.setDateTime(2010,1,1,0,0,0)
     FormatSetting.EndDate = huemulLib.setDateTime(2050,12,12,0,0,0)
@@ -104,14 +104,16 @@ class raw_DatosBasicos(huemulLib: huemul_BigDataGovernance, Control: huemul_Cont
       if (!this.OpenFile(ano, mes, dia, hora, min, seg, s"{{TipoArchivo}}=${TipoArchivo}")){
         control.RaiseError(s"Error al abrir archivo: ${this.Error.ControlError_Message}")
       }
+      
+      import huemulLib.spark.implicits._
    
       control.NewStep("Aplicando Filtro")
       /**/    //Agregar filtros o cambiar forma de leer archivo en este lugar
       this.ApplyTrim = AplicarTrim
      // this.allColumnsAsString(false)
-      val rowRDD = this.DataRDD
+      val rowRDD = this.DataRDD     
             .filter { x => x != this.Log.DataFirstRow  }
-            .map { x => this.ConvertSchema(x) }
+            .map(  x => {this.ConvertSchema(x)} )
         
             
       control.NewStep("Transformando a dataframe")      
