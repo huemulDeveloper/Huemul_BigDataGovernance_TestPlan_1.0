@@ -7,12 +7,11 @@ object globalSettings {
    val Global: huemul_GlobalPath  = new huemul_GlobalPath()
    Global.GlobalEnvironments = "production, experimental"
    
-   //Global.CONTROL_Driver = "com.mysql.jdbc.Driver"
-   Global.CONTROL_Driver = "oracle.jdbc.OracleDriver"
-   Global.CONTROL_IsOracle = true
+   //Global.CONTROL_Driver = "com.postgres.jdbc.Driver"
+   //Global.CONTROL_Driver = "oracle.jdbc.OracleDriver"
    
-   //Global.CONTROL_Setting.append(new huemul_KeyValuePath("production","jdbc:postgresql://db-testplan-huemul-1-3.postgres.database.azure.com:5432/postgres?user=huemul_test@db-testplan-huemul-1-3&password=dev.CODE123456&sslmode=require&currentSchema=public"))
-   Global.CONTROL_Setting.append(new huemul_KeyValuePath("production","jdbc:oracle:thin:sys as sysdba/OraPasswd1@23.96.112.42:1521:cdb1"))
+   Global.CONTROL_Setting.append(new huemul_KeyValuePath("production","jdbc:postgresql://bd-control-14.postgres.database.azure.com:5432/postgres?user=huemul@bd-control-14&password=dev.CODE123456&sslmode=require&currentSchema=public"))
+   //Global.CONTROL_Setting.append(new huemul_KeyValuePath("production","jdbc:oracle:thin:sys as sysdba/OraPasswd1@bd-oracle-20.cloudapp.net:1521:cdb1"))
    Global.CONTROL_Setting.append(new huemul_KeyValuePath("experimental","jdbc:mysql://35.225.74.156:3306/control?user=root&password=mysql-control2"))
  
    Global.ImpalaEnabled = false
