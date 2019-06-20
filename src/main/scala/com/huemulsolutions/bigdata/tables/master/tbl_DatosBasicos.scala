@@ -33,14 +33,16 @@ class tbl_DatosBasicos(HuemulLib: huemul_BigDataGovernance, Control: huemul_Cont
   
   val IntValue = new huemul_Columns(IntegerType,true,"datos integer")
   IntValue.setNullable ( true)
-  
+  IntValue.setMDM_EnableOldValue_FullTrace( true)
   
   
   val BigIntValue = new huemul_Columns(LongType,true,"datos BigInt")
   BigIntValue.setNullable ( true)
+  BigIntValue.setMDM_EnableOldValue_FullTrace( true)
   
   val SmallIntValue = new huemul_Columns(ShortType,true,"datos SmallInt")
   SmallIntValue.setNullable ( true)
+  SmallIntValue.setMDM_EnableOldValue_FullTrace( true)
   
   val TinyIntValue = new huemul_Columns(ShortType,true,"datos TinyInt")
   TinyIntValue.setNullable ( true)
