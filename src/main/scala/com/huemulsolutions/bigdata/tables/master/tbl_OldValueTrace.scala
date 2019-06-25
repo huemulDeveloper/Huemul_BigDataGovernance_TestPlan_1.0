@@ -40,6 +40,12 @@ class tbl_OldValueTrace(HuemulLib: huemul_BigDataGovernance, Control: huemul_Con
   Fecha.setMDM_EnableProcessLog(true)
   Fecha.setMDM_EnableOldValue(true)
   
+  val Monto = new huemul_Columns(IntegerType,true,"datos Monto")
+  Monto.setNullable ( true)
+  Monto.setMDM_EnableOldValue_FullTrace( true)
+  Monto.setMDM_EnableDTLog(true)
+  Monto.setMDM_EnableProcessLog(true)
+  Monto.setMDM_EnableOldValue(true)
    
   
   this.ApplyTableDefinition()

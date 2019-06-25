@@ -65,6 +65,7 @@ class raw_DatosOldValue(huemulLib: huemul_BigDataGovernance, Control: huemul_Con
     FormatSetting.DataSchemaConf.AddColumns("codigo", "codigo", StringType,"")
     FormatSetting.DataSchemaConf.AddColumns("descripcion", "descripcion_ti", IntegerType,"")
     FormatSetting.DataSchemaConf.AddColumns("fecha", "fecha_ti", TimestampType,"")
+    FormatSetting.DataSchemaConf.AddColumns("monto", "monto_ti", IntegerType,"")
     
     
     //Log Info

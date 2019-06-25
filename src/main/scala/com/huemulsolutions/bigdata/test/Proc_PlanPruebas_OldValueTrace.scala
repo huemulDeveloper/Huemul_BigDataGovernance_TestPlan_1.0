@@ -77,6 +77,22 @@ object Proc_PlanPruebas_OldValueTrace {
       TablaMaster.DataFramehuemul.setDataFrame(DF_RAW_final.DataFramehuemul.DataFrame, "DF_Original")
       TablaMaster.setMappingAuto()
       val tp_resultado_2 = TablaMaster.executeFull("DF_Final_2", org.apache.spark.storage.StorageLevel.MEMORY_ONLY )
+      
+      //CREATE VALIDATION FOR TABLE RESULT
+      val result_val_mdm = huemulLib.spark.sql(s"""
+          SELECT max(case when codigo = 3 and mdm_columnname = "descripcion" and mdm_newvalue = "numero, tres,modificado" and mdm_oldvalue = "numero, tres" then 1 else 0 end) as test1_ok
+                ,max(case when codigo = 6 and mdm_columnname = "descripcion" and mdm_newvalue is null                     and mdm_oldvalue = "numero seis"  then 1 else 0 end) as test2_ok
+
+                ,max(case when codigo = 3 and mdm_columnname = "monto" and mdm_newvalue = "31"    and mdm_oldvalue is null   then 1 else 0 end) as test_monto_3_ok
+                ,max(case when codigo = 5 and mdm_columnname = "monto" and mdm_newvalue is null   and mdm_oldvalue = "50"    then 1 else 0 end) as test_monto_5_ok
+                ,max(case when codigo = 6 and mdm_columnname = "monto" and mdm_newvalue = "61"    and mdm_oldvalue = "60"    then 1 else 0 end) as test_monto_6_ok
+					FROM production_mdm_oldvalue.tbl_oldvaluetrace_oldvalue
+      """)
+      
+      result_val_mdm.show()
+      
+      
+      
      
       Control.FinishProcessOK
     } catch {
