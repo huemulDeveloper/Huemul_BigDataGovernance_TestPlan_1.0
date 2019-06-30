@@ -80,16 +80,41 @@ object Proc_PlanPruebas_OldValueTrace {
       
       //CREATE VALIDATION FOR TABLE RESULT
       val result_val_mdm = huemulLib.spark.sql(s"""
-          SELECT max(case when codigo = 3 and mdm_columnname = "descripcion" and mdm_newvalue = "numero, tres,modificado" and mdm_oldvalue = "numero, tres" then 1 else 0 end) as test1_ok
-                ,max(case when codigo = 6 and mdm_columnname = "descripcion" and mdm_newvalue is null                     and mdm_oldvalue = "numero seis"  then 1 else 0 end) as test2_ok
+          SELECT cast(max(case when codigo = 3 and mdm_columnname = "descripcion" and mdm_newvalue = "numero, tres,modificado" and mdm_oldvalue = "numero, tres" then 1 else 0 end) as int) as test1_ok
+                ,cast(max(case when codigo = 6 and mdm_columnname = "descripcion" and mdm_newvalue is null                     and mdm_oldvalue = "numero seis"  then 1 else 0 end) as int) as test2_ok
+                ,cast(max(case when codigo = 6 and mdm_columnname = "descripcion" and mdm_newvalue = "numero, cuatro"          and mdm_oldvalue = ""             then 1 else 0 end) as int) as test9_ok
 
-                ,max(case when codigo = 3 and mdm_columnname = "monto" and mdm_newvalue = "31"    and mdm_oldvalue is null   then 1 else 0 end) as test_monto_3_ok
-                ,max(case when codigo = 5 and mdm_columnname = "monto" and mdm_newvalue is null   and mdm_oldvalue = "50"    then 1 else 0 end) as test_monto_5_ok
-                ,max(case when codigo = 6 and mdm_columnname = "monto" and mdm_newvalue = "61"    and mdm_oldvalue = "60"    then 1 else 0 end) as test_monto_6_ok
+                ,cast(max(case when codigo = 6 and mdm_columnname = "fecha" and mdm_newvalue = "2018-02-26 00:00:00" and mdm_oldvalue is null                  then 1 else 0 end) as int) as test3_ok
+                ,cast(max(case when codigo = 4 and mdm_columnname = "fecha" and mdm_newvalue = "2018-04-24 00:00:00" and mdm_oldvalue = "2018-02-24 00:00:00"  then 1 else 0 end) as int) as test4_ok
+
+                ,cast(max(case when codigo = 3 and mdm_columnname = "monto" and mdm_newvalue = "31"    and mdm_oldvalue is null   then 1 else 0 end) as int) as test5_ok
+                ,cast(max(case when codigo = 5 and mdm_columnname = "monto" and mdm_newvalue is null   and mdm_oldvalue = "50"    then 1 else 0 end) as int) as test6_ok
+                ,cast(max(case when codigo = 6 and mdm_columnname = "monto" and mdm_newvalue = "61"    and mdm_oldvalue = "60"    then 1 else 0 end) as int) as test7_ok
+                ,case when count(1) = 8 then 1 else 0 end as test8_ok
 					FROM production_mdm_oldvalue.tbl_oldvaluetrace_oldvalue
       """)
       
       result_val_mdm.show()
+      val result_val_mdm_2 = result_val_mdm.collectAsList()
+      
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Datos Modificados - test 1", "Modifica valor segun lo esperado", "test1_ok = 1", s"test1_ok = ${result_val_mdm_2.get(0).getAs[Int]("test1_ok") }", result_val_mdm_2.get(0).getAs[Int]("test1_ok")== 1)
+      Control.RegisterTestPlanFeature("OldValueTrace", IdTestPlan)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Datos Modificados - test 2", "Modifica valor segun lo esperado", "test2_ok = 1", s"test2_ok = ${result_val_mdm_2.get(0).getAs[Int]("test2_ok") }", result_val_mdm_2.get(0).getAs[Int]("test2_ok")== 1)
+      Control.RegisterTestPlanFeature("OldValueTrace", IdTestPlan)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Datos Modificados - test 3", "Modifica valor segun lo esperado", "test3_ok = 1", s"test3_ok = ${result_val_mdm_2.get(0).getAs[Int]("test3_ok") }", result_val_mdm_2.get(0).getAs[Int]("test3_ok")== 1)
+      Control.RegisterTestPlanFeature("OldValueTrace", IdTestPlan)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Datos Modificados - test 4", "Modifica valor segun lo esperado", "test4_ok = 1", s"test4_ok = ${result_val_mdm_2.get(0).getAs[Int]("test4_ok") }", result_val_mdm_2.get(0).getAs[Int]("test4_ok")== 1)
+      Control.RegisterTestPlanFeature("OldValueTrace", IdTestPlan)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Datos Modificados - test 5", "Modifica valor segun lo esperado", "test5_ok = 1", s"test5_ok = ${result_val_mdm_2.get(0).getAs[Int]("test5_ok") }", result_val_mdm_2.get(0).getAs[Int]("test5_ok")== 1)
+      Control.RegisterTestPlanFeature("OldValueTrace", IdTestPlan)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Datos Modificados - test 6", "Modifica valor segun lo esperado", "test6_ok = 1", s"test6_ok = ${result_val_mdm_2.get(0).getAs[Int]("test6_ok") }", result_val_mdm_2.get(0).getAs[Int]("test6_ok")== 1)
+      Control.RegisterTestPlanFeature("OldValueTrace", IdTestPlan)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Datos Modificados - test 7", "Modifica valor segun lo esperado", "test7_ok = 1", s"test7_ok = ${result_val_mdm_2.get(0).getAs[Int]("test7_ok") }", result_val_mdm_2.get(0).getAs[Int]("test7_ok")== 1)
+      Control.RegisterTestPlanFeature("OldValueTrace", IdTestPlan)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Datos Modificados - test 8", "Modifica valor segun lo esperado", "test8_ok = 1", s"test8_ok = ${result_val_mdm_2.get(0).getAs[Int]("test8_ok") }", result_val_mdm_2.get(0).getAs[Int]("test8_ok")== 1)
+      Control.RegisterTestPlanFeature("OldValueTrace", IdTestPlan)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Datos Modificados - test 9", "Modifica valor segun lo esperado", "test9_ok = 1", s"test9_ok = ${result_val_mdm_2.get(0).getAs[Int]("test9_ok") }", result_val_mdm_2.get(0).getAs[Int]("test9_ok")== 1)
+      Control.RegisterTestPlanFeature("OldValueTrace", IdTestPlan)
       
       
       
