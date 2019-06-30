@@ -29,7 +29,7 @@ object App {
     */
   
     
-    Proc_PlanPruebas_OldValueTrace.main(args)
+    
     Proc_PlanPruebas_CargaMaster_SelectiveUpdate.main(args)
 
     Proc_PlanPruebas_PermisosFull.main(args)
@@ -57,6 +57,8 @@ object App {
     Proc_PlanPruebas_Errores.main(args)
     Proc_PlanPruebas_Malos01.main(args)
     Proc_PlanPruebas_CargaNoTrim.main(args)
+    
+    Proc_PlanPruebas_OldValueTrace.main(args)
      
     
     

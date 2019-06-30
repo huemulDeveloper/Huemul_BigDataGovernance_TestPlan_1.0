@@ -82,7 +82,7 @@ object Proc_PlanPruebas_OldValueTrace {
       val result_val_mdm = huemulLib.spark.sql(s"""
           SELECT cast(max(case when codigo = 3 and mdm_columnname = "descripcion" and mdm_newvalue = "numero, tres,modificado" and mdm_oldvalue = "numero, tres" then 1 else 0 end) as int) as test1_ok
                 ,cast(max(case when codigo = 6 and mdm_columnname = "descripcion" and mdm_newvalue is null                     and mdm_oldvalue = "numero seis"  then 1 else 0 end) as int) as test2_ok
-                ,cast(max(case when codigo = 6 and mdm_columnname = "descripcion" and mdm_newvalue = "numero, cuatro"          and mdm_oldvalue = ""             then 1 else 0 end) as int) as test9_ok
+                ,cast(max(case when codigo = 4 and mdm_columnname = "descripcion" and mdm_newvalue = "numero, cuatro"          and mdm_oldvalue = ""             then 1 else 0 end) as int) as test9_ok
 
                 ,cast(max(case when codigo = 6 and mdm_columnname = "fecha" and mdm_newvalue = "2018-02-26 00:00:00" and mdm_oldvalue is null                  then 1 else 0 end) as int) as test3_ok
                 ,cast(max(case when codigo = 4 and mdm_columnname = "fecha" and mdm_newvalue = "2018-04-24 00:00:00" and mdm_oldvalue = "2018-02-24 00:00:00"  then 1 else 0 end) as int) as test4_ok
