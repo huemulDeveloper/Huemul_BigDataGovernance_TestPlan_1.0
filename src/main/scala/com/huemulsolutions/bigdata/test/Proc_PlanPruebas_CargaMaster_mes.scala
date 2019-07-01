@@ -473,11 +473,13 @@ object Proc_PlanPruebas_CargaMaster_mes {
       
       val DQRules = new ArrayBuffer[huemul_DataQuality]()
       val DQ_ComparaAgrupado = new huemul_DataQuality(null,"Suma Float = Suma Decimal","sum(DecimalValue) = sum(FloatValue)",2,huemulType_DQQueryLevel.Aggregate)
+      DQ_ComparaAgrupado.setDQ_ExternalCode("EC_001")
       DQRules.append(DQ_ComparaAgrupado)
       val DQ_ComparaFila = new huemul_DataQuality(null,"coalesce(Double,0) = coalesce(Decimal,0)","coalesce(DecimalValue,0) = coalesce(RealValue,0)",3)
+      DQ_ComparaFila.setDQ_ExternalCode("EC_002")
       DQRules.append(DQ_ComparaFila)
       
-      val DQ_ComparaAgrupado_LanzaWarning = new huemul_DataQuality(null,"Suma Double is null","sum(DecimalValue) is null",4,huemulType_DQQueryLevel.Aggregate, huemulType_DQNotification.WARNING)
+      val DQ_ComparaAgrupado_LanzaWarning = new huemul_DataQuality(null,"Suma Double is null","sum(DecimalValue) is null",4,huemulType_DQQueryLevel.Aggregate, huemulType_DQNotification.WARNING, true, "EC_003")
       DQRules.append(DQ_ComparaAgrupado_LanzaWarning)
       val DQ_ComparaFila_LanzaWarning = new huemul_DataQuality(null,"Double <> Decimal","DecimalValue <> FloatValue",5,huemulType_DQQueryLevel.Row, huemulType_DQNotification.WARNING)
       DQRules.append(DQ_ComparaFila_LanzaWarning)
