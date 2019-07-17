@@ -32,7 +32,7 @@ object Proc_PlanPruebas_OnlyInsertNew {
       
       Control.NewStep("Mapeo de Campos")
       val TablaMaster = new tbl_DatosBasicosInsert(huemulLib, Control)      
-      TablaMaster.DataFramehuemul.setDataFrame(DF_RAW.DataFramehuemul.DataFrame, "DF_Original")
+      TablaMaster.DF_from_DF(DF_RAW.DataFramehuemul.DataFrame,"DF_RAW", "DF_Original")
       
    //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
       val a = huemulLib.spark.catalog.listTables(TablaMaster.GetCurrentDataBase()).collect()
@@ -82,7 +82,7 @@ object Proc_PlanPruebas_OnlyInsertNew {
         Control.RaiseError(s"Error al intentar abrir archivo de datos: ${DF_RAW.Error.ControlError_Message}")
       }
       Control.NewStep("Mapeo de Campos")      
-      TablaMaster.DataFramehuemul.setDataFrame(DF_RAW.DataFramehuemul.DataFrame, "DF_Mod")
+      TablaMaster.DF_from_DF(DF_RAW.DataFramehuemul.DataFrame,"DF_RAW_2", "DF_Mod")
       
       //TODO: cambiar el parámetro "true" por algo.UPDATE O algo.NOUPDATE (en replaceValueOnUpdate
       Control.NewStep("PASO 2: SOLO INSERTA 1 REGISTRO, NO MODIFICA NI ELMINA NADA")

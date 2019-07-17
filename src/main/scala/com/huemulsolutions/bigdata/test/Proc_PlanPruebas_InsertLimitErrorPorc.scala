@@ -31,7 +31,7 @@ object Proc_PlanPruebas_InsertLimitErrorPorc {
       
       Control.NewStep("Mapeo de Campos")
       val TablaMaster = new tbl_DatosBasicosNuevosPerc(huemulLib, Control)      
-      TablaMaster.DataFramehuemul.setDataFrame(DF_RAW.DataFramehuemul.DataFrame, "DF_Original")
+      TablaMaster.DF_from_DF(DF_RAW.DataFramehuemul.DataFrame,"DF_RAW", "DF_Original")
       
       //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
       val a = huemulLib.spark.catalog.listTables(TablaMaster.GetCurrentDataBase()).collect()
@@ -74,7 +74,7 @@ object Proc_PlanPruebas_InsertLimitErrorPorc {
       if (!DF_RAW.open("DF_RAW", null, Ano.toInt, Mes.toInt, 1, 0, 0, 0,"Nuevos")) {
         Control.RaiseError(s"Error al intentar abrir archivo de datos: ${DF_RAW.Error.ControlError_Message}")
       }
-      TablaMaster.DataFramehuemul.setDataFrame(DF_RAW.DataFramehuemul.DataFrame, "DF_Nuevos")
+      TablaMaster.DF_from_DF(DF_RAW.DataFramehuemul.DataFrame,"DF_RAW", "DF_Nuevos")
       
       val DFValidaCantIni = huemulLib.DF_ExecuteQuery("validaCantidad", s"select cast(count(1) as Long) as Cantidad from ${TablaMaster.GetTable()}")
       val NumReg = DFValidaCantIni.first().getAs[Long]("Cantidad")

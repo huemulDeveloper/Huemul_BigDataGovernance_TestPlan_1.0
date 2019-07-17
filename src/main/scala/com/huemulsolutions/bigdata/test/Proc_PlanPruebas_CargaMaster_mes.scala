@@ -46,7 +46,7 @@ object Proc_PlanPruebas_CargaMaster_mes {
       
       val periodo_mes = huemulLib.ReplaceWithParams("{{YYYY}}-{{MM}}-{{DD}}", Ano.toInt, Mes.toInt, 1, 0, 0, 0, null)
       val df_final = DF_RAW.DataFramehuemul.DataFrame.withColumn("periodo_mes", lit(periodo_mes))
-      TablaMaster.DataFramehuemul.setDataFrame(df_final, "DF_Original")
+      TablaMaster.DF_from_DF(df_final, "DF_RAW", "DF_Original")
       
    //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
       val a = huemulLib.spark.catalog.listTables(TablaMaster.GetCurrentDataBase()).collect()

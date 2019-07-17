@@ -31,7 +31,7 @@ object Proc_PlanPruebas_Malos01 {
       }
       Control.NewStep("Mapeo de Campos")
       val TablaMaster = new tbl_DatosBasicos(huemulLib, Control)      
-      TablaMaster.DataFramehuemul.setDataFrame(DF_RAW.DataFramehuemul.DataFrame, "DF_Original")
+      TablaMaster.DF_from_DF(DF_RAW.DataFramehuemul.DataFrame, "DF_RAW", "DF_Original")
       
       //TablaMaster.DF_from_SQL("DF_Original", "select * from DF_RAW")
       
