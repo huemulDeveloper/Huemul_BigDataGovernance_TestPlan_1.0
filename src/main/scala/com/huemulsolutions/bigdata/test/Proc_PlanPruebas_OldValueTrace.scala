@@ -38,7 +38,7 @@ object Proc_PlanPruebas_OldValueTrace {
       }
       Control.NewStep("Mapeo de Campos")
       val TablaMaster = new tbl_OldValueTrace (huemulLib, Control)      
-      TablaMaster.DF_from_DF(DF_RAW.DataFramehuemul.DataFrame, "DF_RAW", "DF_Original")
+      TablaMaster.DF_from_RAW(DF_RAW, "DF_Original")
       
    //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
       val a = huemulLib.spark.catalog.listTables(TablaMaster.GetCurrentDataBase()).collect()
@@ -60,7 +60,7 @@ object Proc_PlanPruebas_OldValueTrace {
       Control.NewStep("Ejecución")
       val tp_resultado = TablaMaster.executeFull("DF_Final", org.apache.spark.storage.StorageLevel.MEMORY_ONLY ) 
       
-      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "No hay error en masterización", "No hay error en masterización", s"Si hay error en masterización", tp_resultado == true)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "No hay error en masterización", "No hay error en masterización", s"${if (tp_resultado == true) "no" else "si"} hay error en masterización", tp_resultado == true)
       Control.RegisterTestPlanFeature("OldValueTrace - inicial", IdTestPlan)
       
         
