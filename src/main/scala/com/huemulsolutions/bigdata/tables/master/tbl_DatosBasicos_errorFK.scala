@@ -31,7 +31,10 @@ class tbl_DatosBasicos_errorFK(HuemulLib: huemul_BigDataGovernance, Control: hue
   val TipoValor = new huemul_Columns(StringType,true,"Nombre del tipo de valor (FK)")
   TipoValor.setDQ_MinLen ( 2)
   TipoValor.setDQ_MaxLen ( 50)
-  TipoValor.setNullable ( true)
+  TipoValor.setNullable ( false)
+  
+  val CampoAdicional = new huemul_Columns(StringType,false,"valor Adicional")
+  CampoAdicional.setDefaultValue("'no asignado'")
   
   
   //**********Ejemplo para aplicar DataQuality de Integridad Referencial

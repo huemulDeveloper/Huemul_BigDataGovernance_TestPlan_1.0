@@ -38,6 +38,7 @@ object App {
     
     
     Proc_PlanPruebas_CargaMaster.main(args)
+    Proc_PlanPruebas_fk.main(args)
     Proc_PlanPruebas_CargaMaster_mes.main(args)
     Proc_PlanPruebas_CargaMaster_mes_2.main(args)
     Proc_PlanPruebas_CargaMaster_mes_paso_2_selective.main(args)
@@ -68,7 +69,7 @@ object App {
     
     val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
 
-    if (Control.TestPlan_IsOkById(TestPlanGroup, 18))
+    if (Control.TestPlan_IsOkById(TestPlanGroup, 19))
       println ("TODO OK")
     else
       println ("ERRORES")

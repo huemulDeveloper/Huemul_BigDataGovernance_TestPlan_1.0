@@ -70,6 +70,22 @@ object Proc_PlanPruebas_Malos01 {
       Control.RegisterTestPlanFeature("IsPK Error", IdTestPlan)
       
       
+      val errores2 = huemulLib.spark.sql(s"""select dq_error_columnname
+                                                  ,cast(count(1) as int) as Cantidad
+                                                  ,cast(sum(case when tipovalor = "Positivo_Maximo" then 1 else 0 end) as Int) as error_01
+                        from production_dqerror.tbl_DatosBasicos_dq 
+                        where dq_control_id = '${Control.Control_Id}' 
+                        and dq_error_code = 1018
+                        group by dq_error_columnname """).collect
+      val cantidad = errores2.filter { x => x.getAs[String]("dq_error_columnname") == "TipoValor" }(0).getAs[Int]("Cantidad") 
+      val error_01 = errores2.filter { x => x.getAs[String]("dq_error_columnname") == "TipoValor" }(0).getAs[Int]("error_01") 
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores en tabla _dq TipoValor", "errores en columna TipoValor", "Cantidad con errores = 2", s"Cantidad con errores = ${cantidad}", cantidad == 2)
+      Control.RegisterTestPlanFeature("FK Error encontrado", IdTestPlan)
+      
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "error encontrado (tipovalor = Positivo_Maximo)", "error encontrado (tipovalor = Positivo_Maximo)", "error_01 = 2", s"error_01 = ${error_01}", error_01 == 2)
+      Control.RegisterTestPlanFeature("FK Error encontrado", IdTestPlan)
+      
+      
       /* //esta prueba fue comentada, antes entregaba el N° de registros con error, ahora no
        * //esta será una modificación de versión 1.2
       var PK_NumRowsTotal: Long = 0

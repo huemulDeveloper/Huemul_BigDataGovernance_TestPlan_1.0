@@ -8,7 +8,7 @@ import com.huemulsolutions.bigdata.tables.huemulType_Tables._
 import com.huemulsolutions.bigdata.tables.huemulType_StorageType._
 import org.apache.spark.sql.types.DataTypes._
 import org.apache.spark.sql.types.DecimalType
-
+import org.apache.spark.sql.types.Decimal
 
 
 class tbl_DatosBasicos(HuemulLib: huemul_BigDataGovernance, Control: huemul_Control) extends huemul_Table(HuemulLib,Control) with Serializable {
@@ -34,7 +34,7 @@ class tbl_DatosBasicos(HuemulLib: huemul_BigDataGovernance, Control: huemul_Cont
   val IntValue = new huemul_Columns(IntegerType,true,"datos integer")
   IntValue.setNullable ( true)
   IntValue.setMDM_EnableOldValue_FullTrace( true)
-  
+  //IntValue.setDQ_MaxDecimalValue(Decimal.apply(10))
   
   val BigIntValue = new huemul_Columns(LongType,true,"datos BigInt")
   BigIntValue.setNullable ( true)

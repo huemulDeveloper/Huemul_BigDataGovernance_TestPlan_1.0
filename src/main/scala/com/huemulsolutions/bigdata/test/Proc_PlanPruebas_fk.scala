@@ -28,7 +28,7 @@ object Proc_PlanPruebas_fk {
       val TablaMaster = new tbl_DatosBasicos_errorFK (huemulLib, Control)      
       TablaMaster.DF_from_SQL("DF_DATOS", """SELECT Codigo, tipoValor FROM (
                                                 SELECT 1 as Codigo, null as tipovalor union all --error
-                                                SELECT 2 as Codigo, '     Cero-Vacio' as tipovalor union all
+                                                SELECT 2 as Codigo, 'Cero-Vacio' as tipovalor union all
                                                 SELECT 3 as Codigo, 'Negativo_Maximo' as tipovalor union all
                                                 SELECT 4 as Codigo, 'Negativo_Maximo2' as tipovalor union all --error
                                                 SELECT 5 as Codigo, 'no existe' as tipovalor --error 
@@ -69,9 +69,36 @@ object Proc_PlanPruebas_fk {
       
       //Column_DQ_MaxLen
       val numErrores = TablaMaster.DataFramehuemul.getDQResult().filter {x => x.DQ_IsError == true}.length
-      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "N° errores en DQ = 1", "N° erorres en DQ = 1", "N° errores en DQ = 1", s"N° Errores en DQ = ${numErrores}", numErrores == 1)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "N° errores en DQ = 2", "N° erorres en DQ = 2", "N° errores en DQ = 2", s"N° Errores en DQ = ${numErrores}", numErrores == 2)
       Control.RegisterTestPlanFeature("FK Error encontrado", IdTestPlan)
         
+      //calida directamente en la tabla 
+      val errores1 = huemulLib.spark.sql(s"select cast(count(1) as int) as Cantidad from production_dqerror.tbl_datosbasicos_errorfk_dq where dq_control_id = '${Control.Control_Id}' ").collect
+      var cantidad = errores1(0).getAs[Int]("Cantidad") 
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores production_dqerror.tbl_datosbasicos_errorfk_dq ", "errores en la tabla de production_dqerror.tbl_datosbasicos_errorfk_dq ", "Cantidad con errores = 4", s"Cantidad con errores = ${cantidad}", cantidad == 4)
+      Control.RegisterTestPlanFeature("FK Error encontrado", IdTestPlan)
+      
+      val errores2 = huemulLib.spark.sql(s"""select dq_error_columnname
+                                                  ,cast(count(1) as int) as Cantidad
+                                                  ,cast(max(case when tipovalor = "Negativo_Maximo2" then 1 else 0 end) as Int) as error_01
+                                                  ,cast(max(case when tipovalor = "no existe" then 1 else 0 end)        as Int) as error_02
+                                                  ,cast(max(case when tipovalor is null then 1 else 0 end)              as Int) as error_03
+                        from production_dqerror.tbl_datosbasicos_errorfk_dq 
+                        where dq_control_id = '${Control.Control_Id}' 
+                        group by dq_error_columnname """).collect
+      cantidad = errores2.filter { x => x.getAs[String]("dq_error_columnname") == "TipoValor" }(0).getAs[Int]("Cantidad") 
+      val error_01 = errores2.filter { x => x.getAs[String]("dq_error_columnname") == "TipoValor" }(0).getAs[Int]("error_01") 
+      val error_02 = errores2.filter { x => x.getAs[String]("dq_error_columnname") == "TipoValor" }(0).getAs[Int]("error_02") 
+      val error_03 = errores2.filter { x => x.getAs[String]("dq_error_columnname") == "TipoValor" }(0).getAs[Int]("error_03") 
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores en tabla _dq TipoValor", "errores en columna TipoValor", "Cantidad con errores = 4", s"Cantidad con errores = ${cantidad}", cantidad == 4)
+      Control.RegisterTestPlanFeature("FK Error encontrado", IdTestPlan)
+      
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "error encontrado (tipovalor = Negativo_Maximo2)", "error encontrado (tipovalor = Negativo_Maximo2)", "error_01 = 1", s"error_01 = ${error_01}", error_01 == 1)
+      Control.RegisterTestPlanFeature("FK Error encontrado", IdTestPlan)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "error encontrado (tipovalor = Negativo_Maximo2)", "error encontrado (tipovalor = Negativo_Maximo2)", "error_02 = 1", s"error_02 = ${error_02}", error_02 == 1)
+      Control.RegisterTestPlanFeature("FK Error encontrado", IdTestPlan)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "error encontrado (tipovalor = Negativo_Maximo2)", "error encontrado (tipovalor = Negativo_Maximo2)", "error_03 = 1", s"error_03 = ${error_03}", error_03 == 1)
+      Control.RegisterTestPlanFeature("FK Error encontrado", IdTestPlan)
       
       
       
@@ -84,7 +111,7 @@ object Proc_PlanPruebas_fk {
         Control.FinishProcessError()
     }
     
-    if (Control.TestPlan_CurrentIsOK(2))
+    if (Control.TestPlan_CurrentIsOK(4))
       println("Proceso OK")
       
     huemulLib.close()
