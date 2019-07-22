@@ -23,6 +23,9 @@ class tbl_DatosBasicos(HuemulLib: huemul_BigDataGovernance, Control: huemul_Cont
   
   //Agrega version 1.3
   this.setNumPartitions(2)
+  
+  //Agrega versión 2.0
+  this.setSaveBackup(true)
 
   
   val TipoValor = new huemul_Columns(StringType,true,"Nombre del tipo de valor")
