@@ -111,7 +111,7 @@ object Proc_PlanPruebas_fk {
         Control.FinishProcessError()
     }
     
-    if (Control.TestPlan_CurrentIsOK(4))
+    if (Control.TestPlan_CurrentIsOK(7))
       println("Proceso OK")
       
     huemulLib.close()
