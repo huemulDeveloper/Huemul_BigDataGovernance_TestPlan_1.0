@@ -36,6 +36,8 @@ object Proc_PlanPruebas_CargaMaster_SelectiveUpdate {
       }
       Control.NewStep("Mapeo de Campos")
       val TablaMaster = new tbl_DatosBasicos(huemulLib, Control)      
+      val df_temp_vacia = TablaMaster.getEmptyTable("pruebaVacia")
+      df_temp_vacia.show()
       TablaMaster.DF_from_DF(DF_RAW.DataFramehuemul.DataFrame, "DF_RAW", "DF_Original")
       
    //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
