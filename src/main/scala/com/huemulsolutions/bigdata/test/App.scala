@@ -29,7 +29,7 @@ object App {
     */
   
     
-    
+    /*
     Proc_PlanPruebas_CargaMaster_SelectiveUpdate.main(args)
 
     Proc_PlanPruebas_PermisosFull.main(args)
@@ -60,12 +60,32 @@ object App {
     Proc_PlanPruebas_CargaNoTrim.main(args)
     
     Proc_PlanPruebas_OldValueTrace.main(args)
-     
+     */
     
     
     //Validación que todo está OK
     val huemulLib = new huemul_BigDataGovernance("Pruebas Inicialización de Clases",args,globalSettings.Global)
     val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
+    
+    if (!huemulLib.hdfsPath_exists("hdfs:///user/data/production/te")) 
+      println("prueba 1 exitosa: no existe")
+    else 
+      println("prueba 1 error")
+    
+    if (huemulLib.hdfsPath_exists("hdfs:///user/data/production/temp/")) 
+      println("prueba 2 exitosa: existe")
+    else 
+      println("prueba 2 error")
+      
+    if (huemulLib.hiveTable_exists("production_master", "tbl_DatosBasicos_mes"))
+      println("prueba 3 exitosa: tabla existe")
+    else 
+      println("prueba 3 error")
+      
+    if (!huemulLib.hiveTable_exists("production_master", "tbl_DatosBasicos_mes234"))
+      println("prueba 4 exitosa: tabla no existe")
+    else 
+      println("prueba 4 error")
     
     val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
 
