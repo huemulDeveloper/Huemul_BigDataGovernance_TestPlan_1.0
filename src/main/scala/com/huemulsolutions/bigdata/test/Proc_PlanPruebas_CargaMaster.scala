@@ -39,12 +39,12 @@ object Proc_PlanPruebas_CargaMaster {
       TablaMaster.DF_from_DF(DF_RAW.DataFramehuemul.DataFrame,"DF_RAW", "DF_Original")
       
    //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
-      val a = huemulLib.spark.catalog.listTables(TablaMaster.GetCurrentDataBase()).collect()
+      val a = huemulLib.spark.catalog.listTables(TablaMaster.getCurrentDataBase()).collect()
       if (a.filter { x => x.name.toUpperCase() == TablaMaster.TableName.toUpperCase()  }.length > 0) {
-        huemulLib.spark.sql(s"drop table if exists ${TablaMaster.GetTable()} ")
+        huemulLib.spark.sql(s"drop table if exists ${TablaMaster.getTable()} ")
       } 
       
-      val FullPath = new org.apache.hadoop.fs.Path(s"${TablaMaster.GetFullNameWithPath()}")
+      val FullPath = new org.apache.hadoop.fs.Path(s"${TablaMaster.getFullNameWithPath()}")
       val fs = FileSystem.get(huemulLib.spark.sparkContext.hadoopConfiguration) 
       if (fs.exists(FullPath))
         fs.delete(FullPath, true)
@@ -550,12 +550,15 @@ object Proc_PlanPruebas_CargaMaster {
       Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ)
       Control.RegisterTestPlanFeature("DQManual_Row", NumDQ)
       
-      val NumDQ_conError = Control.RegisterTestPlan(TestPlanGroup, "DQ - N° Ejecuciones con Error", "ejecuta la validación, debe tener 2 ejecuciones con error (warnings)", "N° Ejecuciones = 2", s"N° Ejecuciones = ${DQResultManual.getDQResult().filter { x => x.DQ_IsError} .length}", DQResultManual.getDQResult().filter { x => x.DQ_IsError} .length == 2)
-      Control.RegisterTestPlanFeature("DQManual_Notification_Warning", NumDQ_conError)
+      val NumDQ_conWarning = Control.RegisterTestPlan(TestPlanGroup, "DQ - N° Ejecuciones con Warning", "ejecuta la validación, debe tener 2 ejecuciones con warnings", "N° Ejecuciones = 2", s"N° Ejecuciones = ${DQResultManual.getDQResult().filter { x => x.DQ_IsWarning} .length}", DQResultManual.getDQResult().filter { x => x.DQ_IsWarning} .length == 2)
+      Control.RegisterTestPlanFeature("DQManual_Notification_Warning", NumDQ_conWarning)
+      Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ_conWarning)
+      Control.RegisterTestPlanFeature("DQManual_Row", NumDQ_conWarning)
+      
+      val NumDQ_conError = Control.RegisterTestPlan(TestPlanGroup, "DQ - N° Ejecuciones con Error", "ejecuta la validación, debe tener 0 ejecuciones con error", "N° Ejecuciones = 0", s"N° Ejecuciones = ${DQResultManual.getDQResult().filter { x => x.DQ_IsError} .length}", DQResultManual.getDQResult().filter { x => x.DQ_IsError} .length == 0)
       Control.RegisterTestPlanFeature("DQManual_Notification_Error", NumDQ_conError)
       Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ_conError)
       Control.RegisterTestPlanFeature("DQManual_Row", NumDQ_conError)
-      
       
       
       //******************************************************************

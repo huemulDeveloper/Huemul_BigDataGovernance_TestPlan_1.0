@@ -39,12 +39,12 @@ object Proc_PlanPruebas_CargaNoTrim {
       TablaMaster.DF_from_DF(DF_RAW.DataFramehuemul.DataFrame, "DF_RAW", "DF_Original")
       
    //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
-      val a = huemulLib.spark.catalog.listTables(TablaMaster.GetCurrentDataBase()).collect()
+      val a = huemulLib.spark.catalog.listTables(TablaMaster.getCurrentDataBase()).collect()
       if (a.filter { x => x.name.toUpperCase() == TablaMaster.TableName.toUpperCase()  }.length > 0) {
-        huemulLib.spark.sql(s"drop table if exists ${TablaMaster.GetTable()} ")
+        huemulLib.spark.sql(s"drop table if exists ${TablaMaster.getTable()} ")
       } 
       
-      val FullPath = new org.apache.hadoop.fs.Path(s"${TablaMaster.GetFullNameWithPath()}")
+      val FullPath = new org.apache.hadoop.fs.Path(s"${TablaMaster.getFullNameWithPath()}")
       val fs = FileSystem.get(huemulLib.spark.sparkContext.hadoopConfiguration) 
       if (fs.exists(FullPath))
         fs.delete(FullPath, true)

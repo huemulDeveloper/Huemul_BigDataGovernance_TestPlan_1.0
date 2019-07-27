@@ -40,7 +40,7 @@ object Proc_PlanPruebas_CargaMaster_mes_paso_2_selective {
       
       TablaMaster.DF_from_SQL("DF_Original2", s"""select 'Cero-Vacio' as TipoValor, 45 as IntValue, '${periodo_mes}' as periodo_mes union all select 'Negativo_Maximo' as TipoValor, -11 as IntValue, '${periodo_mes}' as periodo_mes  """) 
       
-      huemulLib.spark.sql(s"select * from ${TablaMaster.GetTable()}").show(100)
+      huemulLib.spark.sql(s"select * from ${TablaMaster.getTable()}").show(100)
       huemulLib.spark.sql(s"select * from DF_Original2").show(100)
      
       TablaMaster.periodo_mes.SetMapping("periodo_mes")
@@ -479,8 +479,12 @@ object Proc_PlanPruebas_CargaMaster_mes_paso_2_selective {
       Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ)
       Control.RegisterTestPlanFeature("DQManual_Row", NumDQ)
       
-      val NumDQ_conError = Control.RegisterTestPlan(TestPlanGroup, "DQ - N° Ejecuciones con Error", "ejecuta la validación, debe tener 2 ejecuciones con error (warnings)", "N° Ejecuciones = 2", s"N° Ejecuciones = ${DQResultManual.getDQResult().filter { x => x.DQ_IsError} .length}", DQResultManual.getDQResult().filter { x => x.DQ_IsError} .length == 2)
-      Control.RegisterTestPlanFeature("DQManual_Notification_Warning", NumDQ_conError)
+      val NumDQ_conWarning = Control.RegisterTestPlan(TestPlanGroup, "DQ - N° Ejecuciones con Warning", "ejecuta la validación, debe tener 2 ejecuciones con warnings", "N° Ejecuciones = 2", s"N° Ejecuciones = ${DQResultManual.getDQResult().filter { x => x.DQ_IsWarning} .length}", DQResultManual.getDQResult().filter { x => x.DQ_IsWarning} .length == 2)
+      Control.RegisterTestPlanFeature("DQManual_Notification_Warning", NumDQ_conWarning)
+      Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ_conWarning)
+      Control.RegisterTestPlanFeature("DQManual_Row", NumDQ_conWarning)
+      
+      val NumDQ_conError = Control.RegisterTestPlan(TestPlanGroup, "DQ - N° Ejecuciones con Error", "ejecuta la validación, debe tener 0 ejecuciones con error", "N° Ejecuciones = 0", s"N° Ejecuciones = ${DQResultManual.getDQResult().filter { x => x.DQ_IsError} .length}", DQResultManual.getDQResult().filter { x => x.DQ_IsError} .length == 0)
       Control.RegisterTestPlanFeature("DQManual_Notification_Error", NumDQ_conError)
       Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ_conError)
       Control.RegisterTestPlanFeature("DQManual_Row", NumDQ_conError)
@@ -541,7 +545,7 @@ object Proc_PlanPruebas_CargaMaster_mes_paso_2_selective {
       Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ_conErrores)
       Control.RegisterTestPlanFeature("DQManual_Row", NumDQ_conErrores)
       
-      val datos = huemulLib.spark.sql(s"""select periodo_mes, count(1) from  ${TablaMaster.GetTable()} group by periodo_mes""")
+      val datos = huemulLib.spark.sql(s"""select periodo_mes, count(1) from  ${TablaMaster.getTable()} group by periodo_mes""")
       datos.show()
       val NumDQ_Transaction = Control.RegisterTestPlan(TestPlanGroup, "DQ - 2 periodos cargados", "Tablas transaction con 2 periodos cargados", "len del arreglo = 2", s"len del arreglo = ${datos.count()}", datos.count() == 2)
       

@@ -34,12 +34,12 @@ object Proc_PlanPruebas_InsertLimitError {
       TablaMaster.DF_from_DF(DF_RAW.DataFramehuemul.DataFrame,"DF_RAW", "DF_Original")
       
       //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
-      val a = huemulLib.spark.catalog.listTables(TablaMaster.GetCurrentDataBase()).collect()
+      val a = huemulLib.spark.catalog.listTables(TablaMaster.getCurrentDataBase()).collect()
       if (a.filter { x => x.name.toUpperCase() == TablaMaster.TableName.toUpperCase()  }.length > 0) {
-        huemulLib.spark.sql(s"drop table if exists ${TablaMaster.GetTable()} ")
+        huemulLib.spark.sql(s"drop table if exists ${TablaMaster.getTable()} ")
       } 
       
-      val FullPath = new org.apache.hadoop.fs.Path(s"${TablaMaster.GetFullNameWithPath()}")
+      val FullPath = new org.apache.hadoop.fs.Path(s"${TablaMaster.getFullNameWithPath()}")
       val fs = FileSystem.get(huemulLib.spark.sparkContext.hadoopConfiguration) 
       if (fs.exists(FullPath))
         fs.delete(FullPath, true)
@@ -76,7 +76,7 @@ object Proc_PlanPruebas_InsertLimitError {
       }
       TablaMaster.DF_from_DF(DF_RAW.DataFramehuemul.DataFrame,"DF_RAW", "DF_Nuevos")
       
-      val DFValidaCantIni = huemulLib.DF_ExecuteQuery("validaCantidad", s"select cast(count(1) as Long) as Cantidad from ${TablaMaster.GetTable()}")
+      val DFValidaCantIni = huemulLib.DF_ExecuteQuery("validaCantidad", s"select cast(count(1) as Long) as Cantidad from ${TablaMaster.getTable()}")
       val NumReg = DFValidaCantIni.first().getAs[Long]("Cantidad")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "NumRegInicial", "N° Registros iniciales de tablas", "N° Reg Inicial = 6", s"N° Reg Inicial = ${NumReg}", NumReg == 6)
       Control.RegisterTestPlanFeature("DQ_MaxNewRecords_Num", IdTestPlan)
@@ -93,7 +93,7 @@ object Proc_PlanPruebas_InsertLimitError {
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "Si hay error en masterización", "Si hay error en masterización 1005", s"Si hay error en masterización (${TablaMaster.Error_Code})", TablaMaster.Error_Code == 1005)
       Control.RegisterTestPlanFeature("DQ_MaxNewRecords_Num", IdTestPlan)
       
-      val DFValidaCantFin = huemulLib.DF_ExecuteQuery("validaCantidad", s"select cast(count(1) as Long) as Cantidad from ${TablaMaster.GetTable()}")
+      val DFValidaCantFin = huemulLib.DF_ExecuteQuery("validaCantidad", s"select cast(count(1) as Long) as Cantidad from ${TablaMaster.getTable()}")
       val NumRegFin = DFValidaCantFin.first().getAs[Long]("Cantidad")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "NumRegFinal", "N° Registros Finales de tablas", "N° Reg Finales = 6", s"N° Reg Finales = ${NumRegFin}", NumRegFin == 6)
       Control.RegisterTestPlanFeature("DQ_MaxNewRecords_Num", IdTestPlan)
