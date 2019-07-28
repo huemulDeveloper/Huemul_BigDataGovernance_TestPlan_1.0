@@ -32,11 +32,12 @@ class tbl_DatosBasicos(HuemulLib: huemul_BigDataGovernance, Control: huemul_Cont
   TipoValor.setIsPK ( true)
   TipoValor.setDQ_MinLen ( 2)
   TipoValor.setDQ_MaxLen ( 50)
-  
+  TipoValor.setBusinessGlossary_Id("BG_001")
   
   val IntValue = new huemul_Columns(IntegerType,true,"datos integer")
   IntValue.setNullable ( true)
   IntValue.setMDM_EnableOldValue_FullTrace( true)
+  IntValue.setBusinessGlossary_Id("BG_002")
   //IntValue.setDQ_MaxDecimalValue(Decimal.apply(10))
   
   val BigIntValue = new huemul_Columns(LongType,true,"datos BigInt")

@@ -21,6 +21,7 @@ object Proc_PlanPruebas_CargaMaster {
     val Ano = huemulLib.arguments.GetValue("ano", null,"Debe especificar ano de proceso: ejemplo: ano=2017")
     val Mes = huemulLib.arguments.GetValue("mes", null,"Debe especificar mes de proceso: ejemplo: mes=12")
     
+    huemulLib.huemul_showDemoLines(false)
     val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
 
     Control.AddParamInformation("TestPlanGroup", TestPlanGroup)
