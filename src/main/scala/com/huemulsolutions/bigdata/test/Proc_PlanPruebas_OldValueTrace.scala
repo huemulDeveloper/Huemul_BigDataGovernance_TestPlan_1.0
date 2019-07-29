@@ -71,10 +71,10 @@ object Proc_PlanPruebas_OldValueTrace {
       val DF_RAW_final =  new raw_DatosOldValue(huemulLib, Control)
       
       if (!DF_RAW_final.open("DF_RAW_final", Control, Ano.toInt, Mes.toInt, 1, 0, 0, 0,"fin")) {
-        Control.RaiseError(s"Error al intentar abrir archivo de datos fin: ${DF_RAW.Error.ControlError_Message}")
+        Control.RaiseError(s"Error al intentar abrir archivo de datos fin: ${DF_RAW_final.Error.ControlError_Message}")
       }
       Control.NewStep("Mapeo de Campos")
-      TablaMaster.DF_from_DF(DF_RAW.DataFramehuemul.DataFrame, "DF_RAW_final", "DF_Original")
+      TablaMaster.DF_from_DF(DF_RAW_final.DataFramehuemul.DataFrame, "DF_RAW_final", "DF_Original")
 
       TablaMaster.setMappingAuto()
       val tp_resultado_2 = TablaMaster.executeFull("DF_Final_2", org.apache.spark.storage.StorageLevel.MEMORY_ONLY )
