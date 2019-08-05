@@ -29,7 +29,7 @@ object App {
     */
   
     
-    
+    com.huemulsolutions.bigdata.raw.raw_LargoDinamico.main(args)
     Proc_PlanPruebas_CargaMaster_SelectiveUpdate.main(args)
 
     Proc_PlanPruebas_PermisosFull.main(args)
@@ -89,7 +89,7 @@ object App {
     
     val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
 
-    if (Control.TestPlan_IsOkById(TestPlanGroup, 19))
+    if (Control.TestPlan_IsOkById(TestPlanGroup, 20))
       println ("TODO OK")
     else
       println ("ERRORES")

@@ -8,14 +8,14 @@ object globalSettings {
    Global.GlobalEnvironments = "production, experimental"
    
    //Global.CONTROL_Driver = "com.postgres.jdbc.Driver"
-   //Global.CONTROL_Driver = "oracle.jdbc.OracleDriver"
-   Global.CONTROL_Driver = "com.mysql.jdbc.Driver"
+   Global.CONTROL_Driver = "oracle.jdbc.OracleDriver"
+   //Global.CONTROL_Driver = "com.mysql.jdbc.Driver"
    //Global.CONTROL_Driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
    
    //Global.CONTROL_Setting.append(new huemul_KeyValuePath("production","jdbc:postgresql://bd-control-14.postgres.database.azure.com:5432/postgres?user=huemul@bd-control-14&password=dev.CODE123456&sslmode=require&currentSchema=public"))
-   //Global.CONTROL_Setting.append(new huemul_KeyValuePath("production","jdbc:oracle:thin:sys as sysdba/OraPasswd1@bd-oracle-20.cloudapp.net:1521:cdb1"))
+   Global.CONTROL_Setting.append(new huemul_KeyValuePath("production","jdbc:oracle:thin:sys as sysdba/OraPasswd1@bd-oracle-20.cloudapp.net:1521:cdb1"))
    //Global.CONTROL_Setting.append(new huemul_KeyValuePath("production","jdbc:sqlserver://bd-server-sql-20.database.windows.net:1433;database=bd-control-sqlserver;user=control@bd-server-sql-20;password=dev.CODE123456;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"))
-   Global.CONTROL_Setting.append(new huemul_KeyValuePath("production","jdbc:mysql://mysql-control.mysql.database.azure.com:3306/control?useSSL=true&requireSSL=false&user=devcode@mysql-control&password=dev.CODE123456"))
+   //Global.CONTROL_Setting.append(new huemul_KeyValuePath("production","jdbc:mysql://mysql-control.mysql.database.azure.com:3306/control?useSSL=true&requireSSL=false&user=devcode@mysql-control&password=dev.CODE123456"))
  
    Global.ImpalaEnabled = false
    Global.IMPALA_Setting.append(new huemul_KeyValuePath("production","jdbc:postgresql://control-postgre.postgres.database.azure.com:5432/postgres?user=control@control-postgre&password=developer.CODE6471&currentSchema=public"))
