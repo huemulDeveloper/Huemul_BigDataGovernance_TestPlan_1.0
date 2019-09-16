@@ -13,7 +13,7 @@ import com.huemulsolutions.bigdata
  */
 object Proc_PlanPruebas_PermisosFull {
   def main(args: Array[String]): Unit = {
-    val huemulLib = new huemul_BigDataGovernance("01 - Proc_PlanPruebas_PermisosFull",args,globalSettings.Global)
+    val huemulLib = new huemul_BigDataGovernance("01 - Proc_PlanPruebas_PermisosFull",args,com.yourcompany.settings.globalSettings.Global)
     val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
     
     val Ano = huemulLib.arguments.GetValue("ano", null,"Debe especificar ano de proceso: ejemplo: ano=2017")

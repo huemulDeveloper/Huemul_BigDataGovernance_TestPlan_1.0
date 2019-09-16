@@ -17,7 +17,7 @@ import com.huemulsolutions.bigdata.tables.master.tbl_OldValueTrace
 
 object Proc_PlanPruebas_OldValueTrace {
   def main(args: Array[String]): Unit = {
-    val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Proc_PlanPruebas_OldValueTrace",args,globalSettings.Global)
+    val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Proc_PlanPruebas_OldValueTrace",args,com.yourcompany.settings.globalSettings.Global)
     val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
     
     val Ano = huemulLib.arguments.GetValue("ano", null,"Debe especificar ano de proceso: ejemplo: ano=2017")

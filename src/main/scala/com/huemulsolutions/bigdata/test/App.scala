@@ -64,7 +64,7 @@ object App {
     
     
     //Validación que todo está OK
-    val huemulLib = new huemul_BigDataGovernance("Pruebas Inicialización de Clases",args,globalSettings.Global)
+    val huemulLib = new huemul_BigDataGovernance("Pruebas Inicialización de Clases",args,com.yourcompany.settings.globalSettings.Global)
     val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
     
     if (!huemulLib.hdfsPath_exists("hdfs:///user/data/production/te")) 

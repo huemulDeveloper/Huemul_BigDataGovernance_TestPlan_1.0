@@ -5,7 +5,6 @@ import com.huemulsolutions.bigdata.datalake.huemulType_FileType;
 import com.huemulsolutions.bigdata.datalake.huemulType_Separator;
 import com.huemulsolutions.bigdata.datalake.huemul_DataLake;
 import com.huemulsolutions.bigdata.datalake.huemul_DataLakeSetting;
-import com.huemulsolutions.bigdata.test.globalSettings;
 import com.huemulsolutions.bigdata.control._
 import com.huemulsolutions.bigdata.common._
 import com.huemulsolutions.bigdata.control._
@@ -140,7 +139,7 @@ object raw_DatosOldValue {
   def main(args : Array[String]) {
     
     //Creación API
-    val huemulLib  = new huemul_BigDataGovernance(s"BigData Fabrics - ${this.getClass.getSimpleName}", args, globalSettings.Global)
+    val huemulLib  = new huemul_BigDataGovernance(s"BigData Fabrics - ${this.getClass.getSimpleName}", args, com.yourcompany.settings.globalSettings.Global)
     val Control = new huemul_Control(huemulLib, null, huemulType_Frequency.MONTHLY)
     /*************** PARAMETROS **********************/
     

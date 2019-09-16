@@ -12,7 +12,7 @@ import com.huemulsolutions.bigdata.tables.master.tbl_DatosBasicos_errorFK
 
 object Proc_PlanPruebas_fk {
   def main(args: Array[String]): Unit = {
-    val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Proc_PlanPruebas_fk",args,globalSettings.Global)
+    val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Proc_PlanPruebas_fk",args,com.yourcompany.settings.globalSettings.Global)
     val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
     
     val Ano = huemulLib.arguments.GetValue("ano", null,"Debe especificar ano de proceso: ejemplo: ano=2017")

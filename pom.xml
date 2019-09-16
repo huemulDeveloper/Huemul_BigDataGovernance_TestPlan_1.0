@@ -56,6 +56,11 @@
 	  <artifactId>huemul-bigdatagovernance</artifactId>
 	  <version>2.0.1</version>
 	</dependency>
+	<dependency>
+	  <groupId>com.yourcompany</groupId>
+	  <artifactId>demo_settings</artifactId>
+	  <version>2.0</version>
+	</dependency>
 
     <!-- Test -->
     <dependency>

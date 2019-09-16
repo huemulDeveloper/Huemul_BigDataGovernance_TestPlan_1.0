@@ -17,7 +17,7 @@ import org.apache.spark.sql.functions._
 
 object Proc_PlanPruebas_CargaMaster_mes_paso_2_selective {
   def main(args: Array[String]): Unit = {
-    val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Proc_PlanPruebas_CargaMaster_mes_2",args,globalSettings.Global)
+    val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Proc_PlanPruebas_CargaMaster_mes_2",args,com.yourcompany.settings.globalSettings.Global)
     val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
     
     val Ano = "2018" //huemulLib.arguments.GetValue("ano", null,"Debe especificar ano de proceso: ejemplo: ano=2017")
