@@ -24,6 +24,9 @@ object globalSettings {
    Global.RAW_BigFiles_Path.append(new huemul_KeyValuePath("production","hdfs:///user/data/production/raw/"))
    Global.RAW_BigFiles_Path.append(new huemul_KeyValuePath("experimental","hdfs:///user/data/experimental/raw/"))
    
+   //BACKUP SETTING
+   Global.MDM_Backup_Path.append(new huemul_KeyValuePath("production","hdfs:///user/data/production/backup/"))
+   Global.MDM_Backup_Path.append(new huemul_KeyValuePath("experimental","hdfs://hdfs:///user/data/experimental/backup/"))
    
    
    //MASTER SETTING

@@ -13,7 +13,7 @@ import com.huemulsolutions.bigdata
  */
 object Proc_PlanPruebas_NoMapped {
   def main(args: Array[String]): Unit = {
-    val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Error Mapped",args,globalSettings.Global)
+    val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Error Mapped",args,com.yourcompany.settings.globalSettings.Global)
     val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
     
     val Ano = huemulLib.arguments.GetValue("ano", null,"Debe especificar ano de proceso: ejemplo: ano=2017")
@@ -31,7 +31,7 @@ object Proc_PlanPruebas_NoMapped {
       }
       Control.NewStep("Mapeo de Campos")
       val TablaMaster = new tbl_DatosBasicos(huemulLib, Control)      
-      TablaMaster.DataFramehuemul.setDataFrame(DF_RAW.DataFramehuemul.DataFrame, "DF_Original")
+      TablaMaster.DF_from_DF(DF_RAW.DataFramehuemul.DataFrame,"DF_RAW", "DF_Original")
       
       //TablaMaster.DF_from_SQL("DF_Original", "select * from DF_RAW")
       

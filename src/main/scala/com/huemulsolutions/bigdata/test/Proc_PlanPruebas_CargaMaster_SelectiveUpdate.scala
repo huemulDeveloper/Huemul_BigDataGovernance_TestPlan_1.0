@@ -15,7 +15,7 @@ import org.apache.spark.sql.types._
 
 object Proc_PlanPruebas_CargaMaster_SelectiveUpdate {
   def main(args: Array[String]): Unit = {
-    val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Proc_PlanPruebas_CargaMaster",args,globalSettings.Global)
+    val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Proc_PlanPruebas_CargaMaster",args,com.yourcompany.settings.globalSettings.Global)
     val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
     
     val Ano = huemulLib.arguments.GetValue("ano", null,"Debe especificar ano de proceso: ejemplo: ano=2017")
@@ -36,15 +36,17 @@ object Proc_PlanPruebas_CargaMaster_SelectiveUpdate {
       }
       Control.NewStep("Mapeo de Campos")
       val TablaMaster = new tbl_DatosBasicos(huemulLib, Control)      
-      TablaMaster.DataFramehuemul.setDataFrame(DF_RAW.DataFramehuemul.DataFrame, "DF_Original")
+      val df_temp_vacia = TablaMaster.getEmptyTable("pruebaVacia")
+      df_temp_vacia.show()
+      TablaMaster.DF_from_DF(DF_RAW.DataFramehuemul.DataFrame, "DF_RAW", "DF_Original")
       
    //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
-      val a = huemulLib.spark.catalog.listTables(TablaMaster.GetCurrentDataBase()).collect()
+      val a = huemulLib.spark.catalog.listTables(TablaMaster.getCurrentDataBase()).collect()
       if (a.filter { x => x.name.toUpperCase() == TablaMaster.TableName.toUpperCase()  }.length > 0) {
-        huemulLib.spark.sql(s"drop table if exists ${TablaMaster.GetTable()} ")
+        huemulLib.spark.sql(s"drop table if exists ${TablaMaster.getTable()} ")
       } 
       
-      val FullPath = new org.apache.hadoop.fs.Path(s"${TablaMaster.GetFullNameWithPath()}")
+      val FullPath = new org.apache.hadoop.fs.Path(s"${TablaMaster.getFullNameWithPath()}")
       val fs = FileSystem.get(huemulLib.spark.sparkContext.hadoopConfiguration) 
       if (fs.exists(FullPath))
         fs.delete(FullPath, true)

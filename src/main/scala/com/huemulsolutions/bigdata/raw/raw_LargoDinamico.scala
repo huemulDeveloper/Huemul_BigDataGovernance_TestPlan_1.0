@@ -13,8 +13,8 @@ import org.apache.spark.sql.types._
 import scalaz.std.math.bigInt
 import com.huemulsolutions.bigdata.control.huemulType_Frequency.huemulType_Frequency
 
-class raw_DatosBasicos(huemulLib: huemul_BigDataGovernance, Control: huemul_Control) extends huemul_DataLake(huemulLib, Control) with Serializable  {
-   this.Description = "Datos Básicos por cada tipo de dato, para plan de pruebas"
+class raw_LargoDinamico(huemulLib: huemul_BigDataGovernance, Control: huemul_Control) extends huemul_DataLake(huemulLib, Control) with Serializable  {
+   this.Description = "Datos Básicos para pruebas de largo dinámico"
    this.GroupName = "HuemulPlanPruebas"
       
    val FormatSetting = new huemul_DataLakeSetting(huemulLib)
@@ -24,7 +24,7 @@ class raw_DatosBasicos(huemulLib: huemul_BigDataGovernance, Control: huemul_Cont
     //Path info
     FormatSetting.GlobalPath = huemulLib.GlobalSettings.RAW_BigFiles_Path
     FormatSetting.LocalPath = "planPruebas/"
-    FormatSetting.FileName = "DatosBasicos{{TipoArchivo}}.txt"
+    FormatSetting.FileName = "LargoDinamico_{{TipoArchivo}}.txt"
     FormatSetting.FileType = huemulType_FileType.TEXT_FILE
     FormatSetting.ContactName = "Sebastián Rodríguez"
     
@@ -60,17 +60,9 @@ class raw_DatosBasicos(huemulLib: huemul_BigDataGovernance, Control: huemul_Cont
     //PLAN EJECUCION 3:
     FormatSetting.DataSchemaConf.ColSeparatorType = huemulType_Separator.POSITION  //POSITION;CHARACTER
     
-    FormatSetting.DataSchemaConf.AddColumns("TipoValor", "TipoValor_ti", StringType,"",0,15)
-    FormatSetting.DataSchemaConf.AddColumns("IntValue", "IntValue_ti", IntegerType,"",16,24)
-    FormatSetting.DataSchemaConf.AddColumns("BigIntValue", "BigIntValue_ti", LongType, "con descripción mia",25,36)
-    FormatSetting.DataSchemaConf.AddColumns("SmallIntValue", "SmallIntValue_ti", ShortType,"",37,50)
-    FormatSetting.DataSchemaConf.AddColumns("TinyIntValue", "TinyIntValue_ti", ShortType,"",51,63)
-    FormatSetting.DataSchemaConf.AddColumns("DecimalValue", "DecimalValue_ti", DecimalType(10,4),"",64,76)
-    FormatSetting.DataSchemaConf.AddColumns("RealValue", "RealValue_ti", DoubleType,"",77,86)
-    FormatSetting.DataSchemaConf.AddColumns("FloatValue", "FloatValue_ti", FloatType,"",87,97)
-    FormatSetting.DataSchemaConf.AddColumns("StringValue", "StringValue_ti", StringType,"",98,110)
-    FormatSetting.DataSchemaConf.AddColumns("charValue", "charValue_ti", StringType,"",111,120)
-    FormatSetting.DataSchemaConf.AddColumns("timeStampValue", "timeStampValue_ti", TimestampType,"",121,140)
+    FormatSetting.DataSchemaConf.AddColumns("campo1", "codigo", StringType,"",0,10)
+    FormatSetting.DataSchemaConf.AddColumns("campo2", "nombre", IntegerType,"",10,20)
+    FormatSetting.DataSchemaConf.AddColumns("campo3", "largo dinamico", LongType, "con descripción mia",20,-1)
     
     
     //Log Info
@@ -79,6 +71,7 @@ class raw_DatosBasicos(huemulLib: huemul_BigDataGovernance, Control: huemul_Cont
     //Fields Info for CHARACTER
     FormatSetting.LogSchemaConf.ColSeparator = ";"    //SET FOR CARACTER
     FormatSetting.LogSchemaConf.setHeaderColumnsString("VACIO") //Fielda;Fieldb;fieldc
+    
     
     this.SettingByDate.append(FormatSetting)
   
@@ -124,7 +117,7 @@ class raw_DatosBasicos(huemulLib: huemul_BigDataGovernance, Control: huemul_Cont
       
       control.NewStep("Validando cantidad de filas")      
       //validacion cantidad de filas
-      val validanumfilas = this.DataFramehuemul.DQ_NumRowsInterval(this, 6,7)  
+      val validanumfilas = this.DataFramehuemul.DQ_NumRowsInterval(this, 4,4)  
       if (validanumfilas.isError) control.RaiseError(s"user: Numero de Filas fuera del rango. ${validanumfilas.Description}")
                         
       control.FinishProcessOK                      
@@ -141,22 +134,55 @@ class raw_DatosBasicos(huemulLib: huemul_BigDataGovernance, Control: huemul_Cont
 
 
 
-object raw_DatosBasicos {
+object raw_LargoDinamico {
   def main(args : Array[String]) {
     
     //Creación API
     val huemulLib  = new huemul_BigDataGovernance(s"BigData Fabrics - ${this.getClass.getSimpleName}", args, com.yourcompany.settings.globalSettings.Global)
     val Control = new huemul_Control(huemulLib, null, huemulType_Frequency.MONTHLY)
     /*************** PARAMETROS **********************/
-    
+     val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
+   
     //Inicializa clase RAW  
-    val DF_RAW =  new raw_DatosBasicos(huemulLib, Control)
-    if (!DF_RAW.open("DF_RAW", null, 2018, 12, 31, 0, 0, 0, "")) {
+    val DF_RAW =  new raw_LargoDinamico(huemulLib, Control)
+    if (!DF_RAW.open("DF_RAW", null, 2018, 12, 31, 0, 0, 0, "ini",false)) {
       println("************************************************************")
       println("**********  E  R R O R   E N   P R O C E S O   *************")
       println("************************************************************")
-    } else
+      val IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "LeeLargoDinamico", "LeeLargoDinamico sin error", "sin error", s"con error: ${DF_RAW.Error.ControlError_ErrorCode}", DF_RAW.Error_isError == false)
+      Control.RegisterTestPlanFeature("LargoDinamico", IdTestPlan)
+    } else{
+      val IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "LeeLargoDinamico", "LeeLargoDinamico sin error", "sin error", s"con error: ${DF_RAW.Error.ControlError_ErrorCode}", DF_RAW.Error_isError == false)
+      Control.RegisterTestPlanFeature("LargoDinamico", IdTestPlan)
       DF_RAW.DataFramehuemul.DataFrame.show()
+      huemulLib.spark.sql("select *, length(campo1) as largo_campo1, length(campo2) as largo_campo2, length(campo3) as largo_campo3 FROM DF_RAW").show()
+      
+      val res = huemulLib.spark.sql("""select cast(max(case when length(campo3) = 7 and  campo3 = '0123456' then 1 else 0 end) as Int) as p_01
+                                             ,cast(max(case when length(campo3) = 4 and  campo3 = '013 ' then 1 else 0 end) as Int) as p_02
+                                             ,cast(max(case when length(campo3) = 3 and  campo3 = '012' then 1 else 0 end) as Int) as p_03
+                                             ,cast(max(case when length(campo3) = 21 and  campo3 = '012345678901234567890' then 1 else 0 end) as Int) as p_04
+                             FROM DF_RAW""").collect()
+      
+      val res_p01 = res(0).getAs[Int]("p_01")
+      val res_p02 = res(0).getAs[Int]("p_02")
+      val res_p03 = res(0).getAs[Int]("p_03")
+      val res_p04 = res(0).getAs[Int]("p_04")
+      
+      val IdTestPlan_p01 = Control.RegisterTestPlan(TestPlanGroup, "prueba 1", "largo 7 y texto [0123456]", "cumple", s"${if (res_p01==1) "cumple" else "no cumple"}", res_p01 == 1)
+      Control.RegisterTestPlanFeature("LargoDinamico", IdTestPlan_p01)
+      
+      val IdTestPlan_p02 = Control.RegisterTestPlan(TestPlanGroup, "prueba 2", "largo 4 y texto [013 ]", "cumple", s"${if (res_p02==1) "cumple" else "no cumple"}", res_p02 == 1)
+      Control.RegisterTestPlanFeature("LargoDinamico", IdTestPlan_p02)
+      
+      val IdTestPlan_p03 = Control.RegisterTestPlan(TestPlanGroup, "prueba 3", "largo 3 y texto [012]", "cumple", s"${if (res_p03==1) "cumple" else "no cumple"}", res_p03 == 1)
+      Control.RegisterTestPlanFeature("LargoDinamico", IdTestPlan_p03)
+      
+      val IdTestPlan_p04 = Control.RegisterTestPlan(TestPlanGroup, "prueba 4", "largo 21 y texto [012345678901234567890]", "cumple", s"${if (res_p04==1) "cumple" else "no cumple"}", res_p04 == 1)
+      Control.RegisterTestPlanFeature("LargoDinamico", IdTestPlan_p04)
+      
+      
+                            
+    }
       
     
     val MyName: String = this.getClass.getSimpleName
@@ -164,5 +190,10 @@ object raw_DatosBasicos {
     //DF_RAW.GenerateInitialCode(MyName, "sbif_institucion_mes","bigdata.fabrics","sbif.bancos")       
     
     Control.FinishProcessOK
+    
+    if (Control.TestPlan_CurrentIsOK(5))
+      println("Proceso OK")
+      
+    huemulLib.close()
   }  
 }

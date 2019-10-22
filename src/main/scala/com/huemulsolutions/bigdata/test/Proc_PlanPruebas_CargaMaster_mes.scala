@@ -22,7 +22,7 @@ import org.apache.spark.sql.functions._
 
 object Proc_PlanPruebas_CargaMaster_mes {
   def main(args: Array[String]): Unit = {
-    val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Proc_PlanPruebas_CargaMaster_mes",args,globalSettings.Global)
+    val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Proc_PlanPruebas_CargaMaster_mes",args,com.yourcompany.settings.globalSettings.Global)
     val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
     
     val Ano = "2018"//huemulLib.arguments.GetValue("ano", null,"Debe especificar ano de proceso: ejemplo: ano=2017")
@@ -46,15 +46,15 @@ object Proc_PlanPruebas_CargaMaster_mes {
       
       val periodo_mes = huemulLib.ReplaceWithParams("{{YYYY}}-{{MM}}-{{DD}}", Ano.toInt, Mes.toInt, 1, 0, 0, 0, null)
       val df_final = DF_RAW.DataFramehuemul.DataFrame.withColumn("periodo_mes", lit(periodo_mes))
-      TablaMaster.DataFramehuemul.setDataFrame(df_final, "DF_Original")
+      TablaMaster.DF_from_DF(df_final, "DF_RAW", "DF_Original")
       
    //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
-      val a = huemulLib.spark.catalog.listTables(TablaMaster.GetCurrentDataBase()).collect()
+      val a = huemulLib.spark.catalog.listTables(TablaMaster.getCurrentDataBase()).collect()
       if (a.filter { x => x.name.toUpperCase() == TablaMaster.TableName.toUpperCase()  }.length > 0) {
-        huemulLib.spark.sql(s"drop table if exists ${TablaMaster.GetTable()} ")
+        huemulLib.spark.sql(s"drop table if exists ${TablaMaster.getTable()} ")
       } 
       
-      val FullPath = new org.apache.hadoop.fs.Path(s"${TablaMaster.GetFullNameWithPath()}")
+      val FullPath = new org.apache.hadoop.fs.Path(s"${TablaMaster.getFullNameWithPath()}")
       val fs = FileSystem.get(huemulLib.spark.sparkContext.hadoopConfiguration) 
       if (fs.exists(FullPath))
         fs.delete(FullPath, true)
@@ -473,11 +473,13 @@ object Proc_PlanPruebas_CargaMaster_mes {
       
       val DQRules = new ArrayBuffer[huemul_DataQuality]()
       val DQ_ComparaAgrupado = new huemul_DataQuality(null,"Suma Float = Suma Decimal","sum(DecimalValue) = sum(FloatValue)",2,huemulType_DQQueryLevel.Aggregate)
+      DQ_ComparaAgrupado.setDQ_ExternalCode("EC_001")
       DQRules.append(DQ_ComparaAgrupado)
       val DQ_ComparaFila = new huemul_DataQuality(null,"coalesce(Double,0) = coalesce(Decimal,0)","coalesce(DecimalValue,0) = coalesce(RealValue,0)",3)
+      DQ_ComparaFila.setDQ_ExternalCode("EC_002")
       DQRules.append(DQ_ComparaFila)
       
-      val DQ_ComparaAgrupado_LanzaWarning = new huemul_DataQuality(null,"Suma Double is null","sum(DecimalValue) is null",4,huemulType_DQQueryLevel.Aggregate, huemulType_DQNotification.WARNING)
+      val DQ_ComparaAgrupado_LanzaWarning = new huemul_DataQuality(null,"Suma Double is null","sum(DecimalValue) is null",4,huemulType_DQQueryLevel.Aggregate, huemulType_DQNotification.WARNING, true, "EC_003")
       DQRules.append(DQ_ComparaAgrupado_LanzaWarning)
       val DQ_ComparaFila_LanzaWarning = new huemul_DataQuality(null,"Double <> Decimal","DecimalValue <> FloatValue",5,huemulType_DQQueryLevel.Row, huemulType_DQNotification.WARNING)
       DQRules.append(DQ_ComparaFila_LanzaWarning)
@@ -495,8 +497,12 @@ object Proc_PlanPruebas_CargaMaster_mes {
       Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ)
       Control.RegisterTestPlanFeature("DQManual_Row", NumDQ)
       
-      val NumDQ_conError = Control.RegisterTestPlan(TestPlanGroup, "DQ - N° Ejecuciones con Error", "ejecuta la validación, debe tener 2 ejecuciones con error (warnings)", "N° Ejecuciones = 2", s"N° Ejecuciones = ${DQResultManual.getDQResult().filter { x => x.DQ_IsError} .length}", DQResultManual.getDQResult().filter { x => x.DQ_IsError} .length == 2)
-      Control.RegisterTestPlanFeature("DQManual_Notification_Warning", NumDQ_conError)
+      val NumDQ_conWarning = Control.RegisterTestPlan(TestPlanGroup, "DQ - N° Ejecuciones con Warning", "ejecuta la validación, debe tener 2 ejecuciones con warnings", "N° Ejecuciones = 2", s"N° Ejecuciones = ${DQResultManual.getDQResult().filter { x => x.DQ_IsWarning} .length}", DQResultManual.getDQResult().filter { x => x.DQ_IsWarning} .length == 2)
+      Control.RegisterTestPlanFeature("DQManual_Notification_Warning", NumDQ_conWarning)
+      Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ_conWarning)
+      Control.RegisterTestPlanFeature("DQManual_Row", NumDQ_conWarning)
+      
+      val NumDQ_conError = Control.RegisterTestPlan(TestPlanGroup, "DQ - N° Ejecuciones con Error", "ejecuta la validación, debe tener 0 ejecuciones con error", "N° Ejecuciones = 0", s"N° Ejecuciones = ${DQResultManual.getDQResult().filter { x => x.DQ_IsError} .length}", DQResultManual.getDQResult().filter { x => x.DQ_IsError} .length == 0)
       Control.RegisterTestPlanFeature("DQManual_Notification_Error", NumDQ_conError)
       Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ_conError)
       Control.RegisterTestPlanFeature("DQManual_Row", NumDQ_conError)

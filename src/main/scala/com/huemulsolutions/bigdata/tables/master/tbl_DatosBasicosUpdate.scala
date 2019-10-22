@@ -36,36 +36,42 @@ class tbl_DatosBasicosUpdate(HuemulLib: huemul_BigDataGovernance, Control: huemu
   IntValue.setMDM_EnableDTLog ( true)
   IntValue.setMDM_EnableOldValue ( true)
   IntValue.setMDM_EnableProcessLog ( true)
+  IntValue.setMDM_EnableOldValue_FullTrace( true)
   
   val BigIntValue = new huemul_Columns(LongType,true,"datos BigInt")
   BigIntValue.setNullable ( true)
   BigIntValue.setMDM_EnableDTLog ( true)
   BigIntValue.setMDM_EnableOldValue ( true)
   BigIntValue.setMDM_EnableProcessLog ( true)
+  BigIntValue.setMDM_EnableOldValue_FullTrace( true)
   
   val SmallIntValue = new huemul_Columns(ShortType,true,"datos SmallInt")
   SmallIntValue.setNullable ( true)
   SmallIntValue.setMDM_EnableDTLog ( true)
   SmallIntValue.setMDM_EnableOldValue ( true)
   SmallIntValue.setMDM_EnableProcessLog ( true)
+  SmallIntValue.setMDM_EnableOldValue_FullTrace( true)
   
   val TinyIntValue = new huemul_Columns(ShortType,true,"datos TinyInt")
   TinyIntValue.setNullable ( true)
   TinyIntValue.setMDM_EnableDTLog ( true)
   TinyIntValue.setMDM_EnableOldValue ( true)
   TinyIntValue.setMDM_EnableProcessLog ( true)
+  TinyIntValue.setMDM_EnableOldValue_FullTrace( true)
   
   val DecimalValue = new huemul_Columns(DecimalType(10,4),true,"datos Decimal(10,4)")
   DecimalValue.setNullable ( true)
   DecimalValue.setMDM_EnableDTLog ( true)
   DecimalValue.setMDM_EnableOldValue ( true)
   DecimalValue.setMDM_EnableProcessLog ( true)
+  DecimalValue.setMDM_EnableOldValue_FullTrace( true)
   
   val RealValue = new huemul_Columns(DoubleType,true,"datos Real")
   RealValue.setNullable ( true)
   RealValue.setMDM_EnableDTLog ( true)
   RealValue.setMDM_EnableOldValue ( true)
   RealValue.setMDM_EnableProcessLog ( true)
+  RealValue.setMDM_EnableOldValue_FullTrace( true)
   
   val FloatValue = new huemul_Columns(FloatType,true,"datos Float")
   FloatValue.setNullable ( true)
@@ -78,6 +84,7 @@ class tbl_DatosBasicosUpdate(HuemulLib: huemul_BigDataGovernance, Control: huemu
   StringValue.setMDM_EnableDTLog ( true)
   StringValue.setMDM_EnableOldValue ( true)
   StringValue.setMDM_EnableProcessLog ( true)
+  StringValue.setMDM_EnableOldValue_FullTrace( true)
   
   val charValue = new huemul_Columns(StringType,true,"datos Char")
   charValue.setNullable ( true)
@@ -90,6 +97,7 @@ class tbl_DatosBasicosUpdate(HuemulLib: huemul_BigDataGovernance, Control: huemu
   timeStampValue.setMDM_EnableDTLog ( true)
   timeStampValue.setMDM_EnableOldValue ( true)
   timeStampValue.setMDM_EnableProcessLog ( true)
+  timeStampValue.setMDM_EnableOldValue_FullTrace( true)
   
   val StringNoModificarValue = new huemul_Columns(StringType,true,"datos String solo inserta, no modifica")
   StringNoModificarValue.setNullable ( true)

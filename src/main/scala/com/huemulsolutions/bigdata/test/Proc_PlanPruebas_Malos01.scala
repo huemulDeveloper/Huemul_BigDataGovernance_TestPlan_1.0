@@ -13,7 +13,7 @@ import com.huemulsolutions.bigdata
  */
 object Proc_PlanPruebas_Malos01 {
   def main(args: Array[String]): Unit = {
-    val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Malos01",args,globalSettings.Global)
+    val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Malos01",args,com.yourcompany.settings.globalSettings.Global)
     val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
     
     val Ano = huemulLib.arguments.GetValue("ano", null,"Debe especificar ano de proceso: ejemplo: ano=2017")
@@ -31,7 +31,7 @@ object Proc_PlanPruebas_Malos01 {
       }
       Control.NewStep("Mapeo de Campos")
       val TablaMaster = new tbl_DatosBasicos(huemulLib, Control)      
-      TablaMaster.DataFramehuemul.setDataFrame(DF_RAW.DataFramehuemul.DataFrame, "DF_Original")
+      TablaMaster.DF_from_DF(DF_RAW.DataFramehuemul.DataFrame, "DF_RAW", "DF_Original")
       
       //TablaMaster.DF_from_SQL("DF_Original", "select * from DF_RAW")
       
@@ -68,6 +68,22 @@ object Proc_PlanPruebas_Malos01 {
       val NumErrores_TipoValor = TablaMaster.DataFramehuemul.getDQResult().filter { x => x.DQ_ErrorCode == 1018 }
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Malo01 - Obtiene DQ PK", "N° registros devueltos de DQ pK = 1", "N° Reg = 1", s"N° Reg = ${NumErrores_TipoValor.length}", NumErrores_TipoValor.length == 1)
       Control.RegisterTestPlanFeature("IsPK Error", IdTestPlan)
+      
+      
+      val errores2 = huemulLib.spark.sql(s"""select dq_error_columnname
+                                                  ,cast(count(1) as int) as Cantidad
+                                                  ,cast(sum(case when tipovalor = "Positivo_Maximo" then 1 else 0 end) as Int) as error_01
+                        from production_dqerror.tbl_DatosBasicos_dq 
+                        where dq_control_id = '${Control.Control_Id}' 
+                        and dq_error_code = 1018
+                        group by dq_error_columnname """).collect
+      val cantidad = errores2.filter { x => x.getAs[String]("dq_error_columnname") == "TipoValor" }(0).getAs[Int]("Cantidad") 
+      val error_01 = errores2.filter { x => x.getAs[String]("dq_error_columnname") == "TipoValor" }(0).getAs[Int]("error_01") 
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores en tabla _dq TipoValor", "errores en columna TipoValor", "Cantidad con errores = 2", s"Cantidad con errores = ${cantidad}", cantidad == 2)
+      Control.RegisterTestPlanFeature("FK Error encontrado", IdTestPlan)
+      
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "error encontrado (tipovalor = Positivo_Maximo)", "error encontrado (tipovalor = Positivo_Maximo)", "error_01 = 2", s"error_01 = ${error_01}", error_01 == 2)
+      Control.RegisterTestPlanFeature("FK Error encontrado", IdTestPlan)
       
       
       /* //esta prueba fue comentada, antes entregaba el N° de registros con error, ahora no
