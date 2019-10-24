@@ -3,6 +3,8 @@ package com.huemulsolutions.bigdata.test
 
 import com.huemulsolutions.bigdata.common._
 import com.huemulsolutions.bigdata.control._
+import com.yourcompany.settings.globalSettings
+
 //import com.huemulsolutions.bigdata.test.Proc_PlanPruebas_PermisosUpdate
 
 /**
@@ -28,7 +30,7 @@ object App {
     * 
     */
   
-    
+    com.yourcompany.settings.globalSettings.Global.HIVE_HourToUpdateMetadata=6
     com.huemulsolutions.bigdata.raw.raw_LargoDinamico.main(args)
     Proc_PlanPruebas_CargaMaster_SelectiveUpdate.main(args)
 
@@ -48,6 +50,7 @@ object App {
     
     Proc_PlanPruebas_NoMapped.main(args)
     
+    Proc_PlanPruebas_OnlyInsertNew_warning.main(args)
     Proc_PlanPruebas_OnlyInsertNew.main(args)
     Proc_PlanPruebas_OnlyUpdate.main(args)
      
@@ -60,6 +63,8 @@ object App {
     Proc_PlanPruebas_CargaNoTrim.main(args)
     
     Proc_PlanPruebas_OldValueTrace.main(args)
+    
+    Proc_PlanPruebas_CargaMaster_mes_exclude.main(args)
     
     
     
@@ -89,7 +94,7 @@ object App {
     
     val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
 
-    if (Control.TestPlan_IsOkById(TestPlanGroup, 20))
+    if (Control.TestPlan_IsOkById(TestPlanGroup, 22))
       println ("TODO OK")
     else
       println ("ERRORES")
