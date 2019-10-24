@@ -74,7 +74,7 @@ class tbl_DatosBasicos_mes_exclude(HuemulLib: huemul_BigDataGovernance, Control:
   
   //**********Ejemplo para aplicar DataQuality de Integridad Referencial
   val itbl_DatosBasicos = new tbl_DatosBasicos(HuemulLib,Control)
-  val fk_tbl_DatosBasicos = new huemul_Table_Relationship(itbl_DatosBasicos, false).setNotification(huemulType_DQNotification.WARNING_EXCLUDE)
+  val fk_tbl_DatosBasicos = new huemul_Table_Relationship(itbl_DatosBasicos, false).setNotification(huemulType_DQNotification.WARNING_EXCLUDE).broadcastJoin(true)
   fk_tbl_DatosBasicos.AddRelationship(itbl_DatosBasicos.TipoValor , TipoValor)
   
   
