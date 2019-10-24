@@ -68,13 +68,13 @@ class tbl_DatosBasicos_mes_exclude(HuemulLib: huemul_BigDataGovernance, Control:
   timeStampValue.setNullable ( true)
   
   //Regla para probar exclusión de registro al fallar un warning
-  val DQ_warning_exclude: huemul_DataQuality = new huemul_DataQuality(TipoValor ,"Exclusión de valor Negativo_Maximo", "tipoValor <> 'Negativo_Maximo'",1).setNotification(huemulType_DQNotification.WARNING_EXCLUDE).setQueryLevel(huemulType_DQQueryLevel.Row)
-  val DQ_warning_solo: huemul_DataQuality = new huemul_DataQuality(TipoValor ,"Solo warning cuando aparezca registro Cero-Vacio", "tipoValor <> 'Cero-Vacio'",2).setNotification(huemulType_DQNotification.WARNING).setQueryLevel(huemulType_DQQueryLevel.Row)
+  val DQ_warning_exclude: huemul_DataQuality = new huemul_DataQuality(TipoValor ,"Exclusión de valor Cero-Vacio", "tipoValor not in ('Cero-Vacio')",1).setNotification(huemulType_DQNotification.WARNING_EXCLUDE).setQueryLevel(huemulType_DQQueryLevel.Row)
+  val DQ_warning_solo: huemul_DataQuality = new huemul_DataQuality(TipoValor ,"Solo warning cuando aparezca registro Cero-Vacio", "tipoValor <> 'Negativo_Maximo'",2).setNotification(huemulType_DQNotification.WARNING).setQueryLevel(huemulType_DQQueryLevel.Row)
   
   
   //**********Ejemplo para aplicar DataQuality de Integridad Referencial
   val itbl_DatosBasicos = new tbl_DatosBasicos(HuemulLib,Control)
-  val fk_tbl_DatosBasicos = new huemul_Table_Relationship(itbl_DatosBasicos, false)
+  val fk_tbl_DatosBasicos = new huemul_Table_Relationship(itbl_DatosBasicos, false).setNotification(huemulType_DQNotification.WARNING_EXCLUDE)
   fk_tbl_DatosBasicos.AddRelationship(itbl_DatosBasicos.TipoValor , TipoValor)
   
   

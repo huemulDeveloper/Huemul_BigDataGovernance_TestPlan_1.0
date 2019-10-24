@@ -115,14 +115,13 @@ object Proc_PlanPruebas_CargaMaster_mes_exclude {
                                                                                WHERE tipoValor = 'Cero-Vacio'""")
       
       var Cantidad: Long = if (Cero_Vacio_Todos == null) 0 else Cero_Vacio_Todos.count()
-      
-      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Cero_Vacio - TieneRegistros", "Registro Cero_Vacio, debe tener 1 registro", "Cantidad = 1", s"Cantidad = ${Cantidad}", Cantidad == 1)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Cero_Vacio - TieneRegistros", "Registro Cero_Vacio, debe tener 0 registro", "Cantidad = 0", s"Cantidad = ${Cantidad}", Cantidad == 0)
       Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
       Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
-      val Cero_Vacio = Cero_Vacio_Todos.first()
+      //val Cero_Vacio = Cero_Vacio_Todos.first()
       
       Control.NewStep("DF Plan de pruebas: Negativo_Maximo ")
       val Negativo_Maximo_Todos = huemulLib.DF_ExecuteQuery("Negativo_Maximo_Todos", s"""SELECT case when BigIntValue = -10                      then true else false end as Cumple_BigIntValue
@@ -140,13 +139,13 @@ object Proc_PlanPruebas_CargaMaster_mes_exclude {
                                                                                FROM DF_Final
                                                                                WHERE tipoValor = 'Negativo_Maximo'""")
       Cantidad = if (Negativo_Maximo_Todos == null) 0 else Negativo_Maximo_Todos.count()
-      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - TieneRegistros", "Registro Negativo_Maximo, debe tener 0 registro", "Cantidad = 0", s"Cantidad = ${Cantidad}", Cantidad == 0)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - TieneRegistros", "Registro Negativo_Maximo, debe tener 1 registro", "Cantidad = 1", s"Cantidad = ${Cantidad}", Cantidad == 1)
       Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
       Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)      
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - realiza trim", IdTestPlan)
-      //val Negativo_Maximo = Negativo_Maximo_Todos.first()
+      val Negativo_Maximo = Negativo_Maximo_Todos.first()
       
       Control.NewStep("DF Plan de pruebas: Negativo_Minimo ")
       val Negativo_Minimo_Todos = huemulLib.DF_ExecuteQuery("Negativo_Minimo_Todos", s"""SELECT case when BigIntValue = -100                      then true else false end as Cumple_BigIntValue
@@ -229,13 +228,13 @@ object Proc_PlanPruebas_CargaMaster_mes_exclude {
                                                                                FROM DF_Final
                                                                                WHERE tipoValor = 'nulo'""")
       Cantidad = if (ValorNull_Todos == null) 0 else ValorNull_Todos.count()
-      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValorNull - TieneRegistros", "Registro ValorNull, debe tener 1 registro", "Cantidad = 1", s"Cantidad = ${Cantidad}", Cantidad == 1)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValorNull - TieneRegistros", "Registro ValorNull, debe tener 0 registro", "Cantidad = 0", s"Cantidad = ${Cantidad}", Cantidad == 0)
       Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
       Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)
       Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - Convierte string null a null", IdTestPlan)
-      val ValorNull = ValorNull_Todos.first()
+      //val ValorNull = ValorNull_Todos.first()
       
       
    
@@ -249,6 +248,7 @@ object Proc_PlanPruebas_CargaMaster_mes_exclude {
       //**************************
       //****  C O M P A R A C I O N   C E R O - V A C I O  *************
       //**************************
+      /*
       var BigIntValue =  Cero_Vacio.getAs[Boolean]("Cumple_BigIntValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Cero_Vacio - BigIntValue", "Registro Cero_Vacio, Campo BigIntValue", "Valor = 0", s"Valor = ??", BigIntValue)
       Control.RegisterTestPlanFeature("Datos de tipo BigIntType", IdTestPlan)
@@ -279,42 +279,43 @@ object Proc_PlanPruebas_CargaMaster_mes_exclude {
       var timeStampValue =  Cero_Vacio.getAs[Boolean]("Cumple_timeStampValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Cero_Vacio - timeStampValue", "Registro Cero_Vacio, Campo timeStampValue", "Valor = '1900-01-01 00:00:00.0'", s"Valor = ??", timeStampValue)
       Control.RegisterTestPlanFeature("Datos de tipo TimestampType", IdTestPlan)
+      * 
+      */
       
       //**************************
       //****  C O M P A R A C I O N     N E G A T I V O   M A X I M O  *************
       //**************************
-      /*
-      BigIntValue =  Negativo_Maximo.getAs[Boolean]("Cumple_BigIntValue")
+      var BigIntValue =  Negativo_Maximo.getAs[Boolean]("Cumple_BigIntValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - BigIntValue", "Registro Negativo_Maximo, Campo BigIntValue", "Valor = -10", s"Valor = ??", BigIntValue)
       Control.RegisterTestPlanFeature("Datos de tipo BigIntType", IdTestPlan)
-      IntValue =  Negativo_Maximo.getAs[Boolean]("Cumple_IntValue")
+      var IntValue =  Negativo_Maximo.getAs[Boolean]("Cumple_IntValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - IntValue", "Registro Negativo_Maximo, Campo IntValue", "Valor = -10", s"Valor = ??", IntValue)
       Control.RegisterTestPlanFeature("Datos de tipo IntegerType", IdTestPlan)
-      SmallIntValue =  Negativo_Maximo.getAs[Boolean]("Cumple_SmallIntValue")
+      var SmallIntValue =  Negativo_Maximo.getAs[Boolean]("Cumple_SmallIntValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - SmallIntValue", "Registro Negativo_Maximo, Campo SmallIntValue", "Valor = -10", s"Valor = ??", SmallIntValue)
       Control.RegisterTestPlanFeature("Datos de tipo ShortType", IdTestPlan)
-      TinyIntValue =  Negativo_Maximo.getAs[Boolean]("Cumple_TinyIntValue")
+      var TinyIntValue =  Negativo_Maximo.getAs[Boolean]("Cumple_TinyIntValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - TinyIntValue", "Registro Negativo_Maximo, Campo TinyIntValue", "Valor = -10", s"Valor = ??", TinyIntValue)
       Control.RegisterTestPlanFeature("Datos de tipo ShortType", IdTestPlan)
-      DecimalValue =  Negativo_Maximo.getAs[Boolean]("Cumple_DecimalValue")
+      var DecimalValue =  Negativo_Maximo.getAs[Boolean]("Cumple_DecimalValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - DecimalValue", "Registro Negativo_Maximo, Campo DecimalValue", s"Valor = -10.1230", s"Valor = ??", DecimalValue)
       Control.RegisterTestPlanFeature("Datos de tipo DecimalType", IdTestPlan)
-      RealValue =  Negativo_Maximo.getAs[Boolean]("Cumple_RealValue")
+      var RealValue =  Negativo_Maximo.getAs[Boolean]("Cumple_RealValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - RealValue", "Registro Negativo_Maximo, Campo RealValue", "Valor = -10.1230", s"Valor = ??", RealValue)
       Control.RegisterTestPlanFeature("Datos de tipo DoubleType", IdTestPlan)
-      FloatValue =  Negativo_Maximo.getAs[Boolean]("Cumple_FloatValue")
+      var FloatValue =  Negativo_Maximo.getAs[Boolean]("Cumple_FloatValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - FloatValue", "Registro Negativo_Maximo, Campo FloatValue", "Valor = -10.1230", s"Valor = ??", FloatValue)
       Control.RegisterTestPlanFeature("Datos de tipo FloatType", IdTestPlan)
-      StringValue =  Negativo_Maximo.getAs[Boolean]("Cumple_StringValue")
+      var StringValue =  Negativo_Maximo.getAs[Boolean]("Cumple_StringValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - StringValue", "Registro Negativo_Maximo, Campo StringValue", "Valor = TEXTO ZZZZZZ", s"Valor = ??", StringValue)
       Control.RegisterTestPlanFeature("Datos de tipo StringType", IdTestPlan)
-      charValue =  Negativo_Maximo.getAs[Boolean]("Cumple_charValue")
+      var charValue =  Negativo_Maximo.getAs[Boolean]("Cumple_charValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - charValue", "Registro Negativo_Maximo, Campo charValue", "Valor = z", s"Valor = ??", charValue)
       Control.RegisterTestPlanFeature("Datos de tipo StringType", IdTestPlan)
-      timeStampValue =  Negativo_Maximo.getAs[Boolean]("Cumple_timeStampValue")
+      var timeStampValue =  Negativo_Maximo.getAs[Boolean]("Cumple_timeStampValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - timeStampValue", "Registro Negativo_Maximo, Campo timeStampValue", "Valor = '2017-12-31 00:00:00.0'", s"Valor = ??", timeStampValue)
       Control.RegisterTestPlanFeature("Datos de tipo TimestampType", IdTestPlan)
-      */
+      
       
       //**************************
       //****  C O M P A R A C I O N     N E G A T I V O   M I N I M O  *************
@@ -422,6 +423,7 @@ object Proc_PlanPruebas_CargaMaster_mes_exclude {
       //**************************
       //****  C O M P A R A C I O N      N U L O S  *************
       //**************************
+      /*
       BigIntValue =  ValorNull.getAs[Boolean]("Cumple_BigIntValue")
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValorNull - BigIntValue", "Registro ValorNull, Campo BigIntValue", "Valor = null", s"Valor = ??", BigIntValue)
       Control.RegisterTestPlanFeature("Datos de tipo BigIntType", IdTestPlan)
@@ -462,6 +464,8 @@ object Proc_PlanPruebas_CargaMaster_mes_exclude {
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ValorNull - timeStampValue", "Registro ValorNull, Campo timeStampValue", "Valor = null", s"Valor = ??", timeStampValue)
       Control.RegisterTestPlanFeature("Datos de tipo TimestampType", IdTestPlan)
       Control.RegisterTestPlanFeature("RAW - Convierte string null a null", IdTestPlan)
+      * 
+      */
       
       
       //**************************
@@ -498,7 +502,7 @@ object Proc_PlanPruebas_CargaMaster_mes_exclude {
       Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ)
       Control.RegisterTestPlanFeature("DQManual_Row", NumDQ)
       
-      val NumDQ_conWarning = Control.RegisterTestPlan(TestPlanGroup, "DQ - N° Ejecuciones con Warning", "ejecuta la validación, debe tener 2 ejecuciones con warnings", "N° Ejecuciones = 2", s"N° Ejecuciones = ${DQResultManual.getDQResult().filter { x => x.DQ_IsWarning} .length}", DQResultManual.getDQResult().filter { x => x.DQ_IsWarning} .length == 2)
+      val NumDQ_conWarning = Control.RegisterTestPlan(TestPlanGroup, "DQ - N° Ejecuciones con Warning", "ejecuta la validación, debe tener 2 ejecuciones con warnings", "N° Ejecuciones = 1", s"N° Ejecuciones = ${DQResultManual.getDQResult().filter { x => x.DQ_IsWarning} .length}", DQResultManual.getDQResult().filter { x => x.DQ_IsWarning} .length == 1)
       Control.RegisterTestPlanFeature("DQManual_Notification_Warning", NumDQ_conWarning)
       Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ_conWarning)
       Control.RegisterTestPlanFeature("DQManual_Row", NumDQ_conWarning)
@@ -509,61 +513,7 @@ object Proc_PlanPruebas_CargaMaster_mes_exclude {
       Control.RegisterTestPlanFeature("DQManual_Row", NumDQ_conError)
       
       
-      
-      //******************************************************************
-      //DataQuality con errores y tolerancia %
-      //******************************************************************
-      
-      val DQRulesConError = new ArrayBuffer[huemul_DataQuality]()
-      val DQ_ComparaAgrupado_conError = new huemul_DataQuality(null,"Suma Double > Suma Decimal","sum(DecimalValue) > sum(FloatValue)",6,huemulType_DQQueryLevel.Aggregate)
-      DQRulesConError.append(DQ_ComparaAgrupado_conError)
-      val DQ_ComparaFila_conError = new huemul_DataQuality(null,"Double > Decimal","DecimalValue > FloatValue",7)
-      DQRulesConError.append(DQ_ComparaFila_conError)
      
-      val DQ_ComparaFila_Tolerancia = new huemul_DataQuality(null,"DecimalValue > 0.2","DecimalValue > 0",8)
-      DQ_ComparaFila_Tolerancia.setTolerance(null, Decimal.apply(0.66)) 
-      DQRulesConError.append(DQ_ComparaFila_Tolerancia)
-      
-      val DQ_ComparaFila_ToleranciaSinError = new huemul_DataQuality(null,"DecimalValue > 0.1","DecimalValue > 0.1",9)
-      DQ_ComparaFila_ToleranciaSinError.setTolerance(null,Decimal.apply(0.67))
-      DQRulesConError.append(DQ_ComparaFila_ToleranciaSinError)
-      
-      
-      val DQ_ComparaFila_ToleranciaRow = new huemul_DataQuality(null,"DecimalValue > 0.2","DecimalValue > 0",10)
-      DQ_ComparaFila_ToleranciaRow.setTolerance(2, null) 
-      DQRulesConError.append(DQ_ComparaFila_ToleranciaRow)
-      
-      val DQ_ComparaFila_ToleranciaSinErrorRow = new huemul_DataQuality(null,"DecimalValue > 0.1","DecimalValue > 0.1",11)
-      DQ_ComparaFila_ToleranciaSinErrorRow.setTolerance(5,null)
-      DQRulesConError.append(DQ_ComparaFila_ToleranciaSinErrorRow)
-      
-      
-      val DQResultManual_Errores = TablaMaster.DataFramehuemul.DF_RunDataQuality(DQRulesConError, null, TablaMaster)
-      
-      val NumDQ_ErrorCode = Control.RegisterTestPlan(TestPlanGroup, "DQ - codigo error = 8", "ejecuta la validación, debe tener un error de codigo 8", "error_code = 8", s"error_code = ?", DQResultManual_Errores.getDQResult().filter { x => x.DQ_ErrorCode == 8} .length == 1)
-      Control.RegisterTestPlanFeature("DQManual_Notification_Warning", NumDQ_ErrorCode)
-      Control.RegisterTestPlanFeature("DQManual_Notification_Error", NumDQ_ErrorCode)
-      Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ_ErrorCode)
-      Control.RegisterTestPlanFeature("DQManual_Row", NumDQ_ErrorCode)
-      
-      val NumDQ_ErrorCode10 = Control.RegisterTestPlan(TestPlanGroup, "DQ - codigo error = 10", "ejecuta la validación, debe tener un error de codigo 10", "error_code = 10", s"error_code = ?", DQResultManual_Errores.getDQResult().filter { x => x.DQ_ErrorCode == 10} .length == 1)
-      Control.RegisterTestPlanFeature("DQManual_Notification_Warning", NumDQ_ErrorCode10)
-      Control.RegisterTestPlanFeature("DQManual_Notification_Error", NumDQ_ErrorCode10)
-      Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ_ErrorCode10)
-      Control.RegisterTestPlanFeature("DQManual_Row", NumDQ_ErrorCode10)
-      
-      val NumDQ_ErrorCodeSinError = Control.RegisterTestPlan(TestPlanGroup, "DQ - DecimalValue > 0.1 sin error", "ejecuta la validación, no debe tener error", "DecimalValue > 0.1 sin error", s"DecimalValue > 0.1 ?", DQResultManual_Errores.getDQResult().filter { x => x.DQ_SQLFormula == "DecimalValue > 0.1"}(0).DQ_IsError == false )
-      Control.RegisterTestPlanFeature("DQManual_Notification_Warning", NumDQ_ErrorCodeSinError)
-      Control.RegisterTestPlanFeature("DQManual_Notification_Error", NumDQ_ErrorCodeSinError)
-      Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ_ErrorCodeSinError)
-      Control.RegisterTestPlanFeature("DQManual_Row", NumDQ_ErrorCodeSinError)
-     
-      val NumDQ_conErrores = Control.RegisterTestPlan(TestPlanGroup, "DQ - N° Ejecuciones con Error (V2)", "ejecuta la validación, debe tener 4 ejecuciones con error (warnings) (v2)", "N° Ejecuciones = 4", s"N° Ejecuciones = ${DQResultManual_Errores.getDQResult().filter { x => x.DQ_IsError} .length}", DQResultManual_Errores.getDQResult().filter { x => x.DQ_IsError} .length == 4)
-      Control.RegisterTestPlanFeature("DQManual_Notification_Warning", NumDQ_conErrores)
-      Control.RegisterTestPlanFeature("DQManual_Notification_Error", NumDQ_conErrores)
-      Control.RegisterTestPlanFeature("DQManual_Aggregate", NumDQ_conErrores)
-      Control.RegisterTestPlanFeature("DQManual_Row", NumDQ_conErrores)
-      
       Control.FinishProcessOK
     } catch {
       case e: Exception => 
