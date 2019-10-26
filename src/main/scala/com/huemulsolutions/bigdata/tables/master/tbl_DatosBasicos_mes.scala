@@ -26,46 +26,46 @@ class tbl_DatosBasicos_mes(HuemulLib: huemul_BigDataGovernance, Control: huemul_
   this.setNumPartitions(2)
   
   val periodo_mes = new huemul_Columns(StringType,true,"periodo")
-  periodo_mes.setIsPK ( true)
+  periodo_mes.setIsPK ( )
 
   
   val TipoValor = new huemul_Columns(StringType,true,"Nombre del tipo de valor")
-  TipoValor.setIsPK ( true)
-  TipoValor.setDQ_MinLen ( 2)
-  TipoValor.setDQ_MaxLen ( 50)
+    .setIsPK ()
+    .setDQ_MinLen ( 2,null)
+    .setDQ_MaxLen ( 50,null)
   
   
   val IntValue = new huemul_Columns(IntegerType,true,"datos integer")
-  IntValue.setNullable ( true)
+      .setNullable ( )
   
   
   
   val BigIntValue = new huemul_Columns(LongType,true,"datos BigInt")
-  BigIntValue.setNullable ( true)
+  BigIntValue.setNullable ( )
   
   val SmallIntValue = new huemul_Columns(ShortType,true,"datos SmallInt")
-  SmallIntValue.setNullable ( true)
+  SmallIntValue.setNullable ()
   
   val TinyIntValue = new huemul_Columns(ShortType,true,"datos TinyInt")
-  TinyIntValue.setNullable ( true)
+  TinyIntValue.setNullable ()
   
   val DecimalValue = new huemul_Columns(DecimalType(10,4),true,"datos Decimal(10,4)")
-  DecimalValue.setNullable ( true)
+  DecimalValue.setNullable ()
   
   val RealValue = new huemul_Columns(DoubleType,true,"datos Real")
-  RealValue.setNullable ( true)
+  RealValue.setNullable ()
   
   val FloatValue = new huemul_Columns(FloatType,true,"datos Float")
-  FloatValue.setNullable ( true)
+  FloatValue.setNullable ()
   
   val StringValue = new huemul_Columns(StringType,true,"datos String")
-  StringValue.setNullable ( true)
+  StringValue.setNullable ()
   
   val charValue = new huemul_Columns(StringType,true,"datos Char")
-  charValue.setNullable ( true)
+  charValue.setNullable ()
   
   val timeStampValue = new huemul_Columns(TimestampType,true,"datos TimeStamp")
-  timeStampValue.setNullable ( true)
+  timeStampValue.setNullable ()
   
   
   

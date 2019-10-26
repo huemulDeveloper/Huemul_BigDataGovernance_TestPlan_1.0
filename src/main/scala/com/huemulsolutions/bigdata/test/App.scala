@@ -66,6 +66,8 @@ object App {
     
     Proc_PlanPruebas_CargaMaster_mes_exclude.main(args)
     
+    Proc_PlanPruebas_OnlyInsertNew_exclude.main(args)
+    
     
     
     //Validación que todo está OK
@@ -94,7 +96,7 @@ object App {
     
     val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
 
-    if (Control.TestPlan_IsOkById(TestPlanGroup, 22))
+    if (Control.TestPlan_IsOkById(TestPlanGroup, 23))
       println ("TODO OK")
     else
       println ("ERRORES")

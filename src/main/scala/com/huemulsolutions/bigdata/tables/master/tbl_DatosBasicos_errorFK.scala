@@ -25,21 +25,21 @@ class tbl_DatosBasicos_errorFK(HuemulLib: huemul_BigDataGovernance, Control: hue
   this.setNumPartitions(2)
 
   val Codigo = new huemul_Columns(IntegerType,true,"Codigo del registro PK")
-  Codigo.setIsPK ( true)
+  Codigo.setIsPK ( )
   
   
   val TipoValor = new huemul_Columns(StringType,true,"Nombre del tipo de valor (FK)")
-  TipoValor.setDQ_MinLen ( 2)
-  TipoValor.setDQ_MaxLen ( 50)
-  TipoValor.setNullable ( false)
+      .setDQ_MinLen ( 2,null)
+      .setDQ_MaxLen ( 50,null)
+      
   
   val CampoAdicional = new huemul_Columns(StringType,false,"valor Adicional")
-  CampoAdicional.setDefaultValue("'no asignado'")
+  CampoAdicional.setDefaultValues("'no asignado'")
   
   
   //**********Ejemplo para aplicar DataQuality de Integridad Referencial
   val itbl_DatosBasicos = new tbl_DatosBasicos(HuemulLib,Control)
-  val fk_tbl_DatosBasicos = new huemul_Table_Relationship(itbl_DatosBasicos, false)
+  val fk_tbl_DatosBasicos = new huemul_Table_Relationship(itbl_DatosBasicos, false).setExternalCode("USER_FK_CODE")
   fk_tbl_DatosBasicos.AddRelationship(itbl_DatosBasicos.TipoValor , TipoValor)
   
   
