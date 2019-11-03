@@ -11,7 +11,7 @@ import org.apache.spark.sql.types.DecimalType
 
 
 
-class tbl_DatosBasicos_mes(HuemulLib: huemul_BigDataGovernance, Control: huemul_Control) extends huemul_Table(HuemulLib,Control) with Serializable {
+class tbl_DatosBasicos_mes_exclude(HuemulLib: huemul_BigDataGovernance, Control: huemul_Control) extends huemul_Table(HuemulLib,Control) with Serializable {
   this.setTableType(huemulType_Tables.Transaction)
   this.setDataBase(HuemulLib.GlobalSettings.MASTER_DataBase)
   this.setDescription("Plan pruebas: verificar que todos los tipos de datos sean interpretados de forma correcta")
@@ -26,53 +26,55 @@ class tbl_DatosBasicos_mes(HuemulLib: huemul_BigDataGovernance, Control: huemul_
   this.setNumPartitions(2)
   
   val periodo_mes = new huemul_Columns(StringType,true,"periodo")
-  periodo_mes.setIsPK ( )
+  periodo_mes.setIsPK ( true)
 
   
   val TipoValor = new huemul_Columns(StringType,true,"Nombre del tipo de valor")
-    .setIsPK ()
-    .setDQ_MinLen ( 2,null)
-    .setDQ_MaxLen ( 50,null)
+  TipoValor.setIsPK ( true)
+  TipoValor.setDQ_MinLen ( 2)
+  TipoValor.setDQ_MaxLen ( 50)
   
   
   val IntValue = new huemul_Columns(IntegerType,true,"datos integer")
-      .setNullable ( )
+  IntValue.setNullable ( true)
   
   
   
   val BigIntValue = new huemul_Columns(LongType,true,"datos BigInt")
-  BigIntValue.setNullable ( )
+  BigIntValue.setNullable ( true)
   
   val SmallIntValue = new huemul_Columns(ShortType,true,"datos SmallInt")
-  SmallIntValue.setNullable ()
+  SmallIntValue.setNullable ( true)
   
   val TinyIntValue = new huemul_Columns(ShortType,true,"datos TinyInt")
-  TinyIntValue.setNullable ()
+  TinyIntValue.setNullable ( true)
   
   val DecimalValue = new huemul_Columns(DecimalType(10,4),true,"datos Decimal(10,4)")
-  DecimalValue.setNullable ()
+  DecimalValue.setNullable ( true)
   
   val RealValue = new huemul_Columns(DoubleType,true,"datos Real")
-  RealValue.setNullable ()
+  RealValue.setNullable ( true)
   
   val FloatValue = new huemul_Columns(FloatType,true,"datos Float")
-  FloatValue.setNullable ()
+  FloatValue.setNullable ( true)
   
   val StringValue = new huemul_Columns(StringType,true,"datos String")
-  StringValue.setNullable ()
+  StringValue.setNullable ( true)
   
   val charValue = new huemul_Columns(StringType,true,"datos Char")
-  charValue.setNullable ()
+  charValue.setNullable ( true)
   
   val timeStampValue = new huemul_Columns(TimestampType,true,"datos TimeStamp")
-  timeStampValue.setNullable ()
+  timeStampValue.setNullable ( true)
   
-  
+  //Regla para probar exclusión de registro al fallar un warning
+  val DQ_warning_exclude: huemul_DataQuality = new huemul_DataQuality(TipoValor ,"Exclusión de valor Cero-Vacio", "tipoValor not in ('Cero-Vacio')",1).setNotification(huemulType_DQNotification.WARNING_EXCLUDE).setQueryLevel(huemulType_DQQueryLevel.Row)
+  val DQ_warning_solo: huemul_DataQuality = new huemul_DataQuality(TipoValor ,"Solo warning cuando aparezca registro Cero-Vacio", "tipoValor <> 'Negativo_Maximo'",2).setNotification(huemulType_DQNotification.WARNING).setQueryLevel(huemulType_DQQueryLevel.Row)
   
   
   //**********Ejemplo para aplicar DataQuality de Integridad Referencial
   val itbl_DatosBasicos = new tbl_DatosBasicos(HuemulLib,Control)
-  val fk_tbl_DatosBasicos = new huemul_Table_Relationship(itbl_DatosBasicos, false)
+  val fk_tbl_DatosBasicos = new huemul_Table_Relationship(itbl_DatosBasicos, false).setNotification(huemulType_DQNotification.WARNING_EXCLUDE).broadcastJoin(true)
   fk_tbl_DatosBasicos.AddRelationship(itbl_DatosBasicos.TipoValor , TipoValor)
   
   
