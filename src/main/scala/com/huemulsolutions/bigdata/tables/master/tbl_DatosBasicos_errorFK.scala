@@ -17,7 +17,8 @@ class tbl_DatosBasicos_errorFK(HuemulLib: huemul_BigDataGovernance, Control: hue
   this.setDescription("Plan pruebas: verificar que error en FK funcione con registro en DQ")
   this.setGlobalPaths(HuemulLib.GlobalSettings.MASTER_BigFiles_Path)
   this.setLocalPath("planPruebas/")
-  this.setStorageType(huemulType_StorageType.PARQUET)
+  //this.setStorageType(huemulType_StorageType.PARQUET)
+  this.setStorageType(huemulType_StorageType.ORC)
   this.setDQ_MaxNewRecords_Num(4)
   this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   

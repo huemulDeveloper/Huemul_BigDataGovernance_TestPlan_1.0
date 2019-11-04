@@ -78,6 +78,26 @@ object globalSettings {
    
    Global.SANDBOX_BigFiles_Path.append(new huemul_KeyValuePath("production","hdfs:///user/data/production/sandbox/"))
    Global.SANDBOX_BigFiles_Path.append(new huemul_KeyValuePath("experimental","hdfs:///user/data/experimental/sandbox/"))
+   
+   //DQ_ERROR SETTING
+   Global.DQ_SaveErrorDetails = true
+   Global.DQError_DataBase.append(new huemul_KeyValuePath("production","production_DQError"))
+   Global.DQError_DataBase.append(new huemul_KeyValuePath("experimental","experimental_DQError"))
+   
+   Global.DQError_Path.append(new huemul_KeyValuePath("production","hdfs:///user/data/production/dqerror/"))
+   Global.DQError_Path.append(new huemul_KeyValuePath("experimental","hdfs:///user/data/experimental/dqerror/"))
+
+   //OLD VALUE TRACE
+   Global.MDM_SaveOldValueTrace = true
+   Global.MDM_OldValueTrace_DataBase.append(new huemul_KeyValuePath("production","production_mdm_oldvalue"))
+   Global.MDM_OldValueTrace_DataBase.append(new huemul_KeyValuePath("experimental","experimental_mdm_oldvalue"))
+   
+   Global.MDM_OldValueTrace_Path.append(new huemul_KeyValuePath("production","hdfs:///user/data/production/mdm_oldvalue/"))
+   Global.MDM_OldValueTrace_Path.append(new huemul_KeyValuePath("experimental","hdfs:///user/data/experimental/mdm_oldvalue/"))
+
+   //BACKUP
+   Global.MDM_Backup_Path.append(new huemul_KeyValuePath("production","hdfs:///user/data/production/backup/"))
+   Global.MDM_Backup_Path.append(new huemul_KeyValuePath("experimental","hdfs:///user/data/experimental/backup/"))
 
 }
 

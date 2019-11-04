@@ -19,7 +19,8 @@ class tbl_DatosBasicosErrores(HuemulLib: huemul_BigDataGovernance, Control: huem
   this.setDescription("Plan pruebas: verificar que todos los tipos de datos sean interpretados de forma correcta")
   this.setGlobalPaths(HuemulLib.GlobalSettings.MASTER_BigFiles_Path)
   this.setLocalPath("planPruebas/")
-  this.setStorageType(huemulType_StorageType.PARQUET)
+  //this.setStorageType(huemulType_StorageType.PARQUET)
+  this.setStorageType(huemulType_StorageType.ORC)
   this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   
   //Agrega version 1.3

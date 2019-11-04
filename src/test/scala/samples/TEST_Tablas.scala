@@ -25,6 +25,9 @@ class AppTest {
     
       
     @Test
+    def TEST_tbl_DatosBasicos_Mes() = assertTrue(TESTp_tbl_DatosBasicos_mes())
+    
+    @Test
     def TEST_tbl_DatosBasicos() = assertTrue(TESTp_tbl_DatosBasicos())
     
     @Test
@@ -54,6 +57,28 @@ class AppTest {
       
       try {
         val Master = new tbl_DatosBasicos(huemulLib,Control)
+        if (Master.Error_isError) {
+          println(s"Codigo: ${Master.Error_Code}, Descripción: ${Master.Error_Text}")
+          SinError = false
+        }
+      } catch {
+        case e: Exception => 
+          SinError = false
+          println(e)
+      }
+        
+      
+      return SinError
+    }
+    
+    /**Revisión de clase tbl_DatosBasicos
+     * 
+     */
+    def TESTp_tbl_DatosBasicos_mes(): Boolean = {
+      var SinError = true
+      
+      try {
+        val Master = new tbl_DatosBasicos_mes(huemulLib,Control)
         if (Master.Error_isError) {
           println(s"Codigo: ${Master.Error_Code}, Descripción: ${Master.Error_Text}")
           SinError = false

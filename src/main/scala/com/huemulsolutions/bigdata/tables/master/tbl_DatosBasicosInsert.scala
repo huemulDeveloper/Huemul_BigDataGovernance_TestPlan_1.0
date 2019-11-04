@@ -16,7 +16,8 @@ class tbl_DatosBasicosInsert(HuemulLib: huemul_BigDataGovernance, Control: huemu
   this.setDescription("Plan pruebas: verificar que todos los tipos de datos sean interpretados de forma correcta (carga 1 vez, luego solo inserta datos)")
   this.setGlobalPaths(HuemulLib.GlobalSettings.MASTER_BigFiles_Path)
   this.setLocalPath("planPruebas/")
-  this.setStorageType(huemulType_StorageType.PARQUET)
+  this.setStorageType(huemulType_StorageType.ORC)
+  //this.setStorageType(huemulType_StorageType.PARQUET)
   this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   
     //Agrega version 1.3
