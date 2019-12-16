@@ -24,7 +24,6 @@ import org.apache.spark.api.java.function.FlatMapFunction
 
 
 
-
 object App_hbase {
 
 

@@ -14,6 +14,10 @@ import scala.collection.mutable._
 import org.apache.spark.sql.types._
 import com.huemulsolutions.bigdata.raw.raw_DatosOldValue
 import com.huemulsolutions.bigdata.tables.master.tbl_OldValueTrace
+import com.huemulsolutions.bigdata.tables.huemulType_StorageType._
+import com.huemulsolutions.bigdata.tables.huemulType_StorageType
+import com.huemulsolutions.bigdata.tables.huemul_TableConnector
+import com.huemulsolutions.bigdata.tables.huemulType_InternalTableType
 
 object Proc_PlanPruebas_OldValueTrace {
   def main(args: Array[String]): Unit = {
@@ -24,7 +28,17 @@ object Proc_PlanPruebas_OldValueTrace {
     val Mes = huemulLib.arguments.GetValue("mes", null,"Debe especificar mes de proceso: ejemplo: mes=12")
     
     val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
-
+    val TipoTablaParam: String = huemulLib.arguments.GetValue("TipoTabla", null, "Debe especificar TipoTabla (ORC,PARQUET,HBASE)")
+    var TipoTabla: huemulType_StorageType = null
+    if (TipoTablaParam == "orc")
+        TipoTabla = huemulType_StorageType.ORC
+    else if (TipoTablaParam == "parquet")
+        TipoTabla = huemulType_StorageType.PARQUET
+    else if (TipoTablaParam == "hbase")
+        TipoTabla = huemulType_StorageType.HBASE
+        
+    
+    println(s"tipo tabla: ${TipoTablaParam}, ${TipoTabla}")
     Control.AddParamInformation("TestPlanGroup", TestPlanGroup)
         
     try {
@@ -37,7 +51,7 @@ object Proc_PlanPruebas_OldValueTrace {
         Control.RaiseError(s"Error al intentar abrir archivo de datos: ${DF_RAW.Error.ControlError_Message}")
       }
       Control.NewStep("Mapeo de Campos")
-      val TablaMaster = new tbl_OldValueTrace (huemulLib, Control)      
+      val TablaMaster = new tbl_OldValueTrace (huemulLib, Control,TipoTabla)      
       TablaMaster.DF_from_RAW(DF_RAW, "DF_Original")
       
    //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
@@ -51,6 +65,16 @@ object Proc_PlanPruebas_OldValueTrace {
       if (fs.exists(FullPath))
         fs.delete(FullPath, true)
         
+      val FullPath_OVT = new org.apache.hadoop.fs.Path(s"${TablaMaster.getFullNameWithPath_OldValueTrace()}")
+      if (fs.exists(FullPath_OVT))
+        fs.delete(FullPath_OVT, true)
+        
+      if (TipoTablaParam == "hbase") {
+        Control.NewStep("borrar tabla")
+        val th = new huemul_TableConnector(huemulLib, Control)
+        th.tableDeleteHBase(TablaMaster.getHBaseNamespace(huemulType_InternalTableType.Normal), TablaMaster.getHBaseTableName(huemulType_InternalTableType.Normal))
+      }
+        
    //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
         
         
@@ -63,7 +87,7 @@ object Proc_PlanPruebas_OldValueTrace {
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "No hay error en masterización", "No hay error en masterización", s"${if (tp_resultado == true) "no" else "si"} hay error en masterización", tp_resultado == true)
       Control.RegisterTestPlanFeature("OldValueTrace - inicial", IdTestPlan)
       
-        
+      TablaMaster.DataFramehuemul.DataFrame.show()  
       
       
       
@@ -78,6 +102,8 @@ object Proc_PlanPruebas_OldValueTrace {
 
       TablaMaster.setMappingAuto()
       val tp_resultado_2 = TablaMaster.executeFull("DF_Final_2", org.apache.spark.storage.StorageLevel.MEMORY_ONLY )
+      
+      TablaMaster.DataFramehuemul.DataFrame.show()
       
       //CREATE VALIDATION FOR TABLE RESULT
       val result_val_mdm = huemulLib.spark.sql(s"""

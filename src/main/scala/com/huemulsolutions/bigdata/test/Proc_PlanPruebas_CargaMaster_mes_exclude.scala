@@ -14,7 +14,10 @@ import scala.collection.mutable._
 import org.apache.spark.sql.types._
 import com.huemulsolutions.bigdata.tables.master.tbl_DatosBasicos_mes_exclude
 import org.apache.spark.sql.functions._
-
+import com.huemulsolutions.bigdata.tables.huemulType_StorageType._
+import com.huemulsolutions.bigdata.tables.huemulType_StorageType
+import com.huemulsolutions.bigdata.tables.huemul_TableConnector
+import com.huemulsolutions.bigdata.tables.huemulType_InternalTableType
 //OJO:
 //el resultado de suma de double con valores nulos da distinto a sumar los valores sin nulos (el decimal 15 da diferente)
 //por otro lado, un float cuando se compara linea a linea con un decimal el resultado es distinto.
@@ -29,7 +32,15 @@ object Proc_PlanPruebas_CargaMaster_mes_exclude {
     val Mes = "09"//huemulLib.arguments.GetValue("mes", null,"Debe especificar mes de proceso: ejemplo: mes=12")
     
     val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
-
+    val TipoTablaParam: String = huemulLib.arguments.GetValue("TipoTabla", null, "Debe especificar TipoTabla (ORC,PARQUET,HBASE)")
+    var TipoTabla: huemulType_StorageType = null
+    if (TipoTablaParam == "orc")
+        TipoTabla = huemulType_StorageType.ORC
+    else if (TipoTablaParam == "parquet")
+        TipoTabla = huemulType_StorageType.PARQUET
+    else if (TipoTablaParam == "hbase")
+        TipoTabla = huemulType_StorageType.HBASE
+        
     Control.AddParamInformation("TestPlanGroup", TestPlanGroup)
         
     try {
@@ -42,7 +53,7 @@ object Proc_PlanPruebas_CargaMaster_mes_exclude {
         Control.RaiseError(s"Error al intentar abrir archivo de datos: ${DF_RAW.Error.ControlError_Message}")
       }
       Control.NewStep("Mapeo de Campos")
-      val TablaMaster = new tbl_DatosBasicos_mes_exclude(huemulLib, Control)
+      val TablaMaster = new tbl_DatosBasicos_mes_exclude(huemulLib, Control,TipoTabla)
       
       val periodo_mes = huemulLib.ReplaceWithParams("{{YYYY}}-{{MM}}-{{DD}}", Ano.toInt, Mes.toInt, 1, 0, 0, 0, null)
       val df_final = DF_RAW.DataFramehuemul.DataFrame.withColumn("periodo_mes", lit(periodo_mes))
@@ -58,6 +69,12 @@ object Proc_PlanPruebas_CargaMaster_mes_exclude {
       val fs = FileSystem.get(huemulLib.spark.sparkContext.hadoopConfiguration) 
       if (fs.exists(FullPath))
         fs.delete(FullPath, true)
+        
+      if (TipoTablaParam == "hbase") {
+        Control.NewStep("borrar tabla")
+        val th = new huemul_TableConnector(huemulLib, Control)
+        th.tableDeleteHBase(TablaMaster.getHBaseNamespace(huemulType_InternalTableType.Normal), TablaMaster.getHBaseTableName(huemulType_InternalTableType.Normal))
+      }
         
    //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
       

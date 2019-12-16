@@ -11,14 +11,14 @@ import org.apache.spark.sql.types.DecimalType
 
 
 
-class tbl_DatosBasicosPermisoFull(HuemulLib: huemul_BigDataGovernance, Control: huemul_Control) extends huemul_Table(HuemulLib,Control) with Serializable {
+class tbl_DatosBasicosPermisoFull(HuemulLib: huemul_BigDataGovernance, Control: huemul_Control, TipoTabla: huemulType_StorageType) extends huemul_Table(HuemulLib,Control) with Serializable {
   this.setTableType(huemulType_Tables.Master)
   this.setDataBase(HuemulLib.GlobalSettings.MASTER_DataBase)
   this.setDescription("Plan pruebas: verificar que todos los tipos de datos sean interpretados de forma correcta")
   this.setGlobalPaths(HuemulLib.GlobalSettings.MASTER_BigFiles_Path)
   this.setLocalPath("planPruebas/")
   //this.setStorageType(huemulType_StorageType.PARQUET)
-  this.setStorageType(huemulType_StorageType.ORC)
+  this.setStorageType(TipoTabla)
   this.setDQ_MaxNewRecords_Num(4)
   this.WhoCanRun_executeFull_addAccess("com.huemulsolutions.bigdata.test", "Proc_PlanPruebas_PermisosFull")
   this.setFrequency(huemulType_Frequency.ANY_MOMENT)

@@ -29,8 +29,9 @@ object App {
     resultado2.ResultSet.foreach { x => println(s"campo campo: ${x.getAs("campo")} ") }
     * 
     */
-  
     com.yourcompany.settings.globalSettings.Global.HIVE_HourToUpdateMetadata=6
+   
+    
     com.huemulsolutions.bigdata.raw.raw_LargoDinamico.main(args)
     Proc_PlanPruebas_CargaMaster_SelectiveUpdate.main(args)
 
@@ -62,7 +63,7 @@ object App {
     Proc_PlanPruebas_Malos01.main(args)
     Proc_PlanPruebas_CargaNoTrim.main(args)
     
-    Proc_PlanPruebas_OldValueTrace.main(args)
+     Proc_PlanPruebas_OldValueTrace.main(args)
     
     Proc_PlanPruebas_CargaMaster_mes_exclude.main(args)
     

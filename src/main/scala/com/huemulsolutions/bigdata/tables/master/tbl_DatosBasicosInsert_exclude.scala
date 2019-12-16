@@ -10,13 +10,13 @@ import org.apache.spark.sql.types.DecimalType
 import com.huemulsolutions.bigdata.tables.huemulType_StorageType._
 
 
-class tbl_DatosBasicosInsert_exclude(HuemulLib: huemul_BigDataGovernance, Control: huemul_Control) extends huemul_Table(HuemulLib,Control) with Serializable {
+class tbl_DatosBasicosInsert_exclude(HuemulLib: huemul_BigDataGovernance, Control: huemul_Control, TipoTabla: huemulType_StorageType) extends huemul_Table(HuemulLib,Control) with Serializable {
   this.setTableType(huemulType_Tables.Master)
   this.setDataBase(HuemulLib.GlobalSettings.MASTER_DataBase)
   this.setDescription("Plan pruebas: verificar que todos los tipos de datos sean interpretados de forma correcta (carga 1 vez, luego solo inserta datos)")
   this.setGlobalPaths(HuemulLib.GlobalSettings.MASTER_BigFiles_Path)
   this.setLocalPath("planPruebas/")
-  this.setStorageType(huemulType_StorageType.ORC)
+  this.setStorageType(TipoTabla)
   //this.setStorageType(huemulType_StorageType.PARQUET)
   this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   
@@ -130,7 +130,7 @@ class tbl_DatosBasicosInsert_exclude(HuemulLib: huemul_BigDataGovernance, Contro
   
   
   //**********Ejemplo para aplicar DataQuality de Integridad Referencial
-  val itbl_DatosBasicosNuevos = new tbl_DatosBasicosNuevos(HuemulLib,Control)
+  val itbl_DatosBasicosNuevos = new tbl_DatosBasicosNuevos(HuemulLib,Control, TipoTabla)
   val fk_tbl_DatosBasicos = new huemul_Table_Relationship(itbl_DatosBasicosNuevos, false).setNotification(huemulType_DQNotification.WARNING_EXCLUDE).broadcastJoin(true)
   fk_tbl_DatosBasicos.AddRelationship(itbl_DatosBasicosNuevos.TipoValor , TipoValor)
   

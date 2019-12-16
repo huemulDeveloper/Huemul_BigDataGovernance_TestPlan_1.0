@@ -6,7 +6,10 @@ import com.huemulsolutions.bigdata.raw.raw_DatosBasicos
 import com.huemulsolutions.bigdata
 import org.apache.hadoop.fs.FileSystem
 import com.huemulsolutions.bigdata.tables.master._
-
+import com.huemulsolutions.bigdata.tables.huemulType_StorageType._
+import com.huemulsolutions.bigdata.tables.huemulType_StorageType
+import com.huemulsolutions.bigdata.tables.huemul_TableConnector
+import com.huemulsolutions.bigdata.tables.huemulType_InternalTableType
 
 object Proc_PlanPruebas_InsertLimitErrorPorc {
   def main(args: Array[String]): Unit = {
@@ -17,7 +20,14 @@ object Proc_PlanPruebas_InsertLimitErrorPorc {
     val Mes = huemulLib.arguments.GetValue("mes", null,"Debe especificar mes de proceso: ejemplo: mes=12")
     
     val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
-
+    val TipoTablaParam: String = huemulLib.arguments.GetValue("TipoTabla", null, "Debe especificar TipoTabla (ORC,PARQUET,HBASE)")
+    var TipoTabla: huemulType_StorageType = null
+    if (TipoTablaParam == "orc")
+        TipoTabla = huemulType_StorageType.ORC
+    else if (TipoTablaParam == "parquet")
+        TipoTabla = huemulType_StorageType.PARQUET
+    else if (TipoTablaParam == "hbase")
+        TipoTabla = huemulType_StorageType.HBASE
     Control.AddParamInformation("TestPlanGroup", TestPlanGroup)
         
     try {
@@ -30,7 +40,7 @@ object Proc_PlanPruebas_InsertLimitErrorPorc {
       }
       
       Control.NewStep("Mapeo de Campos")
-      val TablaMaster = new tbl_DatosBasicosNuevosPerc(huemulLib, Control)      
+      val TablaMaster = new tbl_DatosBasicosNuevosPerc(huemulLib, Control,TipoTabla)      
       TablaMaster.DF_from_DF(DF_RAW.DataFramehuemul.DataFrame,"DF_RAW", "DF_Original")
       
       //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
@@ -43,6 +53,12 @@ object Proc_PlanPruebas_InsertLimitErrorPorc {
       val fs = FileSystem.get(huemulLib.spark.sparkContext.hadoopConfiguration) 
       if (fs.exists(FullPath))
         fs.delete(FullPath, true)
+        
+      if (TipoTablaParam == "hbase") {
+        Control.NewStep("borrar tabla")
+        val th = new huemul_TableConnector(huemulLib, Control)
+        th.tableDeleteHBase(TablaMaster.getHBaseNamespace(huemulType_InternalTableType.Normal), TablaMaster.getHBaseTableName(huemulType_InternalTableType.Normal))
+      }
         
    //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
       
