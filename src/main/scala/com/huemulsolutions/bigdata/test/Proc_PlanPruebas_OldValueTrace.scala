@@ -121,6 +121,7 @@ object Proc_PlanPruebas_OldValueTrace {
 					FROM production_mdm_oldvalue.tbl_oldvaluetrace_oldvalue
       """)
       
+      huemulLib.spark.sql("select * from __FullJoin").show()
       result_val_mdm.show()
       val result_val_mdm_2 = result_val_mdm.collectAsList()
       
