@@ -10,7 +10,6 @@ import com.huemulsolutions.bigdata.common._
 import com.huemulsolutions.bigdata.control._
 import org.apache.spark.sql.types._
 
-import scalaz.std.math.bigInt
 import com.huemulsolutions.bigdata.control.huemulType_Frequency.huemulType_Frequency
 
 class raw_LargoDinamico(huemulLib: huemul_BigDataGovernance, Control: huemul_Control) extends huemul_DataLake(huemulLib, Control) with Serializable  {

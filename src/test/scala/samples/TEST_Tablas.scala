@@ -25,6 +25,9 @@ class AppTest {
     
       
     @Test
+    def TEST_tbl_DatosBasicos_Mes() = assertTrue(TESTp_tbl_DatosBasicos_mes())
+    
+    @Test
     def TEST_tbl_DatosBasicos() = assertTrue(TESTp_tbl_DatosBasicos())
     
     @Test
@@ -68,6 +71,28 @@ class AppTest {
       return SinError
     }
     
+    /**Revisión de clase tbl_DatosBasicos
+     * 
+     */
+    def TESTp_tbl_DatosBasicos_mes(): Boolean = {
+      var SinError = true
+      
+      try {
+        val Master = new tbl_DatosBasicos_mes(huemulLib,Control,huemulType_StorageType.HBASE)
+        if (Master.Error_isError) {
+          println(s"Codigo: ${Master.Error_Code}, Descripción: ${Master.Error_Text}")
+          SinError = false
+        }
+      } catch {
+        case e: Exception => 
+          SinError = false
+          println(e)
+      }
+        
+      
+      return SinError
+    }
+    
     /**Revisión de clase tbl_DatosBasicosAVRO
      * 
      */
@@ -75,7 +100,7 @@ class AppTest {
       var SinError = true
       
       try {
-        val Master = new tbl_DatosBasicosAVRO(huemulLib,Control)
+        val Master = new tbl_DatosBasicosAVRO(huemulLib,Control,huemulType_StorageType.ORC)
         if (Master.Error_isError) {
           println(s"Codigo: ${Master.Error_Code}, Descripción: ${Master.Error_Text}")
           SinError = false
@@ -97,7 +122,7 @@ class AppTest {
       var SinError = true
       
       try {
-        val Master = new tbl_DatosBasicosInsert(huemulLib,Control)
+        val Master = new tbl_DatosBasicosInsert(huemulLib,Control,huemulType_StorageType.HBASE)
         if (Master.Error_isError) {
           println(s"Codigo: ${Master.Error_Code}, Descripción: ${Master.Error_Text}")
           SinError = false
@@ -119,7 +144,7 @@ class AppTest {
       var SinError = true
       
       try {
-        val Master = new tbl_DatosBasicosErrores(huemulLib,Control)
+        val Master = new tbl_DatosBasicosErrores(huemulLib,Control,huemulType_StorageType.HBASE)
         if (Master.Error_isError) {
           println(s"Codigo: ${Master.Error_Code}, Descripción: ${Master.Error_Text}")
           SinError = false
@@ -141,7 +166,7 @@ class AppTest {
       var SinError = true
       
       try {
-        val Master = new tbl_DatosBasicosUpdate(huemulLib,Control)
+        val Master = new tbl_DatosBasicosUpdate(huemulLib,Control,huemulType_StorageType.PARQUET)
         if (Master.Error_isError) {
           println(s"Codigo: ${Master.Error_Code}, Descripción: ${Master.Error_Text}")
           SinError = false

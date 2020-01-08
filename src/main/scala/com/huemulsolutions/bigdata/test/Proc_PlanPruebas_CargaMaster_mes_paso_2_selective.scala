@@ -14,6 +14,8 @@ import scala.collection.mutable._
 import org.apache.spark.sql.types._
 import com.huemulsolutions.bigdata.tables.master.tbl_DatosBasicos_mes
 import org.apache.spark.sql.functions._
+import com.huemulsolutions.bigdata.tables.huemulType_StorageType._
+import com.huemulsolutions.bigdata.tables.huemulType_StorageType
 
 object Proc_PlanPruebas_CargaMaster_mes_paso_2_selective {
   def main(args: Array[String]): Unit = {
@@ -24,7 +26,14 @@ object Proc_PlanPruebas_CargaMaster_mes_paso_2_selective {
     val Mes = "10"//huemulLib.arguments.GetValue("mes", null,"Debe especificar mes de proceso: ejemplo: mes=12")
     
     val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
-
+    val TipoTablaParam: String = huemulLib.arguments.GetValue("TipoTabla", null, "Debe especificar TipoTabla (ORC,PARQUET,HBASE)")
+    var TipoTabla: huemulType_StorageType = null
+    if (TipoTablaParam == "orc")
+        TipoTabla = huemulType_StorageType.ORC
+    else if (TipoTablaParam == "parquet")
+        TipoTabla = huemulType_StorageType.PARQUET
+    else if (TipoTablaParam == "hbase")
+        TipoTabla = huemulType_StorageType.HBASE
     Control.AddParamInformation("TestPlanGroup", TestPlanGroup)
         
     try {
@@ -34,7 +43,7 @@ object Proc_PlanPruebas_CargaMaster_mes_paso_2_selective {
       
       
       Control.NewStep("Mapeo de Campos")
-      val TablaMaster = new tbl_DatosBasicos_mes(huemulLib, Control)
+      val TablaMaster = new tbl_DatosBasicos_mes(huemulLib, Control, TipoTabla)
       
       val periodo_mes = huemulLib.ReplaceWithParams("{{YYYY}}-{{MM}}-{{DD}}", Ano.toInt, Mes.toInt, 1, 0, 0, 0, null)
       
@@ -549,7 +558,7 @@ object Proc_PlanPruebas_CargaMaster_mes_paso_2_selective {
       datos.show()
       val NumDQ_Transaction = Control.RegisterTestPlan(TestPlanGroup, "DQ - 2 periodos cargados", "Tablas transaction con 2 periodos cargados", "len del arreglo = 2", s"len del arreglo = ${datos.count()}", datos.count() == 2)
       
-      val TablaMaster4 = new tbl_DatosBasicos_mes(huemulLib, Control)
+      val TablaMaster4 = new tbl_DatosBasicos_mes(huemulLib, Control, TipoTabla)
       TablaMaster4.DF_from_SQL("DF_Original", s"""select 'Cero-Vacio' as codTipoValor, 45 as valIntValue union all  select 'Cero-Vacio' as codTipoValor, -55 as valIntValue """) 
       TablaMaster4.TipoValor.SetMapping("codTipoValor")
       TablaMaster4.IntValue.SetMapping("valIntValue")
@@ -566,7 +575,7 @@ object Proc_PlanPruebas_CargaMaster_mes_paso_2_selective {
       }
       
       
-      val TablaMaster5 = new tbl_DatosBasicos_mes(huemulLib, Control)
+      val TablaMaster5 = new tbl_DatosBasicos_mes(huemulLib, Control, TipoTabla)
       TablaMaster5.DF_from_SQL("DF_Original", s"""select 'Cero-Vacio' as codTipoValor, 45 as valIntValue, '${periodo_mes}' as periodo_mes2 union all  select 'Cero-Vacio' as codTipoValor, -55 as valIntValue, '${periodo_mes}' as periodo_mes2 """) 
       TablaMaster5.periodo_mes.SetMapping("periodo_mes2")
       TablaMaster5.TipoValor.SetMapping("codTipoValor")

@@ -11,13 +11,14 @@ import org.apache.spark.sql.types.DecimalType
 import org.apache.spark.sql.types.Decimal
 
 
-class tbl_DatosBasicosNuevosPerc(HuemulLib: huemul_BigDataGovernance, Control: huemul_Control) extends huemul_Table(HuemulLib,Control) with Serializable {
+class tbl_DatosBasicosNuevosPerc(HuemulLib: huemul_BigDataGovernance, Control: huemul_Control, TipoTabla: huemulType_StorageType) extends huemul_Table(HuemulLib,Control) with Serializable {
   this.setTableType(huemulType_Tables.Master)
   this.setDataBase(HuemulLib.GlobalSettings.MASTER_DataBase)
   this.setDescription("Plan pruebas: verificar que todos los tipos de datos sean interpretados de forma correcta")
   this.setGlobalPaths(HuemulLib.GlobalSettings.MASTER_BigFiles_Path)
   this.setLocalPath("planPruebas/")
-  this.setStorageType(huemulType_StorageType.PARQUET)
+  //this.setStorageType(huemulType_StorageType.PARQUET)
+  this.setStorageType(TipoTabla)
   this.setDQ_MaxNewRecords_Perc(Decimal.apply(0.3))
   this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   

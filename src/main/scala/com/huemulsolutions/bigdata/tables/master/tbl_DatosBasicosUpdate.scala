@@ -8,16 +8,17 @@ import com.huemulsolutions.bigdata.tables.huemulType_Tables._
 import org.apache.spark.sql.types.DataTypes._
 import org.apache.spark.sql.types.DecimalType
 import com.huemulsolutions.bigdata.control.huemulType_Frequency.huemulType_Frequency
+import com.huemulsolutions.bigdata.tables.huemulType_StorageType._
 
 
-
-class tbl_DatosBasicosUpdate(HuemulLib: huemul_BigDataGovernance, Control: huemul_Control) extends huemul_Table(HuemulLib,Control) with Serializable {
+class tbl_DatosBasicosUpdate(HuemulLib: huemul_BigDataGovernance, Control: huemul_Control, TipoTabla: huemulType_StorageType) extends huemul_Table(HuemulLib,Control) with Serializable {
   this.setTableType(huemulType_Tables.Master)
   this.setDataBase(HuemulLib.GlobalSettings.MASTER_DataBase)
   this.setDescription("Plan pruebas: verificar que todos los tipos de datos sean interpretados de forma correcta (carga 1 vez, luego solo actualiza datos)")
   this.setGlobalPaths(HuemulLib.GlobalSettings.MASTER_BigFiles_Path)
   this.setLocalPath("planPruebas/")
-  this.setStorageType(huemulType_StorageType.PARQUET)
+  //this.setStorageType(huemulType_StorageType.PARQUET)
+  this.setStorageType(TipoTabla)
   this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   
   //Agrega version 1.3

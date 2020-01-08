@@ -17,7 +17,9 @@ class tbl_DatosBasicos(HuemulLib: huemul_BigDataGovernance, Control: huemul_Cont
   this.setDescription("Plan pruebas: verificar que todos los tipos de datos sean interpretados de forma correcta")
   this.setGlobalPaths(HuemulLib.GlobalSettings.MASTER_BigFiles_Path)
   this.setLocalPath("planPruebas/")
-  this.setStorageType(huemulType_StorageType.PARQUET)
+  //this.setStorageType(TipoTabla)
+  this.setStorageType(huemulType_StorageType.ORC)
+  //this.setStorageType(huemulType_StorageType.PARQUET)
   this.setDQ_MaxNewRecords_Num(4)
   this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   
