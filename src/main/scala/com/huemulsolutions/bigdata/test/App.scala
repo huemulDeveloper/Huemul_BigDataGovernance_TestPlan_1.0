@@ -82,7 +82,7 @@ object App {
         
     huemulLib_ini.close()
     
-    com.yourcompany.settings.globalSettings.Global.externalBBDD_conf.Using_HIVE.setActive(metadata_hive_active)
+    com.yourcompany.settings.globalSettings.Global.externalBBDD_conf.Using_HIVE.setActive(metadata_hive_active).setActiveForHBASE(metadata_hive_active)
     if (metadata_hive_active) {
       val HIVE_Setting = new ArrayBuffer[huemul_KeyValuePath]()
        val localPath: String = System.getProperty("user.dir").concat("/")
@@ -92,8 +92,9 @@ object App {
    
       
       com.yourcompany.settings.globalSettings.Global.externalBBDD_conf.Using_HIVE.setConnectionStrings(HIVE_Setting)
+      println(s"""num reg: ${com.yourcompany.settings.globalSettings.Global.externalBBDD_conf.Using_HIVE.getJDBC_connection(huemulLib_ini).ExecuteJDBC_WithResult("select 1 as uno").ResultSet.length}""")
     }
-    com.yourcompany.settings.globalSettings.Global.externalBBDD_conf.Using_SPARK.setActive(metadata_spark_active)
+    com.yourcompany.settings.globalSettings.Global.externalBBDD_conf.Using_SPARK.setActive(metadata_spark_active).setActiveForHBASE(false)
     
     
     com.huemulsolutions.bigdata.raw.raw_LargoDinamico.main(args)

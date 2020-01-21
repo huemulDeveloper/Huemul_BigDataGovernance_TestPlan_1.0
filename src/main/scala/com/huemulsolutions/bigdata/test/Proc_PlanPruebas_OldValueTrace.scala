@@ -21,6 +21,7 @@ import com.huemulsolutions.bigdata.tables.huemulType_InternalTableType
 
 object Proc_PlanPruebas_OldValueTrace {
   def main(args: Array[String]): Unit = {
+    com.yourcompany.settings.globalSettings.Global.externalBBDD_conf.Using_HIVE.setActiveForHBASE(true)
     val huemulLib = new huemul_BigDataGovernance("01 - Plan pruebas Proc_PlanPruebas_OldValueTrace",args,com.yourcompany.settings.globalSettings.Global)
     val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
     
