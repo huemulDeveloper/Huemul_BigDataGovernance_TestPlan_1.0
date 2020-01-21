@@ -173,6 +173,8 @@ object App {
         if (valida01.IsError) {
           error_existe_tablas_en_hive = true
           println(valida01.ErrorDescription)
+          Control.RegisterTestPlan(TestPlanGroup, s"hive ${x}", s"detalle error: ${valida01.ErrorDescription}", "no raiserror", s"raiserror", false) 
+    
         }
       }
         
@@ -191,10 +193,12 @@ object App {
         try {
           println(s"valida en SPARK existencia tabla $x")
           val valida01 = huemulLib.spark.sql(s"select count(1) from ${x}")
+          valida01.show()
         } catch {
           case e: Exception => {
             error_existe_tablas_en_spark = true
             println(e.getMessage)
+            Control.RegisterTestPlan(TestPlanGroup, s"hive ${x}", s"detalle error: ${e.getMessage}", "no raiserror", s"raiserror", false)
           }
         }
       }
