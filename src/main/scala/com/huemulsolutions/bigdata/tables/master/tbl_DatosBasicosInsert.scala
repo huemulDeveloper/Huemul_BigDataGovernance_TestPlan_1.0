@@ -20,6 +20,16 @@ class tbl_DatosBasicosInsert(HuemulLib: huemul_BigDataGovernance, Control: huemu
   //this.setStorageType(huemulType_StorageType.PARQUET)
   this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   
+  /**********   S E G U R I D A D   ****************************************/
+  //Solo estos package y clases pueden ejecutar en modo full, si no se especifica todos pueden invocar
+  //this.WhoCanRun_executeFull_addAccess("process_entidad_mes", "com.yourcompany.yourapplication")
+  //Solo estos package y clases pueden ejecutar en modo solo Insert, si no se especifica todos pueden invocar
+  this.WhoCanRun_executeOnlyInsert_addAccess("Proc_PlanPruebas_OnlyInsertNew","com.huemulsolutions.bigdata.test")
+  //Solo estos package y clases pueden ejecutar en modo solo Update, si no se especifica todos pueden invocar
+  //this.WhoCanRun_executeOnlyUpdate_addAccess("[[MyclassName]]", "[[my.package.path]]")
+  
+
+  
     //Agrega version 1.3
   this.setNumPartitions(2)
   

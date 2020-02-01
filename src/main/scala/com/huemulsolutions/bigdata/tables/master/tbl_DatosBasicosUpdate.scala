@@ -21,6 +21,9 @@ class tbl_DatosBasicosUpdate(HuemulLib: huemul_BigDataGovernance, Control: huemu
   this.setStorageType(TipoTabla)
   this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   
+  this.WhoCanRun_executeFull_addAccess("com.huemulsolutions.bigdata.test", "Proc_PlanPruebas_OnlyUpdate")
+  this.WhoCanRun_executeOnlyUpdate_addAccess("com.huemulsolutions.bigdata.test", "Proc_PlanPruebas_OnlyUpdate")
+  
   //Agrega version 1.3
   this.setNumPartitions(2)
   

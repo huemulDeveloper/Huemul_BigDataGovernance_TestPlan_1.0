@@ -23,6 +23,8 @@ class tbl_OldValueTrace(HuemulLib: huemul_BigDataGovernance, Control: huemul_Con
   this.setDQ_MaxNewRecords_Num(4)
   this.setFrequency(huemulType_Frequency.ANY_MOMENT)
   
+  this.WhoCanRun_executeFull_addAccess("com.huemulsolutions.bigdata.test", "Proc_PlanPruebas_OldValueTrace")
+  
   //Agrega version 1.3
   this.setNumPartitions(1)
 
