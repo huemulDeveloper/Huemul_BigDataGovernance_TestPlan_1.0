@@ -104,7 +104,7 @@ object Proc_PlanPruebas_OnlyInsertNew {
       
       //TODO: cambiar el parámetro "true" por algo.UPDATE O algo.NOUPDATE (en replaceValueOnUpdate
       Control.NewStep("PASO 2: SOLO INSERTA 1 REGISTRO, NO MODIFICA NI ELMINA NADA")
-      if (!TablaMaster.executeOnlyInsert("DF_Final_New", org.apache.spark.storage.StorageLevel.MEMORY_ONLY)) {
+      if (!TablaMaster.executeOnlyInsert("DF_Final_New")) {
         IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "No hay error en masterización", "No hay error en masterización", s"Si hay error en masterización", false)
         Control.RegisterTestPlanFeature("Requiered OK", IdTestPlan)
         Control.RegisterTestPlanFeature("IsPK", IdTestPlan)
