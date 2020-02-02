@@ -25,6 +25,9 @@ class tbl_DatosBasicosInsert(HuemulLib: huemul_BigDataGovernance, Control: huemu
   //this.WhoCanRun_executeFull_addAccess("process_entidad_mes", "com.yourcompany.yourapplication")
   //Solo estos package y clases pueden ejecutar en modo solo Insert, si no se especifica todos pueden invocar
   this.WhoCanRun_executeOnlyInsert_addAccess("Proc_PlanPruebas_OnlyInsertNew","com.huemulsolutions.bigdata.test")
+  this.WhoCanRun_executeOnlyInsert_addAccess("Proc_PlanPruebas_OnlyInsertNew_warning","com.huemulsolutions.bigdata.test")
+  this.WhoCanRun_executeOnlyInsert_addAccess("Proc_PlanPruebas_OnlyInsertNew_exclude","com.huemulsolutions.bigdata.test")
+  
   //Solo estos package y clases pueden ejecutar en modo solo Update, si no se especifica todos pueden invocar
   //this.WhoCanRun_executeOnlyUpdate_addAccess("[[MyclassName]]", "[[my.package.path]]")
   
