@@ -7,6 +7,16 @@ import com.yourcompany.settings.globalSettings
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 import java.io.{FileNotFoundException, IOException}
+
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.pdf.PDFParser;
+import org.apache.tika.sax.BodyContentHandler;
+
+import org.xml.sax.SAXException;
+import org.apache.tika.parser.pdf.PDFParserConfig
+
 //import com.huemulsolutions.bigdata.test.Proc_PlanPruebas_PermisosUpdate
 
 /**
@@ -32,6 +42,56 @@ object App {
   }
   
   def main(args : Array[String]) {
+    
+    
+    /*
+    val document = PDDocument.load(new File("CGP_16003127_1344086.pdf"))
+    document.getClass();
+    val stripper = new PDFTextStripperByArea()
+    stripper.setSortByPosition(true);
+    val tStripper = new PDFTextStripper();
+    tStripper.setStartPage(1)
+    tStripper.setEndPage(1)
+    val pdfFileInText = tStripper.getText(document);
+    val lines = pdfFileInText.split("\\r?\\n");
+    println(lines.length)
+    lines.foreach(x => println(x))
+*/
+    
+    val huemulLib = new huemul_BigDataGovernance("Pruebas Inicialización de Clases",args,com.yourcompany.settings.globalSettings.Global)
+    val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
+   
+     
+    val handler = new BodyContentHandler(-1);
+    val metadata = new Metadata();
+    
+    val pdffile = huemulLib.spark.sparkContext.binaryFiles("/user/data/norma_207_1.pdf")
+    val datas = pdffile.collect
+    val inputstream = datas(0)._2.open()
+    
+    
+    val pcontext = new ParseContext();
+          
+          //parsing the document using PDF parser
+    val pdfparser = new PDFParser();
+    val config = pdfparser.getPDFParserConfig
+    config.setSortByPosition(true)
+    pdfparser.setPDFParserConfig(config)
+    pdfparser.parse(inputstream, handler, metadata,pcontext);
+    
+    val b = handler.toString().split("\\n");
+    val metadataNames = metadata.names();
+    metadataNames.foreach(x => println(s"$x: ${metadata.get(x)}"))
+    var i: Int = 0
+     b.foreach(x => {i+=1; if (x.length() > 0) println(s"linea $i(largo ${x.length()} ): ${x}")});
+    
+    
+    
+    
+    huemulLib.close()
+  }
+  
+  def main_old(args : Array[String]) {
     //val huemulLib = new huemul_BigDataGovernance("Pruebas Inicialización de Clases",args,globalSettings.Global)
     //val Control = new huemul_Control(huemulLib,null)
     
