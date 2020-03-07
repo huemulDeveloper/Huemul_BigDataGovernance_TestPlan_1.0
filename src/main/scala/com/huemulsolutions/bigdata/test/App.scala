@@ -41,7 +41,7 @@ object App {
     return key
   }
   
-  def main(args : Array[String]) {
+  def main_PDF(args : Array[String]) {
     
     
     /*
@@ -58,40 +58,10 @@ object App {
     lines.foreach(x => println(x))
 */
     
-    val huemulLib = new huemul_BigDataGovernance("Pruebas Inicialización de Clases",args,com.yourcompany.settings.globalSettings.Global)
-    val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
    
-     
-    val handler = new BodyContentHandler(-1);
-    val metadata = new Metadata();
-    
-    val pdffile = huemulLib.spark.sparkContext.binaryFiles("/user/data/norma_207_1.pdf")
-    val datas = pdffile.collect
-    val inputstream = datas(0)._2.open()
-    
-    
-    val pcontext = new ParseContext();
-          
-          //parsing the document using PDF parser
-    val pdfparser = new PDFParser();
-    val config = pdfparser.getPDFParserConfig
-    config.setSortByPosition(true)
-    pdfparser.setPDFParserConfig(config)
-    pdfparser.parse(inputstream, handler, metadata,pcontext);
-    
-    val b = handler.toString().split("\\n");
-    val metadataNames = metadata.names();
-    metadataNames.foreach(x => println(s"$x: ${metadata.get(x)}"))
-    var i: Int = 0
-     b.foreach(x => {i+=1; if (x.length() > 0) println(s"linea $i(largo ${x.length()} ): ${x}")});
-    
-    
-    
-    
-    huemulLib.close()
   }
   
-  def main_old(args : Array[String]) {
+  def main(args : Array[String]) {
     //val huemulLib = new huemul_BigDataGovernance("Pruebas Inicialización de Clases",args,globalSettings.Global)
     //val Control = new huemul_Control(huemulLib,null)
     
@@ -157,6 +127,7 @@ object App {
     com.yourcompany.settings.globalSettings.Global.externalBBDD_conf.Using_SPARK.setActive(metadata_spark_active).setActiveForHBASE(false)
     
     
+    com.huemulsolutions.bigdata.raw.raw_DatosPDF.main(args)
     com.huemulsolutions.bigdata.raw.raw_LargoDinamico.main(args)
     Proc_PlanPruebas_CargaMaster_SelectiveUpdate.main(args)
 
@@ -269,7 +240,7 @@ object App {
     
     
     
-    if (Control.TestPlan_IsOkById(TestPlanGroup, 24))
+    if (Control.TestPlan_IsOkById(TestPlanGroup, 25))
       println ("TODO OK")
     else
       println ("ERRORES")
