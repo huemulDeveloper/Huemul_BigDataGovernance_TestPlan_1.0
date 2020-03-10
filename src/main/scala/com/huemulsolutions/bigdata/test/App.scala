@@ -127,8 +127,8 @@ object App {
     com.yourcompany.settings.globalSettings.Global.externalBBDD_conf.Using_SPARK.setActive(metadata_spark_active).setActiveForHBASE(false)
     
     
-    com.huemulsolutions.bigdata.raw.raw_DatosPDF.main(args)
-    com.huemulsolutions.bigdata.raw.raw_LargoDinamico.main(args)
+    com.huemulsolutions.bigdata.raw.raw_DatosPDF_test.main(args)
+    com.huemulsolutions.bigdata.raw.raw_LargoDinamico_test.main(args)
     Proc_PlanPruebas_CargaMaster_SelectiveUpdate.main(args)
 
     Proc_PlanPruebas_PermisosFull.main(args)

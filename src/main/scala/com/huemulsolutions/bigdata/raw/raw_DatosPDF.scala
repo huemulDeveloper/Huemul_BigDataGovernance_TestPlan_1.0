@@ -195,7 +195,7 @@ class raw_DatosPDF(huemulLib: huemul_BigDataGovernance, Control: huemul_Control)
 
 
 
-object raw_DatosPDF {
+object raw_DatosPDF_test {
   def main(args : Array[String]) {
     
     //Creación API
@@ -208,7 +208,7 @@ object raw_DatosPDF {
     val DF_RAW =  new raw_DatosPDF(huemulLib, Control)
     if (!DF_RAW.open("DF_RAW", null, 2018, 12, 31, 0, 0, 0)) {
       println("************************************************************")
-      println("**********  E  R R O R   E N   P R O C E S O   *************")
+      println("***********  E R R O R   E N   P R O C E S O   *************")
       println("************************************************************")
     } else 
       DF_RAW.DataFramehuemul.DataFrame.show()
@@ -317,5 +317,9 @@ object raw_DatosPDF {
     
     if (Control.TestPlan_CurrentIsOK(17))
       println("Proceso OK")
+      
+   
+    huemulLib.close()
+    println("sesión cerrada")
   }  
 }

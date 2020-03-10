@@ -133,7 +133,7 @@ class raw_LargoDinamico(huemulLib: huemul_BigDataGovernance, Control: huemul_Con
 
 
 
-object raw_LargoDinamico {
+object raw_LargoDinamico_test {
   def main(args : Array[String]) {
     
     //Creación API
