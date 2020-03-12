@@ -61,7 +61,7 @@
     <dependency>
 	  <groupId>com.huemulsolutions.bigdata</groupId>
 	  <artifactId>huemul-bigdatagovernance</artifactId>
-	  <version>2.4-SNAPSHOT</version>
+	  <version>2.4</version>
 	</dependency>
 	<dependency>
 	  <groupId>com.yourcompany</groupId>
