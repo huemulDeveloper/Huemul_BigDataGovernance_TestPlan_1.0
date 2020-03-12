@@ -80,7 +80,7 @@ object App {
     */
     
     var validacionTablas = new ArrayBuffer[String]()
-    validacionTablas.append("production_mdm_oldvalue.tbl_datosbasicos_oldvalue")
+    //validacionTablas.append("production_mdm_oldvalue.tbl_datosbasicos_oldvalue")
     validacionTablas.append("production_mdm_oldvalue.tbl_datosbasicosupdate_oldvalue")
     validacionTablas.append("production_mdm_oldvalue.tbl_oldvaluetrace_oldvalue")
     validacionTablas.append("production_dqerror.tbl_datosbasicos_dq")
@@ -201,7 +201,7 @@ object App {
       
       validacionTablas.foreach { x =>  
         println(s"valida en HIVE existencia tabla $x")
-        val valida01 = connectionHIVE.ExecuteJDBC_WithResult(s"select count(1) from ${x}")
+        val valida01 = connectionHIVE.ExecuteJDBC_WithResult(s"select count(1) as cantidad from ${x}")
         if (valida01.IsError) {
           error_existe_tablas_en_hive = true
           println(valida01.ErrorDescription)
@@ -224,7 +224,7 @@ object App {
       validacionTablas.foreach { x => 
         try {
           println(s"valida en SPARK existencia tabla $x")
-          val valida01 = huemulLib.spark.sql(s"select count(1) from ${x}")
+          val valida01 = huemulLib.spark.sql(s"select count(1) as cantidad from ${x}")
           valida01.show()
         } catch {
           case e: Exception => {
