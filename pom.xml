@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.huemulsolutions.bigdata</groupId>
   <artifactId>datagovernance.planpruebas</artifactId>
-  <version>2.3</version>
+  <version>2.4</version>
   <name>DataGovernancePlanPruebas</name>
   <description></description>
   <inceptionYear>2016</inceptionYear>
@@ -61,13 +61,31 @@
     <dependency>
 	  <groupId>com.huemulsolutions.bigdata</groupId>
 	  <artifactId>huemul-bigdatagovernance</artifactId>
-	  <version>2.3</version>
+	  <version>2.4</version>
 	</dependency>
 	<dependency>
 	  <groupId>com.yourcompany</groupId>
 	  <artifactId>demo_settings</artifactId>
 	  <version>2.0</version>
 	</dependency>
+	
+	
+
+	<!-- https://mvnrepository.com/artifact/org.apache.pdfbox/fontbox 
+<dependency>
+    <groupId>org.apache.pdfbox</groupId>
+    <artifactId>fontbox</artifactId>
+    <version>2.0.18</version>
+</dependency>-->
+	
+	<!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox 
+<dependency>
+    <groupId>org.apache.pdfbox</groupId>
+    <artifactId>pdfbox</artifactId>
+    <version>2.0.18</version>
+</dependency>-->
+	
+	
 
     <!-- Test -->
     <dependency>

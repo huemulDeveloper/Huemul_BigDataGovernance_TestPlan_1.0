@@ -7,6 +7,16 @@ import com.yourcompany.settings.globalSettings
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 import java.io.{FileNotFoundException, IOException}
+
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.pdf.PDFParser;
+import org.apache.tika.sax.BodyContentHandler;
+
+import org.xml.sax.SAXException;
+import org.apache.tika.parser.pdf.PDFParserConfig
+
 //import com.huemulsolutions.bigdata.test.Proc_PlanPruebas_PermisosUpdate
 
 /**
@@ -31,6 +41,26 @@ object App {
     return key
   }
   
+  def main_PDF(args : Array[String]) {
+    
+    
+    /*
+    val document = PDDocument.load(new File("CGP_16003127_1344086.pdf"))
+    document.getClass();
+    val stripper = new PDFTextStripperByArea()
+    stripper.setSortByPosition(true);
+    val tStripper = new PDFTextStripper();
+    tStripper.setStartPage(1)
+    tStripper.setEndPage(1)
+    val pdfFileInText = tStripper.getText(document);
+    val lines = pdfFileInText.split("\\r?\\n");
+    println(lines.length)
+    lines.foreach(x => println(x))
+*/
+    
+   
+  }
+  
   def main(args : Array[String]) {
     //val huemulLib = new huemul_BigDataGovernance("Pruebas Inicialización de Clases",args,globalSettings.Global)
     //val Control = new huemul_Control(huemulLib,null)
@@ -50,7 +80,7 @@ object App {
     */
     
     var validacionTablas = new ArrayBuffer[String]()
-    validacionTablas.append("production_mdm_oldvalue.tbl_datosbasicos_oldvalue")
+    //validacionTablas.append("production_mdm_oldvalue.tbl_datosbasicos_oldvalue")
     validacionTablas.append("production_mdm_oldvalue.tbl_datosbasicosupdate_oldvalue")
     validacionTablas.append("production_mdm_oldvalue.tbl_oldvaluetrace_oldvalue")
     validacionTablas.append("production_dqerror.tbl_datosbasicos_dq")
@@ -97,7 +127,8 @@ object App {
     com.yourcompany.settings.globalSettings.Global.externalBBDD_conf.Using_SPARK.setActive(metadata_spark_active).setActiveForHBASE(false)
     
     
-    com.huemulsolutions.bigdata.raw.raw_LargoDinamico.main(args)
+    com.huemulsolutions.bigdata.raw.raw_DatosPDF_test.main(args)
+    com.huemulsolutions.bigdata.raw.raw_LargoDinamico_test.main(args)
     Proc_PlanPruebas_CargaMaster_SelectiveUpdate.main(args)
 
     Proc_PlanPruebas_PermisosFull.main(args)
@@ -170,7 +201,7 @@ object App {
       
       validacionTablas.foreach { x =>  
         println(s"valida en HIVE existencia tabla $x")
-        val valida01 = connectionHIVE.ExecuteJDBC_WithResult(s"select count(1) from ${x}")
+        val valida01 = connectionHIVE.ExecuteJDBC_WithResult(s"select count(1) as cantidad from ${x}")
         if (valida01.IsError) {
           error_existe_tablas_en_hive = true
           println(valida01.ErrorDescription)
@@ -193,7 +224,7 @@ object App {
       validacionTablas.foreach { x => 
         try {
           println(s"valida en SPARK existencia tabla $x")
-          val valida01 = huemulLib.spark.sql(s"select count(1) from ${x}")
+          val valida01 = huemulLib.spark.sql(s"select count(1) as cantidad from ${x}")
           valida01.show()
         } catch {
           case e: Exception => {
@@ -209,7 +240,7 @@ object App {
     
     
     
-    if (Control.TestPlan_IsOkById(TestPlanGroup, 24))
+    if (Control.TestPlan_IsOkById(TestPlanGroup, 25))
       println ("TODO OK")
     else
       println ("ERRORES")
