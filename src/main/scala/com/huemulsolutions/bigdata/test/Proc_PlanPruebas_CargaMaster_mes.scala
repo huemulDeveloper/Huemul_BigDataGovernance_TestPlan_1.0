@@ -43,6 +43,8 @@ object Proc_PlanPruebas_CargaMaster_mes {
         TipoTabla = huemulType_StorageType.DELTA
     else if (TipoTablaParam == "hbase")
         TipoTabla = huemulType_StorageType.HBASE
+    else if (TipoTablaParam == "avro")
+        TipoTabla = huemulType_StorageType.AVRO        
         
     Control.AddParamInformation("TestPlanGroup", TestPlanGroup)
         
@@ -130,7 +132,7 @@ object Proc_PlanPruebas_CargaMaster_mes {
                                                                                      ,case when FloatValue = 0.0000                       then true else false end as Cumple_FloatValue
                                                                                      ,case when StringValue = ""                          then true else false end as Cumple_StringValue
                                                                                      ,case when charValue = ""                            then true else false end as Cumple_charValue
-                                                                                     ,case when timeStampValue = "1900-01-01 00:00:00.0"  then true else false end as Cumple_timeStampValue
+                                                                                     ,case when timeStampValue = "1900-01-01 00:00:00.0" or timeStampValue = "1900-01-01 00:00:00"  then true else false end as Cumple_timeStampValue
                                                                                FROM DF_Final
                                                                                WHERE tipoValor = 'Cero-Vacio'""")
       

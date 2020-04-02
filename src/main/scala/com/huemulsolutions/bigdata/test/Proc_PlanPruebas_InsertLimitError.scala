@@ -30,6 +30,8 @@ object Proc_PlanPruebas_InsertLimitError {
         TipoTabla = huemulType_StorageType.DELTA
     else if (TipoTablaParam == "hbase")
         TipoTabla = huemulType_StorageType.HBASE
+    else if (TipoTablaParam == "avro")
+        TipoTabla = huemulType_StorageType.AVRO        
     Control.AddParamInformation("TestPlanGroup", TestPlanGroup)
         
     try {

@@ -31,6 +31,8 @@ object Proc_PlanPruebas_OnlyUpdate {
         TipoTabla = huemulType_StorageType.DELTA
     else if (TipoTablaParam == "hbase")
         TipoTabla = huemulType_StorageType.HBASE
+    else if (TipoTablaParam == "avro")
+        TipoTabla = huemulType_StorageType.AVRO
     Control.AddParamInformation("TestPlanGroup", TestPlanGroup)
         
     try {
@@ -156,7 +158,7 @@ object Proc_PlanPruebas_OnlyUpdate {
                                                                                      ,case when StringValue = ""                          then true else false end as Cumple_StringValue
                                                                                      ,case when StringNoModificarValue = ""                          then true else false end as Cumple_StringNoModificarValue
                                                                                      ,case when charValue = ""                            then true else false end as Cumple_charValue
-                                                                                     ,case when timeStampValue = "1900-01-01 00:00:00.0"  then true else false end as Cumple_timeStampValue
+                                                                                     ,case when timeStampValue = "1900-01-01 00:00:00.0" or timeStampValue = "1900-01-01 00:00:00"  then true else false end as Cumple_timeStampValue
                                                                                      ,case when IntValue_old is null and          IntValue_fhChange is null and         IntValue_ProcessLog is not null and 
                                                                                                 BigIntValue_old is null and       BigIntValue_fhChange is null and      BigIntValue_ProcessLog is not null and 
                                                                                                 SmallIntValue_old is null and     SmallIntValue_fhChange is null and    SmallIntValue_ProcessLog is not null and 

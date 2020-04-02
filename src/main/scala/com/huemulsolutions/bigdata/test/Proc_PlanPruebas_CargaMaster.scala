@@ -103,7 +103,7 @@ object Proc_PlanPruebas_CargaMaster {
                                                                                      ,case when FloatValue = 0.0000                       then true else false end as Cumple_FloatValue
                                                                                      ,case when StringValue = ""                          then true else false end as Cumple_StringValue
                                                                                      ,case when charValue = ""                            then true else false end as Cumple_charValue
-                                                                                     ,case when timeStampValue = "1900-01-01 00:00:00.0"  then true else false end as Cumple_timeStampValue
+                                                                                     ,case when timeStampValue = "1900-01-01 00:00:00.0" or timeStampValue = "1900-01-01 00:00:00"  then true else false end as Cumple_timeStampValue
                                                                                FROM DF_Final
                                                                                WHERE tipoValor = 'Cero-Vacio'""")
       

@@ -32,6 +32,8 @@ object Proc_PlanPruebas_fk {
         TipoTabla = huemulType_StorageType.DELTA
     else if (TipoTablaParam == "hbase")
         TipoTabla = huemulType_StorageType.HBASE
+    else if (TipoTablaParam == "avro")
+        TipoTabla = huemulType_StorageType.AVRO        
     Control.AddParamInformation("TestPlanGroup", TestPlanGroup)
         
     try {
@@ -73,7 +75,7 @@ object Proc_PlanPruebas_fk {
       TablaMaster.executeFull("DF_Final", org.apache.spark.storage.StorageLevel.MEMORY_ONLY_SER)
       var IdTestPlan: String = ""
       //Column_DQ_MinLen
-      var ErrorReg = TablaMaster.DataFramehuemul.getDQResult().filter { x => x.ColumnName == "TipoValor" && x.DQ_ErrorCode == 1024 }
+      var ErrorReg = TablaMaster.DataFramehuemul.getDQResult().filter { x => x.ColumnName != null && x.ColumnName.toLowerCase()  == "TipoValor".toLowerCase() && x.DQ_ErrorCode == 1024 }
       
       if (ErrorReg == null || ErrorReg.length == 0){
         IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "ERROR TipoValor", "error 1024 encontrado en columna TipoValor", "error encontrado", s"error no encontrado", false)
@@ -104,10 +106,10 @@ object Proc_PlanPruebas_fk {
                         from production_dqerror.tbl_datosbasicos_errorfk_dq 
                         where dq_control_id = '${Control.Control_Id}' 
                         group by dq_error_columnname """).collect
-      cantidad = errores2.filter { x => x.getAs[String]("dq_error_columnname") == "TipoValor" }(0).getAs[Int]("Cantidad") 
-      val error_01 = errores2.filter { x => x.getAs[String]("dq_error_columnname") == "TipoValor" }(0).getAs[Int]("error_01") 
-      val error_02 = errores2.filter { x => x.getAs[String]("dq_error_columnname") == "TipoValor" }(0).getAs[Int]("error_02") 
-      val error_03 = errores2.filter { x => x.getAs[String]("dq_error_columnname") == "TipoValor" }(0).getAs[Int]("error_03") 
+      cantidad = errores2.filter { x => x.getAs[String]("dq_error_columnname").toLowerCase() == "TipoValor".toLowerCase() }(0).getAs[Int]("Cantidad") 
+      val error_01 = errores2.filter { x => x.getAs[String]("dq_error_columnname").toLowerCase() == "TipoValor".toLowerCase() }(0).getAs[Int]("error_01") 
+      val error_02 = errores2.filter { x => x.getAs[String]("dq_error_columnname").toLowerCase() == "TipoValor".toLowerCase() }(0).getAs[Int]("error_02") 
+      val error_03 = errores2.filter { x => x.getAs[String]("dq_error_columnname").toLowerCase() == "TipoValor".toLowerCase() }(0).getAs[Int]("error_03") 
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores en tabla _dq TipoValor", "errores en columna TipoValor", "Cantidad con errores = 4", s"Cantidad con errores = ${cantidad}", cantidad == 4)
       Control.RegisterTestPlanFeature("FK Error encontrado", IdTestPlan)
       

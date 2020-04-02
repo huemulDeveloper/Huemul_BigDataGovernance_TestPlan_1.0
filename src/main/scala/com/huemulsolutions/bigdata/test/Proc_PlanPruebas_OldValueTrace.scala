@@ -39,7 +39,8 @@ object Proc_PlanPruebas_OldValueTrace {
         TipoTabla = huemulType_StorageType.DELTA
     else if (TipoTablaParam == "hbase")
         TipoTabla = huemulType_StorageType.HBASE
-        
+    else if (TipoTablaParam == "avro")
+        TipoTabla = huemulType_StorageType.AVRO        
     
     println(s"tipo tabla: ${TipoTablaParam}, ${TipoTabla}")
     Control.AddParamInformation("TestPlanGroup", TestPlanGroup)
@@ -114,8 +115,8 @@ object Proc_PlanPruebas_OldValueTrace {
                 ,cast(max(case when codigo = 6 and mdm_columnname = "descripcion" and mdm_newvalue is null                     and mdm_oldvalue = "numero seis"  then 1 else 0 end) as int) as test2_ok
                 ,cast(max(case when codigo = 4 and mdm_columnname = "descripcion" and mdm_newvalue = "numero, cuatro"          and mdm_oldvalue = ""             then 1 else 0 end) as int) as test9_ok
 
-                ,cast(max(case when codigo = 6 and mdm_columnname = "fecha" and mdm_newvalue = "2018-02-26 00:00:00" and mdm_oldvalue is null                  then 1 else 0 end) as int) as test3_ok
-                ,cast(max(case when codigo = 4 and mdm_columnname = "fecha" and mdm_newvalue = "2018-04-24 00:00:00" and mdm_oldvalue = "2018-02-24 00:00:00"  then 1 else 0 end) as int) as test4_ok
+                ,cast(max(case when codigo = 6 and mdm_columnname = "fecha" and (mdm_newvalue = "2018-02-26 00:00:00" or mdm_newvalue = "2018-02-26") and mdm_oldvalue is null                  then 1 else 0 end) as int) as test3_ok
+                ,cast(max(case when codigo = 4 and mdm_columnname = "fecha" and (mdm_newvalue = "2018-04-24 00:00:00" or mdm_newvalue = "2018-04-24") and (mdm_oldvalue = "2018-02-24 00:00:00" or mdm_oldvalue = "2018-02-24")  then 1 else 0 end) as int) as test4_ok
 
                 ,cast(max(case when codigo = 3 and mdm_columnname = "monto" and mdm_newvalue = "31"    and mdm_oldvalue is null   then 1 else 0 end) as int) as test5_ok
                 ,cast(max(case when codigo = 5 and mdm_columnname = "monto" and mdm_newvalue is null   and mdm_oldvalue = "50"    then 1 else 0 end) as int) as test6_ok

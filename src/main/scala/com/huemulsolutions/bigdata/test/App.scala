@@ -17,11 +17,36 @@ import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.SAXException;
 import org.apache.tika.parser.pdf.PDFParserConfig
 
+import org.apache.spark.streaming._
+import org.apache.spark.streaming.StreamingContext._
+import org.apache.spark.sql.Row
+import org.apache.spark.sql.types._
+import org.apache.spark.sql._
+
+import twitter4j._
+import twitter4j.TwitterFactory
+import twitter4j.Twitter
+import twitter4j.conf.ConfigurationBuilder
+import scala.collection.JavaConverters._
+
 //import com.huemulsolutions.bigdata.test.Proc_PlanPruebas_PermisosUpdate
 
 /**
  * @author ${user.name}
  */
+
+
+class demo_twitter_seba extends Serializable {
+  var user_name: String = null
+  var retweet_count: Integer = 0
+  var tweet_followers_count: Integer = 0
+  var source: String = null
+  var coordinates: String = null
+  var tweet_mentioned_count: Integer = null
+  var tweet_ID: String = null
+  var tweet_text: String = null
+}
+
 
 object App {
 
@@ -59,6 +84,150 @@ object App {
 */
     
    
+  }
+  
+  def main_twitter(args : Array[String]) {
+  
+   val consumerKey = "5YhrJlIJOd0VOfaHRvcKNZeHz"
+   val consumerSecret = "wvg9GloQUj6QDDjTyLu9A6zq9FD363Ca1DBXTEcQrcuSCZsNr6"
+   val accessToken = "1370849557-e1tPpbHOgPdaQ9XLGTXpqiAYzwiji19WoN4xhXq"
+   val accessTokenSecret = "51wUNqKt36dNAb9eBfcusBzHcBvgfZAakG81zCOV6Srpl"
+  
+   
+   
+    
+    val huemulLib = new huemul_BigDataGovernance("Pruebas Inicialización de Clases",args,com.yourcompany.settings.globalSettings.Global)
+    val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
+   
+   
+   
+    val cb = new ConfigurationBuilder()
+    cb.setDebugEnabled(true)
+    cb.setOAuthConsumerKey(consumerKey )
+    cb.setOAuthConsumerSecret(consumerSecret )
+    cb.setOAuthAccessToken(accessToken )
+    cb.setOAuthAccessTokenSecret(accessTokenSecret )
+
+    val twitterFactory = new TwitterFactory(cb.build())
+    val twitter = twitterFactory.getInstance()
+
+    //val dataList: ArrayBuffer[demo_twitter_seba] = new ArrayBuffer[demo_twitter_seba]()
+    //var nuevo 
+    var data_list : Array[Row] = null
+    
+    
+    var i: Integer = 0
+    val query = new Query(" #Azure ")
+          query.setCount(100)
+          query.lang("en")
+          var finished = false
+          while (!finished) {
+            val result = twitter.search(query)
+            val statuses = result.getTweets()
+            var lowestStatusId = Long.MaxValue
+            for (status <- statuses.asScala) {
+              
+              if(!status.isRetweet()){
+                i += 1
+                val nuevo = new Array[Any](8)  
+                
+                nuevo(0) = status.getUser().getScreenName() //user_name 
+                nuevo(1) = status.getRetweetCount() //retweet_count
+                nuevo(2) = status.getUser().getFollowersCount() //tweet_followers_count
+                nuevo(3) = status.getSource() //source
+                val geoloc = status.getGeoLocation()
+                nuevo(4) = if (geoloc == null) null else geoloc.toString() //coordinates
+
+                val mentioned = status.getUserMentionEntities()
+                nuevo(5) =  mentioned.length //tweet_mentioned_count
+                nuevo(6) = status.getId().toString() //tweet_ID
+                nuevo(7) = status.getText() //tweet_text
+                nuevo(8) = status.getCreatedAt
+                status.getPlace.toString()
+                status.getPlace.getCountry
+                
+                
+                if (data_list == null)
+                  data_list = Array(Row.fromSeq(nuevo)) 
+                else 
+                  data_list = data_list :+ (Row.fromSeq(nuevo)) 
+                println(data_list.length)
+                //val a = Row.fromSeq(nuevo) 
+                //val b = data_list.fill(a)(1)
+                //println(status.getText())
+              }
+              lowestStatusId = Math.min(status.getId(), lowestStatusId)
+            }
+            query.setMaxId(lowestStatusId - 1)
+           
+           if (i >= 50) {
+             val final_rdd = huemulLib.spark.sparkContext.parallelize(data_list )
+             val df_final = huemulLib.spark.createDataFrame(final_rdd, StructType(
+                                                            List(
+                                                          StructField("user_name", StringType, true),
+                                                          StructField("retweet_count", IntegerType, true),
+                                                          StructField("tweet_followers_count", IntegerType, true),
+                                                          StructField("source", StringType, true),
+                                                          StructField("coordinates", StringType, true),
+                                                          StructField("tweet_mentioned_count", IntegerType, true),
+                                                          StructField("tweet_ID", StringType, true),
+                                                          StructField("tweet_text", StringType, true))))
+             
+                                                          
+              df_final.write.mode(SaveMode.Append).format("parquet").save("/user/data/spark/twitter_search_01.parquet")
+              
+              data_list = null
+              i = 0
+           }
+          }
+   
+   
+  
+   
+    /*
+    val cb = new ConfigurationBuilder
+    cb.setDebugEnabled(true).setOAuthConsumerKey(consumerKey)
+      .setOAuthConsumerSecret(consumerSecret)
+      .setOAuthAccessToken(accessToken)
+      .setOAuthAccessTokenSecret(accessTokenSecret)
+    val auth = new OAuthAuthorization(cb.build)
+    
+    
+    val ssc = new StreamingContext(huemulLib.spark.sparkContext, Seconds(1))
+    ssc.checkpoint("/user/data/spark/checkpoint3")
+    
+    //val Array(consumerKey, consumerSecret, accessToken, accessTokenSecret) = Array("5YhrJlIJOd0VOfaHRvcKNZeHz","","","")
+    val stream = TwitterUtils.createStream(ssc, twitterAuth, filters, storageLevel) (ssc, None)
+    
+    val hashTags = stream.flatMap(status => status.getText.split(" ").filter(_.startsWith("#")))
+
+    val topCounts60 = hashTags.map((_, 1)).reduceByKeyAndWindow(_ + _, Seconds(60))
+                     .map{case (topic, count) => (count, topic)}
+                     .transform(_.sortByKey(false))
+
+    val topCounts10 = hashTags.map((_, 1)).reduceByKeyAndWindow(_ + _, Seconds(10))
+                     .map{case (topic, count) => (count, topic)}
+                     .transform(_.sortByKey(false))
+
+
+    // Print popular hashtags
+    topCounts60.foreachRDD(rdd => {
+      val topList = rdd.take(10)
+      println("\nPopular topics in last 60 seconds (%s total):".format(rdd.count()))
+      topList.foreach{case (count, tag) => println("%s (%s tweets)".format(tag, count))}
+    })
+
+    topCounts10.foreachRDD(rdd => {
+      val topList = rdd.take(10)
+      println("\nPopular topics in last 10 seconds (%s total):".format(rdd.count()))
+      topList.foreach{case (count, tag) => println("%s (%s tweets)".format(tag, count))}
+    })
+
+    ssc.start()
+    ssc.awaitTermination()
+    */
+    
+    huemulLib.close()
   }
   
   def main(args : Array[String]) {
