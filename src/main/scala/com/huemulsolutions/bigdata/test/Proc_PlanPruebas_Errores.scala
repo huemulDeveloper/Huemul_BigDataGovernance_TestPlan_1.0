@@ -205,27 +205,27 @@ object Proc_PlanPruebas_Errores {
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores en tabla _dq Column_DQ_MaxDateTimeValue", "errores en columna Column_DQ_MaxDateTimeValue", "Cantidad con errores = 2", s"Cantidad con errores = ${cantidad}", cantidad == 2)
       Control.RegisterTestPlanFeature("ControlErrores", IdTestPlan)
       
-      cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname".toLowerCase()) == "Column_DQ_MaxDecimalValue".toLowerCase() }(0).getAs[Int]("Cantidad") 
+      cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname").toLowerCase() == "Column_DQ_MaxDecimalValue".toLowerCase() }(0).getAs[Int]("Cantidad") 
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores en tabla _dq Column_DQ_MaxDecimalValue", "errores en columna Column_DQ_MaxDecimalValue", "Cantidad con errores = 1", s"Cantidad con errores = ${cantidad}", cantidad == 1)
       Control.RegisterTestPlanFeature("ControlErrores", IdTestPlan)
       
-      cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname".toLowerCase()) == "Column_DQ_MaxLen".toLowerCase() }(0).getAs[Int]("Cantidad") 
+      cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname").toLowerCase() == "Column_DQ_MaxLen".toLowerCase() }(0).getAs[Int]("Cantidad") 
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores en tabla _dq Column_DQ_MaxLen", "errores en columna Column_DQ_MaxLen", "Cantidad con errores = 2", s"Cantidad con errores = ${cantidad}", cantidad == 2)
       Control.RegisterTestPlanFeature("ControlErrores", IdTestPlan)
 
-      cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname".toLowerCase()) == "Column_DQ_MinDateTimeValue".toLowerCase() }(0).getAs[Int]("Cantidad") 
+      cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname").toLowerCase() == "Column_DQ_MinDateTimeValue".toLowerCase() }(0).getAs[Int]("Cantidad") 
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores en tabla _dq Column_DQ_MinDateTimeValue", "errores en columna Column_DQ_MinDateTimeValue", "Cantidad con errores = 3", s"Cantidad con errores = ${cantidad}", cantidad == 3)
       Control.RegisterTestPlanFeature("ControlErrores", IdTestPlan)
 
-      cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname".toLowerCase()) == "Column_DQ_MinDecimalValue".toLowerCase() }(0).getAs[Int]("Cantidad") 
+      cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname").toLowerCase() == "Column_DQ_MinDecimalValue".toLowerCase() }(0).getAs[Int]("Cantidad") 
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores en tabla _dq Column_DQ_MinDecimalValue", "errores en columna Column_DQ_MinDecimalValue", "Cantidad con errores = 2", s"Cantidad con errores = ${cantidad}", cantidad == 2)
       Control.RegisterTestPlanFeature("ControlErrores", IdTestPlan)
 
-      cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname".toLowerCase()) == "Column_DQ_MinLen".toLowerCase() }(0).getAs[Int]("Cantidad") 
+      cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname").toLowerCase() == "Column_DQ_MinLen".toLowerCase() }(0).getAs[Int]("Cantidad") 
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores en tabla _dq Column_DQ_MinLen", "errores en columna Column_DQ_MinLen", "Cantidad con errores = 3", s"Cantidad con errores = ${cantidad}", cantidad == 3)
       Control.RegisterTestPlanFeature("ControlErrores", IdTestPlan)
 
-      cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname".toLowerCase()) == "Column_NotNull".toLowerCase() }(0).getAs[Int]("Cantidad") 
+      cantidad = errores.filter { x => x.getAs[String]("dq_error_columnname").toLowerCase() == "Column_NotNull".toLowerCase() }(0).getAs[Int]("Cantidad") 
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Guarda errores en tabla _dq Column_NotNull", "errores en columna Column_NotNull", "Cantidad con errores = 1", s"Cantidad con errores = ${cantidad}", cantidad == 1)
       Control.RegisterTestPlanFeature("ControlErrores", IdTestPlan)
 

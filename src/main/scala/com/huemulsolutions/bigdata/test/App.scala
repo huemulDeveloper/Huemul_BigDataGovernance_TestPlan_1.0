@@ -88,10 +88,14 @@ object App {
   
   def main_twitter(args : Array[String]) {
   
-   val consumerKey = "5YhrJlIJOd0VOfaHRvcKNZeHz"
-   val consumerSecret = "wvg9GloQUj6QDDjTyLu9A6zq9FD363Ca1DBXTEcQrcuSCZsNr6"
-   val accessToken = "1370849557-e1tPpbHOgPdaQ9XLGTXpqiAYzwiji19WoN4xhXq"
-   val accessTokenSecret = "51wUNqKt36dNAb9eBfcusBzHcBvgfZAakG81zCOV6Srpl"
+    val localPath: String = System.getProperty("user.dir").concat("/")
+       println(s"path: ${localPath}")
+   
+      
+   val consumerKey = getKeyFromFile(s"${localPath}twitter_consumerKey.set") 
+   val consumerSecret = getKeyFromFile(s"${localPath}twitter_consumerSecret.set") 
+   val accessToken = getKeyFromFile(s"${localPath}twitter_accessToken.set") 
+   val accessTokenSecret = getKeyFromFile(s"${localPath}twitter_accessTokenSecret.set") 
   
    
    
@@ -295,6 +299,9 @@ object App {
     }
     com.yourcompany.settings.globalSettings.Global.externalBBDD_conf.Using_SPARK.setActive(metadata_spark_active).setActiveForHBASE(false)
     
+    if (com.yourcompany.settings.globalSettings.Global.getBigDataProvider() == huemulType_bigDataProvider.databricks) {
+      com.yourcompany.settings.globalSettings.Global.setAVRO_format("avro")
+    }
     
     com.huemulsolutions.bigdata.raw.raw_DatosPDF_test.main(args)
     com.huemulsolutions.bigdata.raw.raw_LargoDinamico_test.main(args)
@@ -318,6 +325,7 @@ object App {
     
     Proc_PlanPruebas_OnlyInsertNew_warning.main(args)
     Proc_PlanPruebas_OnlyInsertNew.main(args)
+    com.huemulsolutions.bigdata.raw.raw_DatosFORMATO_test.main(args)
     Proc_PlanPruebas_OnlyUpdate.main(args)
      
     Proc_PlanPruebas_AutoCastOff.main(args)
@@ -409,7 +417,7 @@ object App {
     
     
     
-    if (Control.TestPlan_IsOkById(TestPlanGroup, 25))
+    if (Control.TestPlan_IsOkById(TestPlanGroup, 26))
       println ("TODO OK")
     else
       println ("ERRORES")
