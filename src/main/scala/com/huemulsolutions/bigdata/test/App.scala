@@ -274,6 +274,7 @@ object App {
     
     var metadata_hive_active: Boolean = false
     var metadata_spark_active: Boolean = false
+    var metadata_hwc_active: Boolean = false
     
     val huemulLib_ini = new huemul_BigDataGovernance("Pruebas Inicialización de Clases",args,com.yourcompany.settings.globalSettings.Global)
     
@@ -282,8 +283,13 @@ object App {
     
     metadata_hive_active = huemulLib_ini.arguments.GetValue("metadata_hive_active", "false").toBoolean
     metadata_spark_active = huemulLib_ini.arguments.GetValue("metadata_spark_active", "false").toBoolean
+    metadata_hwc_active = huemulLib_ini.arguments.GetValue("metadata_hwc_active", "false").toBoolean
+    
         
     huemulLib_ini.close()
+    
+    com.yourcompany.settings.globalSettings.Global.externalBBDD_conf.Using_HWC.setActive(metadata_hwc_active).setActiveForHBASE(metadata_hwc_active)
+    
     
     com.yourcompany.settings.globalSettings.Global.externalBBDD_conf.Using_HIVE.setActive(metadata_hive_active).setActiveForHBASE(metadata_hive_active)
     if (metadata_hive_active) {
@@ -372,7 +378,17 @@ object App {
     
     
     var error_existe_tablas_en_hive: Boolean = false
-    if (metadata_hive_active) {
+    if (metadata_hive_active || metadata_hwc_active) {
+      if (metadata_hwc_active) {
+        val HIVE_Setting = new ArrayBuffer[huemul_KeyValuePath]()
+        val localPath: String = System.getProperty("user.dir").concat("/")
+        println(s"path: ${localPath}")
+        HIVE_Setting.append(new huemul_KeyValuePath("production",getKeyFromFile(s"${localPath}prod-demo-setting-hive-connection.set")))
+        HIVE_Setting.append(new huemul_KeyValuePath("experimental",getKeyFromFile(s"${localPath}prod-demo-setting-hive-connection.set")))
+             
+        com.yourcompany.settings.globalSettings.Global.externalBBDD_conf.Using_HIVE.setConnectionStrings(HIVE_Setting)
+      }
+      
       val connectionHIVE = huemulLib.GlobalSettings.externalBBDD_conf.Using_HIVE.getJDBC_connection(huemulLib)
       println("validando existencia de tablas en hive jdbc")
       
