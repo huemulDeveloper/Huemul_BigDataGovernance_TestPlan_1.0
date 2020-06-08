@@ -1,2 +1,2 @@
-# Huemul_BigDataGovernance_TestPlan_1.0
-Plan de pruebas para Huemul_BigDataGovernance versiÃ³n 1.0
+# Huemul_BigDataGovernance_TestPlan_2.6
+Plan de pruebas para Huemul_BigDataGovernance versión 2.6
