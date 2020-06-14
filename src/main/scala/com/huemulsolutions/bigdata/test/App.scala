@@ -3,29 +3,31 @@ package com.huemulsolutions.bigdata.test
 
 import com.huemulsolutions.bigdata.common._
 import com.huemulsolutions.bigdata.control._
-import com.yourcompany.settings.globalSettings
+//import com.yourcompany.settings.globalSettings
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 import java.io.{FileNotFoundException, IOException}
 
+/*
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.pdf.PDFParser;
 import org.apache.tika.sax.BodyContentHandler;
+ */
 
-import org.xml.sax.SAXException;
-import org.apache.tika.parser.pdf.PDFParserConfig
+//import org.xml.sax.SAXException;
+//import org.apache.tika.parser.pdf.PDFParserConfig
 
-import org.apache.spark.streaming._
-import org.apache.spark.streaming.StreamingContext._
+//import org.apache.spark.streaming._
+//import org.apache.spark.streaming.StreamingContext._
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.types._
 import org.apache.spark.sql._
 
 import twitter4j._
 import twitter4j.TwitterFactory
-import twitter4j.Twitter
+//import twitter4j.Twitter
 import twitter4j.conf.ConfigurationBuilder
 import scala.collection.JavaConverters._
 
@@ -310,7 +312,22 @@ object App {
     Proc_PlanPruebas_PermisosFull.main(args)
     Proc_PlanPruebas_PermisosInsert.main(args)
     Proc_PlanPruebas_PermisosUpdate.main(args)
-    
+
+    Proc_PlanPruebas_Particion_dia_dia1p1.main(args)
+    Proc_PlanPruebas_Particion_dia_dia1p2.main(args)
+    Proc_PlanPruebas_Particion_dia_dia2p1.main(args)
+    Proc_PlanPruebas_Particion_dia_dia2p2.main(args)
+    Proc_PlanPruebas_Particion_dia_dia3p1.main(args)
+
+    //reprocesamiento de Proc_PlanPruebas_Particion_dia_dia2p1, resultados deben ser iguales
+    Proc_PlanPruebas_Particion_dia_dia2p3.main(args)
+
+
+    Proc_PlanPruebas_Particion_diaAcum_dia1p1.main(args)
+    Proc_PlanPruebas_Particion_diaAcum_dia1p1_re.main(args)
+
+    Proc_PlanPruebas_Particion_master_dia1p1.main(args)
+    Proc_PlanPruebas_Particion_master_dia3p1.main(args)
     
     Proc_PlanPruebas_CargaMaster.main(args)
     Proc_PlanPruebas_fk.main(args)
@@ -425,9 +442,7 @@ object App {
     Control.RegisterTestPlan(TestPlanGroup, "error_existe_tablas_en_spark", "error_existe_tablas_en_spark", "error_existe_tablas_en_spark = false", s"error_existe_tablas_en_spark = ${error_existe_tablas_en_spark}", error_existe_tablas_en_spark == false) 
     Control.TestPlan_CurrentIsOK(2)
     
-    
-    
-    if (Control.TestPlan_IsOkById(TestPlanGroup, 26))
+    if (Control.TestPlan_IsOkById(TestPlanGroup, 36))
       println ("TODO OK")
     else
       println ("ERRORES")
