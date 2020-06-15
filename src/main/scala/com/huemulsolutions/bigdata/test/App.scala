@@ -267,6 +267,9 @@ object App {
     validacionTablas.append("production_master.tbl_datosbasicosnuevosperc")
     validacionTablas.append("production_master.tbl_datosbasicosupdate")
     validacionTablas.append("production_master.tbl_oldvaluetrace")
+    validacionTablas.append("production_master.tbl_DatosParticion")
+    validacionTablas.append("production_master.tbl_DatosParticionAcum")
+    validacionTablas.append("production_master.tbl_DatosParticionMaster")
     
     var metadata_hive_active: Boolean = false
     var metadata_spark_active: Boolean = false
