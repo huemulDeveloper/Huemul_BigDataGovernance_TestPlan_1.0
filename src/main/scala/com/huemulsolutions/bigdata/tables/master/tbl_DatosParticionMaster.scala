@@ -18,7 +18,11 @@ class tbl_DatosParticionMaster(HuemulLib: huemul_BigDataGovernance, Control: hue
   //this.setStorageType(huemulType_StorageType.PARQUET)
   //this.setDQ_MaxNewRecords_Num(value = 4)
   this.setFrequency(huemulType_Frequency.DAILY)
-  
+
+  if (TipoTabla == huemulType_StorageType.AVRO) {
+    HuemulLib.spark.sql("set spark.sql.sources.partitionColumnTypeInference.enabled=false")
+  }
+
   //Agrega version 1.3
   //this.setNumPartitions(2)
   

@@ -8,7 +8,7 @@ import com.huemulsolutions.bigdata.tables.master.tbl_DatosParticion
 
 /**
  * Este plan de pruebas valida lo siguiente:
- * cualquier cambio en este código también debe realizarse en dia2p1
+ * cualquier cambio en este código también debe realizarse en dia2p1 (lectura de datos) y dia2p2 (validación de datos)
  */
 object Proc_PlanPruebas_Particion_dia_dia2p3 {
   def main(args: Array[String]): Unit = {
@@ -49,6 +49,7 @@ object Proc_PlanPruebas_Particion_dia_dia2p3 {
       val TablaMaster = new tbl_DatosParticion(huemulLib, Control, TipoTabla)
 
       //valida que existan las particiones esperadas + los datos anteriores
+      //valida que existan las particiones esperadas + los datos anteriores
       val path_20170501_super01_internet = TablaMaster.getFullNameWithPath().concat("/periodo=2017-05-01/empresa=super-01/app=internet")
       val path_20170501_super01_tienda = TablaMaster.getFullNameWithPath().concat("/periodo=2017-05-01/empresa=super-01/app=tienda")
       val path_20170501_super02_internet = TablaMaster.getFullNameWithPath().concat("/periodo=2017-05-01/empresa=super-02/app=internet")
@@ -59,10 +60,14 @@ object Proc_PlanPruebas_Particion_dia_dia2p3 {
       val path_20170502_super03_internet = TablaMaster.getFullNameWithPath().concat("/periodo=2017-05-02/empresa=super-03/app=internet")
       val path_20170502_super03_tienda = TablaMaster.getFullNameWithPath().concat("/periodo=2017-05-02/empresa=super-03/app=tienda")
 
+      val path_20170502_super02_internet = TablaMaster.getFullNameWithPath().concat("/periodo=2017-05-02/empresa=super-02/app=internet")
+      val path_20170502_super02_telefono = TablaMaster.getFullNameWithPath().concat("/periodo=2017-05-02/empresa=super-02/app=telefono")
+
+
       Control.NewStep(s"buscando path $path_20170501_super01_internet")
       var path_existe = huemulLib.hdfsPath_exists(path_20170501_super01_internet)
       IdTestPlan = Control.RegisterTestPlan(
-           TestPlanGroup
+        TestPlanGroup
         , "dia 01 - existe path path_20170501_super01_internet"
         , s"path buscado = $path_20170501_super01_internet"
         , "path existe = true"
@@ -142,6 +147,27 @@ object Proc_PlanPruebas_Particion_dia_dia2p3 {
         , path_existe)
 
 
+      Control.NewStep(s"buscando path $path_20170502_super02_internet")
+      path_existe = huemulLib.hdfsPath_exists(path_20170502_super02_internet)
+      IdTestPlan = Control.RegisterTestPlan(
+        TestPlanGroup
+        , "dia 02 - existe path path_20170502_super02_internet"
+        , s"path buscado = $path_20170502_super02_internet"
+        , "path existe = true"
+        , s"path existe = $path_existe"
+        , path_existe)
+
+      Control.NewStep(s"buscando path $path_20170502_super02_telefono")
+      path_existe = huemulLib.hdfsPath_exists(path_20170502_super02_telefono)
+      IdTestPlan = Control.RegisterTestPlan(
+        TestPlanGroup
+        , "dia 02 - existe path path_20170502_super02_telefono"
+        , s"path buscado = $path_20170502_super02_telefono"
+        , "path existe = true"
+        , s"path existe = $path_existe"
+        , path_existe)
+
+
       huemulLib.spark.sql("select * from production_master.tbl_datosparticion").show()
 
 
@@ -164,10 +190,10 @@ object Proc_PlanPruebas_Particion_dia_dia2p3 {
       IdTestPlan = Control.RegisterTestPlan(
         TestPlanGroup
         , "dia 01 - calida cantidad de datos totales"
-        , s"debe arrojar 8 registros"
-        , "registros = 8"
+        , s"debe arrojar 10 registros"
+        , "registros = 10"
         , s"registros = $count_01"
-        , count_01 == 8)
+        , count_01 == 10)
 
       val registro01_01 = DF_valida01.where("""periodo = "2017-05-01" and empresa = "super-01" and app = "internet"""").select("cantidad").first()
       if (registro01_01 == null) {
@@ -330,6 +356,48 @@ object Proc_PlanPruebas_Particion_dia_dia2p3 {
           , s"registros = ${registro02_04.getAs[Integer]("cantidad")}"
           , registro02_04.getAs[Integer]("cantidad") == 2)
       }
+
+
+
+      val registro01_06 = DF_valida01.where("periodo = '2017-05-02' and empresa = 'super-02' and app = 'internet'").select("cantidad").first()
+      if (registro01_06 == null) {
+        IdTestPlan = Control.RegisterTestPlan(
+          TestPlanGroup
+          , "dia 01 - existe registro 2017-05-02 | super-02 | internet"
+          , s"debe arrojar 2 registros"
+          , "registros = 2"
+          , s"registros no encontrados"
+          , false)
+      }
+      else {
+        IdTestPlan = Control.RegisterTestPlan(
+          TestPlanGroup
+          , "dia 01 - existe registro 2017-05-02 | super-02 | internet"
+          , s"debe arrojar 2 registros"
+          , "registros = 2"
+          , s"registros = ${registro01_06.getAs[Integer]("cantidad")}"
+          , registro01_06.getAs[Integer]("cantidad") == 2)
+      }
+
+      val registro02_05 = DF_valida01.where("periodo = '2017-05-02' and empresa = 'super-02' and app = 'telefono'").select("cantidad").first()
+      if (registro02_05 == null) {
+        IdTestPlan = Control.RegisterTestPlan(
+          TestPlanGroup
+          , "dia 01 - existe registro 2017-05-02 | super-02 | telefono"
+          , s"debe arrojar 2 registros"
+          , "registros = 2"
+          , s"registros no encontrados"
+          , false)
+      }
+      else {
+        IdTestPlan = Control.RegisterTestPlan(
+          TestPlanGroup
+          , "dia 01 - existe registro 2017-05-02 | super-02 | telefono"
+          , s"debe arrojar 2 registros"
+          , "registros = 2"
+          , s"registros = ${registro02_05.getAs[Integer]("cantidad")}"
+          , registro02_05.getAs[Integer]("cantidad") == 2)
+      }
       
       /////////////////////////////////////////////////////////////////////////////////////////
       /////////////////////////////////////////////////////////////////////////////////////////
@@ -347,7 +415,7 @@ object Proc_PlanPruebas_Particion_dia_dia2p3 {
         Control.FinishProcessError()
     }
     
-    if (Control.TestPlan_CurrentIsOK(18))
+    if (Control.TestPlan_CurrentIsOK(22))
       println("Proceso OK")
     
     huemulLib.close()

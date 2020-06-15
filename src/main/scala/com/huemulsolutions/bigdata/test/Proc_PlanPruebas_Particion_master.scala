@@ -53,7 +53,7 @@ object Proc_PlanPruebas_Particion_master {
       val TablaMaster = new tbl_DatosParticionMaster(huemulLib, Control, TipoTabla)
 
       TablaMaster.DF_from_SQL("df_data",
-        """SELECT to_date(periodo,'yyyymmdd') as periodo,
+        """SELECT to_date(periodo,'yyyyMMdd') as periodo,
               empresa,
               app,
               producto,
