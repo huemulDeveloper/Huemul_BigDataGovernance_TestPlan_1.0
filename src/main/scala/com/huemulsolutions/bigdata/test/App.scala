@@ -60,13 +60,14 @@ object App {
       key = openFile.getLines.mkString
       openFile.close()
     } catch {
-        case e: FileNotFoundException => println(s"Couldn't find that file: ${fileName}")
-        case e: IOException => println(s"(${fileName}). Got an IOException! ${e.getLocalizedMessage}")
-        case e: Exception => println(s"exception opening ${fileName}")
+        case _: FileNotFoundException => println(s"Couldn't find that file: ${fileName}")
+        case e: IOException => println(s"($fileName). Got an IOException! ${e.getLocalizedMessage}")
+        case _: Exception => println(s"exception opening ${fileName}")
     }
     
     return key
   }
+
   
   def main_PDF(args : Array[String]) {
     
@@ -91,7 +92,7 @@ object App {
   def main_twitter(args : Array[String]) {
   
     val localPath: String = System.getProperty("user.dir").concat("/")
-       println(s"path: ${localPath}")
+       println(s"path: $localPath")
    
       
    val consumerKey = getKeyFromFile(s"${localPath}twitter_consumerKey.set") 
@@ -129,40 +130,40 @@ object App {
           var finished = false
           while (!finished) {
             val result = twitter.search(query)
-            val statuses = result.getTweets()
+            val statuses = result.getTweets
             var lowestStatusId = Long.MaxValue
             for (status <- statuses.asScala) {
               
-              if(!status.isRetweet()){
+              if(!status.isRetweet){
                 i += 1
                 val nuevo = new Array[Any](8)  
                 
-                nuevo(0) = status.getUser().getScreenName() //user_name 
-                nuevo(1) = status.getRetweetCount() //retweet_count
-                nuevo(2) = status.getUser().getFollowersCount() //tweet_followers_count
-                nuevo(3) = status.getSource() //source
-                val geoloc = status.getGeoLocation()
-                nuevo(4) = if (geoloc == null) null else geoloc.toString() //coordinates
+                nuevo(0) = status.getUser.getScreenName //user_name
+                nuevo(1) = status.getRetweetCount //retweet_count
+                nuevo(2) = status.getUser.getFollowersCount //tweet_followers_count
+                nuevo(3) = status.getSource //source
+                val geoloc = status.getGeoLocation
+                nuevo(4) = if (geoloc == null) null else geoloc.toString //coordinates
 
-                val mentioned = status.getUserMentionEntities()
+                val mentioned = status.getUserMentionEntities
                 nuevo(5) =  mentioned.length //tweet_mentioned_count
-                nuevo(6) = status.getId().toString() //tweet_ID
-                nuevo(7) = status.getText() //tweet_text
+                nuevo(6) = status.getId.toString //tweet_ID
+                nuevo(7) = status.getText //tweet_text
                 nuevo(8) = status.getCreatedAt
-                status.getPlace.toString()
+                status.getPlace.toString
                 status.getPlace.getCountry
                 
                 
                 if (data_list == null)
                   data_list = Array(Row.fromSeq(nuevo)) 
                 else 
-                  data_list = data_list :+ (Row.fromSeq(nuevo)) 
+                  data_list = data_list :+ Row.fromSeq(nuevo)
                 println(data_list.length)
                 //val a = Row.fromSeq(nuevo) 
                 //val b = data_list.fill(a)(1)
                 //println(status.getText())
               }
-              lowestStatusId = Math.min(status.getId(), lowestStatusId)
+              lowestStatusId = Math.min(status.getId, lowestStatusId)
             }
             query.setMaxId(lowestStatusId - 1)
            
@@ -170,14 +171,14 @@ object App {
              val final_rdd = huemulLib.spark.sparkContext.parallelize(data_list )
              val df_final = huemulLib.spark.createDataFrame(final_rdd, StructType(
                                                             List(
-                                                          StructField("user_name", StringType, true),
-                                                          StructField("retweet_count", IntegerType, true),
-                                                          StructField("tweet_followers_count", IntegerType, true),
-                                                          StructField("source", StringType, true),
-                                                          StructField("coordinates", StringType, true),
-                                                          StructField("tweet_mentioned_count", IntegerType, true),
-                                                          StructField("tweet_ID", StringType, true),
-                                                          StructField("tweet_text", StringType, true))))
+                                                          StructField("user_name", StringType, nullable = true),
+                                                          StructField("retweet_count", IntegerType, nullable = true),
+                                                          StructField("tweet_followers_count", IntegerType, nullable = true),
+                                                          StructField("source", StringType, nullable = true),
+                                                          StructField("coordinates", StringType, nullable = true),
+                                                          StructField("tweet_mentioned_count", IntegerType, nullable = true),
+                                                          StructField("tweet_ID", StringType, nullable = true),
+                                                          StructField("tweet_text", StringType, nullable = true))))
              
                                                           
               df_final.write.mode(SaveMode.Append).format("parquet").save("/user/data/spark/twitter_search_01.parquet")
@@ -248,7 +249,7 @@ object App {
     * 
     */
     
-    var validacionTablas = new ArrayBuffer[String]()
+    val validacionTablas = new ArrayBuffer[String]()
     //validacionTablas.append("production_mdm_oldvalue.tbl_datosbasicos_oldvalue")
     validacionTablas.append("production_mdm_oldvalue.tbl_datosbasicosupdate_oldvalue")
     validacionTablas.append("production_mdm_oldvalue.tbl_oldvaluetrace_oldvalue")
@@ -258,6 +259,11 @@ object App {
     validacionTablas.append("production_dqerror.tbl_datosbasicoserrores_dq")
     validacionTablas.append("production_dqerror.tbl_datosbasicosinsert_dq")
     validacionTablas.append("production_dqerror.tbl_datosbasicosinsert_exclude_dq")
+    validacionTablas.append("production_dqerror.dataf100_w_dq")
+    validacionTablas.append("production_dqerror.dataf100_e_dq")
+    validacionTablas.append("production_dqerror.dataf100_wex_dq")
+    validacionTablas.append("production_dqerror.dataf100_wex_w_dq")
+    validacionTablas.append("production_dqerror.dataf100_wex_w_trx_dq")
     validacionTablas.append("production_master.tbl_datosbasicos")
     validacionTablas.append("production_master.tbl_datosbasicos_mes")
     validacionTablas.append("production_master.tbl_datosbasicos_mes_exclude")
@@ -270,6 +276,12 @@ object App {
     validacionTablas.append("production_master.tbl_DatosParticion")
     validacionTablas.append("production_master.tbl_DatosParticionAcum")
     validacionTablas.append("production_master.tbl_DatosParticionMaster")
+    validacionTablas.append("production_master.tbl_DatosBasicosNombres")
+    validacionTablas.append("production_master.tbl_DatosBasicosNombres_mes")
+    //validacionTablas.append("production_master.dataf100_E")
+    //validacionTablas.append("production_master.dataf100_W")
+    //validacionTablas.append("production_master.dataf100_WEX")
+    //validacionTablas.append("production_master.dataf100_WEX_W")
     
     var metadata_hive_active: Boolean = false
     var metadata_spark_active: Boolean = false
@@ -294,7 +306,7 @@ object App {
     if (metadata_hive_active) {
       val HIVE_Setting = new ArrayBuffer[huemul_KeyValuePath]()
        val localPath: String = System.getProperty("user.dir").concat("/")
-       println(s"path: ${localPath}")
+       println(s"path: $localPath")
       HIVE_Setting.append(new huemul_KeyValuePath("production",getKeyFromFile(s"${localPath}prod-demo-setting-hive-connection.set")))
       HIVE_Setting.append(new huemul_KeyValuePath("experimental",getKeyFromFile(s"${localPath}prod-demo-setting-hive-connection.set")))
    
@@ -307,10 +319,13 @@ object App {
     if (com.yourcompany.settings.globalSettings.Global.getBigDataProvider() == huemulType_bigDataProvider.databricks) {
       com.yourcompany.settings.globalSettings.Global.setAVRO_format("avro")
     }
+
+    prc_f100_testplan.main(args)
     
     com.huemulsolutions.bigdata.raw.raw_DatosPDF_test.main(args)
     com.huemulsolutions.bigdata.raw.raw_LargoDinamico_test.main(args)
     Proc_PlanPruebas_CargaMaster_SelectiveUpdate.main(args)
+    Proc_PlanPruebas_CargaMasterNombres_SelectiveUpdate.main(args)
 
     Proc_PlanPruebas_PermisosFull.main(args)
     Proc_PlanPruebas_PermisosInsert.main(args)
@@ -333,8 +348,11 @@ object App {
     Proc_PlanPruebas_Particion_master_dia3p1.main(args)
     
     Proc_PlanPruebas_CargaMaster.main(args)
+    Proc_PlanPruebas_CargaMasterNombres.main(args)
+
     Proc_PlanPruebas_fk.main(args)
     Proc_PlanPruebas_CargaMaster_mes.main(args)
+    Proc_PlanPruebas_CargaMasterNombres_mes.main(args)
     Proc_PlanPruebas_CargaMaster_mes_2.main(args)
     Proc_PlanPruebas_CargaMaster_mes_paso_2_selective.main(args)
     
@@ -357,19 +375,19 @@ object App {
     Proc_PlanPruebas_OldValueTrace.main(args)
     Proc_PlanPruebas_CargaMaster_mes_exclude.main(args)
     Proc_PlanPruebas_OnlyInsertNew_exclude.main(args)
-    
-    
+
+
     
     //Validación que todo está OK
     val huemulLib = new huemul_BigDataGovernance("Pruebas Inicialización de Clases",args,com.yourcompany.settings.globalSettings.Global)
     val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
     
-    if (!huemulLib.hdfsPath_exists("hdfs:///user/data/production/te")) 
+    if (!huemulLib.hdfsPath_exists("/user/data/production/te"))
       println("prueba 1 exitosa: no existe")
     else 
       println("prueba 1 error")
     
-    if (huemulLib.hdfsPath_exists("hdfs:///user/data/production/temp/")) 
+    if (huemulLib.hdfsPath_exists("/user/data/production/temp/"))
       println("prueba 2 exitosa: existe")
     else 
       println("prueba 2 error")
@@ -396,7 +414,7 @@ object App {
       if (metadata_hwc_active) {
         val HIVE_Setting = new ArrayBuffer[huemul_KeyValuePath]()
         val localPath: String = System.getProperty("user.dir").concat("/")
-        println(s"path: ${localPath}")
+        println(s"path: $localPath")
         HIVE_Setting.append(new huemul_KeyValuePath("production",getKeyFromFile(s"${localPath}prod-demo-setting-hive-connection.set")))
         HIVE_Setting.append(new huemul_KeyValuePath("experimental",getKeyFromFile(s"${localPath}prod-demo-setting-hive-connection.set")))
              
@@ -408,11 +426,11 @@ object App {
       
       validacionTablas.foreach { x =>  
         println(s"valida en HIVE existencia tabla $x")
-        val valida01 = connectionHIVE.ExecuteJDBC_WithResult(s"select count(1) as cantidad from ${x}")
+        val valida01 = connectionHIVE.ExecuteJDBC_WithResult(s"select count(1) as cantidad from $x")
         if (valida01.IsError) {
           error_existe_tablas_en_hive = true
           println(valida01.ErrorDescription)
-          Control.RegisterTestPlan(TestPlanGroup, s"hive ${x}", s"detalle error: ${valida01.ErrorDescription}", "no raiserror", s"raiserror", false) 
+          Control.RegisterTestPlan(TestPlanGroup, s"hive $x", s"detalle error: ${valida01.ErrorDescription}", "no raiserror", s"raiserror", p_testPlan_IsOK = false)
     
         }
       }
@@ -434,18 +452,17 @@ object App {
           val valida01 = huemulLib.spark.sql(s"select count(1) as cantidad from ${x}")
           valida01.show()
         } catch {
-          case e: Exception => {
+          case e: Exception =>
             error_existe_tablas_en_spark = true
             println(e.getMessage)
-            Control.RegisterTestPlan(TestPlanGroup, s"hive ${x}", s"detalle error: ${e.getMessage}", "no raiserror", s"raiserror", false)
-          }
+            Control.RegisterTestPlan(TestPlanGroup, s"hive ${x}", s"detalle error: ${e.getMessage}", "no raiserror", s"raiserror", p_testPlan_IsOK = false)
         }
       }
     }
-    Control.RegisterTestPlan(TestPlanGroup, "error_existe_tablas_en_spark", "error_existe_tablas_en_spark", "error_existe_tablas_en_spark = false", s"error_existe_tablas_en_spark = ${error_existe_tablas_en_spark}", error_existe_tablas_en_spark == false) 
+    Control.RegisterTestPlan(TestPlanGroup, "error_existe_tablas_en_spark", "error_existe_tablas_en_spark", "error_existe_tablas_en_spark = false", s"error_existe_tablas_en_spark = ${error_existe_tablas_en_spark}", !error_existe_tablas_en_spark)
     Control.TestPlan_CurrentIsOK(2)
     
-    if (Control.TestPlan_IsOkById(TestPlanGroup, 36))
+    if (Control.TestPlan_IsOkById(TestPlanGroup, 40))
       println ("TODO OK")
     else
       println ("ERRORES")
