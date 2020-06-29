@@ -71,7 +71,7 @@ object Proc_PlanPruebas_CargaMaster_mes {
       } 
       
       val FullPath = new org.apache.hadoop.fs.Path(s"${TablaMaster.getFullNameWithPath()}")
-      val fs = FileSystem.get(huemulLib.spark.sparkContext.hadoopConfiguration) 
+      val fs = FullPath.getFileSystem(huemulLib.spark.sparkContext.hadoopConfiguration)
       if (fs.exists(FullPath))
         fs.delete(FullPath, true)
         

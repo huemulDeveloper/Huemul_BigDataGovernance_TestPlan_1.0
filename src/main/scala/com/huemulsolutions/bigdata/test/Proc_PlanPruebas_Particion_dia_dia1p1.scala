@@ -27,7 +27,7 @@ object Proc_PlanPruebas_Particion_dia_dia1p1 {
     else if (TipoTablaParam == "delta")
       TipoTabla = huemulType_StorageType.DELTA
     else if (TipoTablaParam == "hbase")
-      TipoTabla = huemulType_StorageType.HBASE
+      TipoTabla = huemulType_StorageType.PARQUET
     else if (TipoTablaParam == "avro")
       TipoTabla = huemulType_StorageType.AVRO
 

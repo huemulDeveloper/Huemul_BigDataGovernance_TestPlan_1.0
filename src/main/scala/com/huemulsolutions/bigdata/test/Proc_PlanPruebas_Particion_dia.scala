@@ -21,6 +21,12 @@ object Proc_PlanPruebas_Particion_dia {
     val huemulLib = if (huemulLib2 == null) new huemul_BigDataGovernance("01 - Proc_PlanPruebas_Particion_dia",args,com.yourcompany.settings.globalSettings.Global) else huemulLib2
     val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
 
+    /*
+    if (huemulLib.GlobalSettings.getBigDataProvider() == huemulType_bigDataPProc_PlanPruebas_CargaNoTrimrovider.databricks) {
+      huemulLib.spark.sql("SET spark.databricks.delta.formatCheck.enabled=false")
+    }
+
+     */
     huemulLib.arguments.setArgs(args)
     val Ano = huemulLib.arguments.GetValue("ano", null,"Debe especificar ano de proceso: ejemplo: ano=2017")
     val Mes = huemulLib.arguments.GetValue("mes", null,"Debe especificar mes de proceso: ejemplo: mes=12")
@@ -35,7 +41,7 @@ object Proc_PlanPruebas_Particion_dia {
     else if (TipoTablaParam == "delta")
       TipoTabla = huemulType_StorageType.DELTA
     else if (TipoTablaParam == "hbase")
-      TipoTabla = huemulType_StorageType.HBASE
+      TipoTabla = huemulType_StorageType.PARQUET
     else if (TipoTablaParam == "avro")
       TipoTabla = huemulType_StorageType.AVRO
 
