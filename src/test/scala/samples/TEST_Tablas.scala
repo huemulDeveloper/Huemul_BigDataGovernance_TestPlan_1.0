@@ -45,7 +45,7 @@ class AppTest {
     def genera(): Boolean = {
       val a = new raw_DatosBasicos(huemulLib, Control)
       
-      a.GenerateInitialCode("package", "objectName", "tbl_algo", "test/", huemulType_Tables.Reference, huemulType_Frequency.MONTHLY)
+      a.GenerateInitialCode("com.yourapplication", "objectName", "tbl_algo", "test/", huemulType_Tables.Reference, huemulType_Frequency.MONTHLY)
       return true
     }
     

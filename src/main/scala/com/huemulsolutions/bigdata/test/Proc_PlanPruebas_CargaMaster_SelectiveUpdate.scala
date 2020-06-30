@@ -47,7 +47,7 @@ object Proc_PlanPruebas_CargaMaster_SelectiveUpdate {
       } 
       
       val FullPath = new org.apache.hadoop.fs.Path(s"${TablaMaster.getFullNameWithPath()}")
-      val fs = FileSystem.get(huemulLib.spark.sparkContext.hadoopConfiguration) 
+      val fs = FullPath.getFileSystem(huemulLib.spark.sparkContext.hadoopConfiguration)
       if (fs.exists(FullPath))
         fs.delete(FullPath, true)
         
@@ -89,7 +89,8 @@ object Proc_PlanPruebas_CargaMaster_SelectiveUpdate {
       TablaMaster2.TipoValor.SetMapping("codTipoValor")
       TablaMaster2.IntValue.SetMapping("valIntValue")
       Control.NewStep("executeSelectiveUpdate")
-      if (!TablaMaster2.executeSelectiveUpdate("DF_Final",null, org.apache.spark.storage.StorageLevel.MEMORY_ONLY)) {
+      val partitionValueNull: String = null
+      if (!TablaMaster2.executeSelectiveUpdate("DF_Final",partitionValueNull, org.apache.spark.storage.StorageLevel.MEMORY_ONLY)) {
         IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "No hay error en masterización", "No hay error en masterización", s"Si hay error en masterización", false)
         Control.RegisterTestPlanFeature("executeSelectiveUpdate", IdTestPlan)
      

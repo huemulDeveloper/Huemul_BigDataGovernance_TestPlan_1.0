@@ -567,7 +567,8 @@ object Proc_PlanPruebas_CargaMaster_mes_paso_2_selective {
       TablaMaster4.TipoValor.SetMapping("codTipoValor")
       TablaMaster4.IntValue.SetMapping("valIntValue")
       Control.NewStep("executeSelectiveUpdate")
-      if (!TablaMaster4.executeSelectiveUpdate("DF_Final",null, org.apache.spark.storage.StorageLevel.MEMORY_ONLY)) {
+      val partitionNull: String = null
+      if (!TablaMaster4.executeSelectiveUpdate("DF_Final",partitionNull, org.apache.spark.storage.StorageLevel.MEMORY_ONLY)) {
         println(s"error: ${TablaMaster4.Error_Code} ${TablaMaster4.Error_Text}")
         IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "Si hay error en masterización", "si hay error en masterización (1017)", s"Si hay error en masterización (${TablaMaster4.Error_Code})", TablaMaster4.Error_Code == 1017)
         Control.RegisterTestPlanFeature("executeSelectiveUpdate", IdTestPlan)
@@ -585,7 +586,9 @@ object Proc_PlanPruebas_CargaMaster_mes_paso_2_selective {
       TablaMaster5.TipoValor.SetMapping("codTipoValor")
       TablaMaster5.IntValue.SetMapping("valIntValue")
       Control.NewStep("executeSelectiveUpdate")
-      if (!TablaMaster5.executeSelectiveUpdate("DF_Final",null, org.apache.spark.storage.StorageLevel.MEMORY_ONLY)) {
+
+      //val partitionNull: String = null
+      if (!TablaMaster5.executeSelectiveUpdate("DF_Final",partitionNull, org.apache.spark.storage.StorageLevel.MEMORY_ONLY)) {
         println(s"error: ${TablaMaster5.Error_Code} ${TablaMaster5.Error_Text}")
         IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Masterización", "Si hay error en masterización", "si hay error en masterización (1044)", s"Si hay error en masterización (${TablaMaster5.Error_Code})", TablaMaster5.Error_Code == 1044)
         Control.RegisterTestPlanFeature("executeSelectiveUpdate", IdTestPlan)
