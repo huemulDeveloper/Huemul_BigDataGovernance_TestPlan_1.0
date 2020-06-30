@@ -28,6 +28,7 @@ object prc_f100_testplan {
     //val TestPlanGroup: .arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
     val TestPlanGroup: String = huemulBigDataGov.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
     val outputDatabase = huemulBigDataGov.GlobalSettings.GetDataBase(huemulBigDataGov, huemulBigDataGov.GlobalSettings.DQError_DataBase)
+    val outputDatabase_master = huemulBigDataGov.GlobalSettings.GetDataBase(huemulBigDataGov, huemulBigDataGov.GlobalSettings.MASTER_DataBase)
 
     try {
 
@@ -353,7 +354,7 @@ object prc_f100_testplan {
       val dqControlIdWEXTrx = dataF100ControlWEXTrx.Control_Id
       println(s"dqControlId=$dqControlIdWEX")
       val tblDataF100WexTrxDQ = s"$outputDatabase.dataf100_wex_trx_dq"
-      val tblDataF100WexTrx = s"$outputDatabase.dataf100_wex_trx"
+      val tblDataF100WexTrx = s"$outputDatabase_master.dataf100_wex_trx"
 
       //------------------------------------------------------------------------------------------------------------
       control.NewStep("WARNING_EXCLUDE - Valida que el process ejecute ok")
@@ -424,7 +425,7 @@ object prc_f100_testplan {
 
 
 
-      if (control.TestPlan_CurrentIsOK(78)) //null todo oks
+      if (control.TestPlan_CurrentIsOK(75)) //null todo oks
       println("Resultado ok")
         else
         println("Resultado ERROR")
@@ -434,6 +435,7 @@ object prc_f100_testplan {
       case e:Throwable =>
         println(e)
         println(e.printStackTrace())
+        control.RegisterTestPlan(TestPlanGroup, "tuvo errores", "ver errores", "sin errores", e.getMessage, false)
         control.TestPlan_CurrentIsOK(-1)
     }
 
