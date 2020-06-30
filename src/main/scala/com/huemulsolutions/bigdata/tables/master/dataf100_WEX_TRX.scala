@@ -18,10 +18,10 @@ class dataf100_WEX_TRX(huemulBigDataGov: huemul_BigDataGovernance, Control: huem
   //Base de Datos en HIVE donde sera creada la tabla
   this.setDataBase(huemulBigDataGov.GlobalSettings.MASTER_DataBase)
   //Tipo de archivo que sera almacenado en HDFS
-  //if (TipoTabla == huemulType_StorageType.HBASE)
-  //  this.setStorageType(huemulType_StorageType.PARQUET)
-  //else
-  this.setStorageType(TipoTabla)
+  if (TipoTabla == huemulType_StorageType.HBASE)
+    this.setStorageType(huemulType_StorageType.PARQUET)
+  else
+    this.setStorageType(TipoTabla)
   //Ruta en HDFS donde se guardara el archivo PARQUET
   this.setGlobalPaths(huemulBigDataGov.GlobalSettings.MASTER_SmallFiles_Path)
   //Ruta en HDFS especifica para esta tabla (GlobalPaths / localPath)
