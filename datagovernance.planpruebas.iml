@@ -152,7 +152,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.carrotsearch:hppc:0.7.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.vlkan:flatbuffers:1.2.0-3f79e055" level="project" />
     <orderEntry type="library" name="Maven: org.apache.spark:spark-streaming_2.11:2.3.3" level="project" />
-    <orderEntry type="library" name="Maven: com.huemulsolutions.bigdata:huemul-bigdatagovernance:2.6" level="project" />
+    <orderEntry type="library" name="Maven: com.huemulsolutions.bigdata:huemul-bigdatagovernance:2.6.1" level="project" />
     <orderEntry type="library" name="Maven: com.huemulsolutions.bigdata:huemul-sql-decode:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hive:hive-jdbc:2.3.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hive:hive-common:2.3.4" level="project" />
