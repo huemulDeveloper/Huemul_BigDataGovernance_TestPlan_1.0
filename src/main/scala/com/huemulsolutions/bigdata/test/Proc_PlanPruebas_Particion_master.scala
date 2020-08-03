@@ -70,13 +70,13 @@ object Proc_PlanPruebas_Particion_master {
               FROM DF_RAW
           """)
 
-      TablaMaster.periodo.SetMapping("periodo")
-      TablaMaster.empresa.SetMapping("empresa")
-      TablaMaster.app.SetMapping("app")
-      TablaMaster.producto.SetMapping("producto")
-      TablaMaster.cantidad.SetMapping("cantidad")
-      TablaMaster.precio.SetMapping("precio")
-      TablaMaster.idTx.SetMapping("idTx")
+      TablaMaster.periodo.setMapping("periodo")
+      TablaMaster.EmpresA.setMapping("empresa")
+      TablaMaster.app.setMapping("app")
+      TablaMaster.producto.setMapping("producto")
+      TablaMaster.cantidad.setMapping("cantidad")
+      TablaMaster.precio.setMapping("precio")
+      TablaMaster.idTx.setMapping("idTx")
 
       if (!TablaMaster.executeFull("DF_FinalParticion")) {
         Control.RaiseError("Error al masterizar")

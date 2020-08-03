@@ -15,7 +15,8 @@ object Proc_PlanPruebas_Particion_master_dia3p1 {
   def main(args: Array[String]): Unit = {
     val huemulLib = new huemul_BigDataGovernance("01 - Proc_PlanPruebas_Particion_master",args,com.yourcompany.settings.globalSettings.Global)
     val Control = new huemul_Control(huemulLib,null, huemulType_Frequency.MONTHLY)
-    
+    var empresaName: String = "EmpresA"
+
     //val empresa = huemulLib.arguments.GetValue("empresa", null,"Debe especificar una empresa, ejemplo: empresa=super-01")
     val TipoTablaParam: String = huemulLib.arguments.GetValue("TipoTabla", null, "Debe especificar TipoTabla (ORC,PARQUET,HBASE,DELTA)")
     var TipoTabla: huemulType_StorageType = null
@@ -27,8 +28,10 @@ object Proc_PlanPruebas_Particion_master_dia3p1 {
       TipoTabla = huemulType_StorageType.DELTA
     else if (TipoTablaParam == "hbase")
       TipoTabla = huemulType_StorageType.HBASE
-    else if (TipoTablaParam == "avro")
+    else if (TipoTablaParam == "avro") {
       TipoTabla = huemulType_StorageType.AVRO
+      empresaName = empresaName.toLowerCase()
+    }
 
     val TestPlanGroup: String = huemulLib.arguments.GetValue("TestPlanGroup", null, "Debe especificar el Grupo de Planes de Prueba")
     var IdTestPlan: String = ""
@@ -39,8 +42,8 @@ object Proc_PlanPruebas_Particion_master_dia3p1 {
       val args_01: Array[String] = new Array[String](1)
       val Ano = 2017
       val Mes = 5
-      var dia = 3
-      var empresa = "super-01"
+      val dia = 3
+      val empresa = "super-01"
       args_01(0) = s"Environment=production,ano=$Ano,mes=$Mes,dia=$dia,empresa=$empresa,TipoTabla=$TipoTablaParam"
       val control_resultado01 = Proc_PlanPruebas_Particion_master.processMaster(huemulLib, args_01)
 
@@ -51,14 +54,14 @@ object Proc_PlanPruebas_Particion_master_dia3p1 {
 
       if (TipoTabla != huemulType_StorageType.HBASE) {
         //valida que existan las particiones esperadas
-        val path_20170501_super01_internet = TablaMaster.getFullNameWithPath().concat("/periodo=2017-05-01/empresa=super-01/app=internet")
-        val path_20170501_super01_tienda = TablaMaster.getFullNameWithPath().concat("/periodo=2017-05-01/empresa=super-01/app=tienda")
+        val path_20170501_super01_internet = TablaMaster.getFullNameWithPath().concat(s"/periodo=2017-05-01/$empresaName=super-01/app=internet")
+        val path_20170501_super01_tienda = TablaMaster.getFullNameWithPath().concat(s"/periodo=2017-05-01/$empresaName=super-01/app=tienda")
 
-        val path_20170503_super01_internet = TablaMaster.getFullNameWithPath().concat("/periodo=2017-05-03/empresa=super-01/app=internet")
-        val path_20170503_super01_tienda = TablaMaster.getFullNameWithPath().concat("/periodo=2017-05-03/empresa=super-01/app=tienda")
+        val path_20170503_super01_internet = TablaMaster.getFullNameWithPath().concat(s"/periodo=2017-05-03/$empresaName=super-01/app=internet")
+        val path_20170503_super01_tienda = TablaMaster.getFullNameWithPath().concat(s"/periodo=2017-05-03/$empresaName=super-01/app=tienda")
 
-        val path_20170504_super02_tienda = TablaMaster.getFullNameWithPath().concat("/periodo=2017-05-04/empresa=super-02/app=internet")
-        val path_20170504_super02_telefono = TablaMaster.getFullNameWithPath().concat("/periodo=2017-05-04/empresa=super-02/app=telefono")
+        val path_20170504_super02_tienda = TablaMaster.getFullNameWithPath().concat(s"/periodo=2017-05-04/$empresaName=super-02/app=internet")
+        val path_20170504_super02_telefono = TablaMaster.getFullNameWithPath().concat(s"/periodo=2017-05-04/$empresaName=super-02/app=telefono")
 
         Control.NewStep(s"buscando path $path_20170501_super01_internet")
         var path_existe = huemulLib.hdfsPath_exists(path_20170501_super01_internet)
@@ -158,7 +161,7 @@ object Proc_PlanPruebas_Particion_master_dia3p1 {
           , s"debe arrojar 2 registros"
           , "registros = 2"
           , s"registros no encontrados"
-          , false)
+          , p_testPlan_IsOK = false)
       }
       else {
         IdTestPlan = Control.RegisterTestPlan(
@@ -178,7 +181,7 @@ object Proc_PlanPruebas_Particion_master_dia3p1 {
           , s"debe arrojar 2 registros"
           , "registros = 2"
           , s"registros no encontrados"
-          , false)
+          , p_testPlan_IsOK = false)
       }
       else {
         IdTestPlan = Control.RegisterTestPlan(
@@ -198,7 +201,7 @@ object Proc_PlanPruebas_Particion_master_dia3p1 {
           , s"debe arrojar 2 registros"
           , "registros = 2"
           , s"registros no encontrados"
-          , false)
+          , p_testPlan_IsOK = false)
       }
       else {
         IdTestPlan = Control.RegisterTestPlan(
@@ -218,7 +221,7 @@ object Proc_PlanPruebas_Particion_master_dia3p1 {
           , s"debe arrojar 1 registros"
           , "registros = 1"
           , s"registros no encontrados"
-          , false)
+          , p_testPlan_IsOK = false)
       }
       else {
         IdTestPlan = Control.RegisterTestPlan(
@@ -238,7 +241,7 @@ object Proc_PlanPruebas_Particion_master_dia3p1 {
           , s"debe arrojar 2 registros"
           , "registros = 2"
           , s"registros no encontrados"
-          , false)
+          , p_testPlan_IsOK = false)
       }
       else {
         IdTestPlan = Control.RegisterTestPlan(
@@ -258,7 +261,7 @@ object Proc_PlanPruebas_Particion_master_dia3p1 {
           , s"debe arrojar 2 registros"
           , "registros = 2"
           , s"registros no encontrados"
-          , false)
+          , p_testPlan_IsOK = false)
       }
       else {
         IdTestPlan = Control.RegisterTestPlan(
@@ -280,7 +283,7 @@ object Proc_PlanPruebas_Particion_master_dia3p1 {
           , s"valor atributo cantidad = 1"
           , "cantidad = 1"
           , s"registros no encontrados"
-          , false)
+          , p_testPlan_IsOK = false)
       }
       else {
         IdTestPlan = Control.RegisterTestPlan(
@@ -304,7 +307,7 @@ object Proc_PlanPruebas_Particion_master_dia3p1 {
     } catch {
       case e: Exception => 
         
-        val IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Error en pruebas", "ERROR DE PROGRAMA -  NO deberia tener errror", "sin errores", s"con error: ${e.getMessage}", false)
+        Control.RegisterTestPlan(TestPlanGroup, "Error en pruebas", "ERROR DE PROGRAMA -  NO deberia tener errror", "sin errores", s"con error: ${e.getMessage}", p_testPlan_IsOK = false)
         Control.Control_Error.GetError(e, this.getClass.getSimpleName, 1)
         Control.FinishProcessError()
     }
