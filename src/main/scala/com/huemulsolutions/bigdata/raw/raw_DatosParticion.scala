@@ -9,42 +9,34 @@ class raw_DatosParticion(huemulLib: huemul_BigDataGovernance, Control: huemul_Co
    this.Description = "datos para probar funcionalidades de Old VAlue Trace"
    this.GroupName = "HuemulPlanPruebas"
       
-   val FormatSetting = new huemul_DataLakeSetting(huemulLib)
-    FormatSetting.StartDate = huemulLib.setDateTime(2010,1,1,0,0,0)
-    FormatSetting.EndDate = huemulLib.setDateTime(2050,12,12,0,0,0)
+   val dataLakeConfig: huemul_DataLakeSetting = new huemul_DataLakeSetting(huemulLib)
+     .setStartDate(2010,1,1,0,0,0)
+     .setEndDate(2050,12,12,0,0,0)
+     //Path & names
+     .setGlobalPath(huemulLib.GlobalSettings.RAW_BigFiles_Path)
+     .setLocalPath("planPruebas/")
+     .setFileName("DatosParticion_{{YYYY}}{{MM}}{{DD}}_{{EMPRESA}}.txt")
+     .setFileType(huemulType_FileType.TEXT_FILE)
+     .setContactName("Sebastián Rodríguez")
+     //Data
+     .setColumnDelimiterType(huemulType_Separator.CHARACTER)
+     .setColumnDelimiter("\\|")
+     .addColumn("periodo", "periodo", StringType,"periodo de los datos")
+     .addColumn("empresa", "empresa", StringType,"Nombre de la empresa")
+     .addColumn("app", "app", StringType,"Canal utilizado")
+     .addColumn("producto", "producto", StringType,"nombre producto")
+     .addColumn("cantidad", "cantidad", IntegerType,"Cantidad")
+     .addColumn("precio", "precio", IntegerType,"Precio")
+     .addColumn("idTx", "idTx", StringType,"codigo de la transacción")
+     //Header
+     .setLogNumRowsColumnName(null)
+       .setHeaderColumnDelimiterType(huemulType_Separator.CHARACTER)
+       .setHeaderColumnDelimiter("\\|")
+       .setHeaderColumnsString("VACIO")
 
-    //Path info
-    FormatSetting.GlobalPath = huemulLib.GlobalSettings.RAW_BigFiles_Path
-    FormatSetting.LocalPath = "planPruebas/"
-    FormatSetting.FileName = "DatosParticion_{{YYYY}}{{MM}}{{DD}}_{{EMPRESA}}.txt"
-    FormatSetting.FileType = huemulType_FileType.TEXT_FILE
-    FormatSetting.ContactName = "Sebastián Rodríguez"
-    
-    //Columns Info CHARACTER
-    
+  this.SettingByDate.append(dataLakeConfig)
 
-    FormatSetting.DataSchemaConf.ColSeparatorType = huemulType_Separator.CHARACTER  //POSITION;CHARACTER
-    FormatSetting.DataSchemaConf.ColSeparator = "\\|"
-    
-    FormatSetting.DataSchemaConf.AddColumns("periodo", "periodo", StringType,"periodo de los datos")
-    FormatSetting.DataSchemaConf.AddColumns("empresa", "empresa", StringType,"Nombre de la empresa")
-    FormatSetting.DataSchemaConf.AddColumns("app", "app", StringType,"Canal utilizado")
-    FormatSetting.DataSchemaConf.AddColumns("producto", "producto", StringType,"nombre producto")
-    FormatSetting.DataSchemaConf.AddColumns("cantidad", "cantidad", IntegerType,"Cantidad")
-    FormatSetting.DataSchemaConf.AddColumns("precio", "precio", IntegerType,"Precio")
-    FormatSetting.DataSchemaConf.AddColumns("idTx", "idTx", StringType,"codigo de la transacción")
 
-    
-    
-    //Log Info
-    FormatSetting.LogSchemaConf.ColSeparatorType = huemulType_Separator.CHARACTER  //POSITION;CHARACTER;NONE
-    FormatSetting.LogNumRows_FieldName = null
-    //Fields Info for CHARACTER
-    FormatSetting.LogSchemaConf.ColSeparator = "|"    //SET FOR CARACTER
-    FormatSetting.LogSchemaConf.setHeaderColumnsString("VACIO") //Fielda;Fieldb;fieldc
-    
-    this.SettingByDate.append(FormatSetting)
-  
     /***
    * open(ano: Int, mes: Int) <br>
    * método que retorna una estructura con un DF de detalle, y registros de control <br>

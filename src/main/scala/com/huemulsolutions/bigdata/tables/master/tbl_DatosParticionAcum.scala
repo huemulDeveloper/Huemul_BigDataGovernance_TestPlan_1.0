@@ -28,17 +28,17 @@ class tbl_DatosParticionAcum(HuemulLib: huemul_BigDataGovernance, Control: huemu
   this.setPK_externalCode("USER_COD_PK")
   
   val periodo: huemul_Columns = new huemul_Columns(DateType,true,"Periodo de los datos")
-                            .setIsPK().setPartitionColumn(1,false, false)
+                            .setIsPK().setPartitionColumn(1,dropBeforeInsert = false, oneValuePerProcess = false)
 
   val idTx: huemul_Columns = new huemul_Columns(StringType,true,"codigo de la transacción")
     .setIsPK()
 
 
-  val empresa: huemul_Columns = new huemul_Columns(StringType,true,"Empresa que registra ventas")
-    .setPartitionColumn(2,false, false)
+  val EmpresA: huemul_Columns = new huemul_Columns(StringType,true,"Empresa que registra ventas")
+    .setPartitionColumn(2,dropBeforeInsert = false, oneValuePerProcess = false)
 
   val app: huemul_Columns = new huemul_Columns(StringType,true,"app que registra ventas")
-    .setPartitionColumn(3,false, false)
+    .setPartitionColumn(3,dropBeforeInsert = false, oneValuePerProcess = false)
 
   val producto: huemul_Columns = new huemul_Columns(StringType,true,"producto de la venta")
 
