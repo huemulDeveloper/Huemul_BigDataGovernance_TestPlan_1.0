@@ -2,13 +2,10 @@ package com.huemulsolutions.bigdata.test
 
 import com.huemulsolutions.bigdata.common._
 import com.huemulsolutions.bigdata.control._
-import com.huemulsolutions.bigdata.tables.master.tbl_DatosBasicos
 import com.huemulsolutions.bigdata.raw.raw_DatosBasicos
-import com.huemulsolutions.bigdata
-import org.apache.hadoop.fs.FileSystem
+//import org.apache.hadoop.fs.FileSystem
 import com.huemulsolutions.bigdata.dataquality.huemul_DataQuality
 import com.huemulsolutions.bigdata.dataquality.huemulType_DQQueryLevel
-import com.huemulsolutions.bigdata.dataquality.huemulType_DQNotification.huemulType_DQNotification
 import com.huemulsolutions.bigdata.dataquality.huemulType_DQNotification
 import scala.collection.mutable._
 import org.apache.spark.sql.types._
@@ -83,18 +80,18 @@ object Proc_PlanPruebas_CargaMaster_mes {
         
    //BORRA HDFS ANTIGUO PARA EFECTOS DEL PLAN DE PRUEBAS
       
-      TablaMaster.periodo_mes.SetMapping("periodo_mes")
-      TablaMaster.TipoValor.SetMapping("TipoValor",true,"coalesce(new.TipoValor,'nulo')","coalesce(new.TipoValor,'nulo')")
-      TablaMaster.IntValue.SetMapping("IntValue")
-      TablaMaster.BigIntValue.SetMapping("BigIntValue")
-      TablaMaster.SmallIntValue.SetMapping("SmallIntValue")
-      TablaMaster.TinyIntValue.SetMapping("TinyIntValue")
-      TablaMaster.DecimalValue.SetMapping("DecimalValue")
-      TablaMaster.RealValue.SetMapping("RealValue")
-      TablaMaster.FloatValue.SetMapping("FloatValue")
-      TablaMaster.StringValue.SetMapping("StringValue")
-      TablaMaster.charValue.SetMapping("charValue")
-      TablaMaster.timeStampValue.SetMapping("timeStampValue")
+      TablaMaster.periodo_mes.setMapping("periodo_mes")
+      TablaMaster.TipoValor.setMapping("TipoValor",true,"coalesce(new.TipoValor,'nulo')","coalesce(new.TipoValor,'nulo')")
+      TablaMaster.IntValue.setMapping("IntValue")
+      TablaMaster.BigIntValue.setMapping("BigIntValue")
+      TablaMaster.SmallIntValue.setMapping("SmallIntValue")
+      TablaMaster.TinyIntValue.setMapping("TinyIntValue")
+      TablaMaster.DecimalValue.setMapping("DecimalValue")
+      TablaMaster.RealValue.setMapping("RealValue")
+      TablaMaster.FloatValue.setMapping("FloatValue")
+      TablaMaster.StringValue.setMapping("StringValue")
+      TablaMaster.charValue.setMapping("charValue")
+      TablaMaster.timeStampValue.setMapping("timeStampValue")
       //TODO: cambiar el parámetro "true" por algo.UPDATE O algo.NOUPDATE (en replaceValueOnUpdate
       Control.NewStep("Ejecución")
       if (!TablaMaster.executeFull("DF_Final")) {
@@ -162,7 +159,7 @@ object Proc_PlanPruebas_CargaMaster_mes {
                                                                                FROM DF_Final
                                                                                WHERE tipoValor = 'Negativo_Maximo'""")
       Cantidad = if (Negativo_Maximo_Todos == null) 0 else Negativo_Maximo_Todos.count()
-      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - TieneRegistros", "Registro Negativo_Maximo, debe tener 1 registro", "Cantidad = 1", s"Cantidad = ${Cantidad}", Cantidad == 1)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Negativo_Maximo - TieneRegistros", "Registro Negativo_Maximo, debe tener 1 registro", "Cantidad = 1", s"Cantidad = $Cantidad", Cantidad == 1)
       Control.RegisterTestPlanFeature("executeFull", IdTestPlan)
       Control.RegisterTestPlanFeature("StorageType parquet", IdTestPlan)
       Control.RegisterTestPlanFeature("autoCast Encendido", IdTestPlan)      
