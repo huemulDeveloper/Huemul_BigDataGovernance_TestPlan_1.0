@@ -122,7 +122,7 @@ class AppTest {
       var SinError = true
       
       try {
-        val Master = new tbl_DatosBasicosInsert(huemulLib,Control,huemulType_StorageType.HBASE)
+        val Master = new tbl_DatosBasicosInsert(huemulLib,Control,huemulType_StorageType.PARQUET)
         if (Master.Error_isError) {
           println(s"Codigo: ${Master.Error_Code}, Descripción: ${Master.Error_Text}")
           SinError = false
@@ -144,7 +144,7 @@ class AppTest {
       var SinError = true
       
       try {
-        val Master = new tbl_DatosBasicosErrores(huemulLib,Control,huemulType_StorageType.HBASE)
+        val Master = new tbl_DatosBasicosErrores(huemulLib,Control,huemulType_StorageType.PARQUET)
         if (Master.Error_isError) {
           println(s"Codigo: ${Master.Error_Code}, Descripción: ${Master.Error_Text}")
           SinError = false
