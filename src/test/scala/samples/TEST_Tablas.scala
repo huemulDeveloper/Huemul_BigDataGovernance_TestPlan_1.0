@@ -33,11 +33,11 @@ class AppTest {
     @Test
     def TEST_tbl_DatosBasicosAVRO() = assertTrue(TESTp_tbl_DatosBasicosAVRO())
     
-    @Test
-    def TEST_tbl_DatosBasicosInsesrt() = assertTrue(TESTp_tbl_DatosBasicosInsert())
+//    @Test
+//    def TEST_tbl_DatosBasicosInsesrt() = assertTrue(TESTp_tbl_DatosBasicosInsert())
     
-    @Test
-    def TEST_tbl_DatosBasicosErrores() = assertTrue(TESTp_tbl_DatosBasicosErrores())
+//    @Test
+//    def TEST_tbl_DatosBasicosErrores() = assertTrue(TESTp_tbl_DatosBasicosErrores())
     
     @Test
     def TEST_tbl_DatosBasicosUpdate() = assertTrue(TESTp_tbl_DatosBasicosUpdate())
