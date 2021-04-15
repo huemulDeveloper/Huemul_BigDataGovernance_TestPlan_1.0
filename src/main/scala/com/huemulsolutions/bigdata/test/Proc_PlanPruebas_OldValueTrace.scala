@@ -105,6 +105,7 @@ object Proc_PlanPruebas_OldValueTrace {
       TablaMaster.DF_from_DF(DF_RAW_final.DataFramehuemul.DataFrame, "DF_RAW_final", "DF_Original")
 
       TablaMaster.setMappingAuto()
+      TablaMaster.setRowStatusDeleteAsDeleted(false)
       val tp_resultado_2 = TablaMaster.executeFull("DF_Final_2", org.apache.spark.storage.StorageLevel.MEMORY_ONLY )
       
       TablaMaster.DataFramehuemul.DataFrame.show()
@@ -147,8 +148,24 @@ object Proc_PlanPruebas_OldValueTrace {
       Control.RegisterTestPlanFeature("OldValueTrace", IdTestPlan)
       IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "Datos Modificados - test 9", "Modifica valor segun lo esperado", "test9_ok = 1", s"test9_ok = ${result_val_mdm_2.get(0).getAs[Int]("test9_ok") }", result_val_mdm_2.get(0).getAs[Int]("test9_ok")== 1)
       Control.RegisterTestPlanFeature("OldValueTrace", IdTestPlan)
-      
-      
+
+
+
+
+      //CREATE VALIDATION FOR setRowStatusDeleteAsDeleted
+      val result_status_mdm = huemulLib.spark.sql(s"""
+          SELECT cast(max(case when codigo = 1 and mdm_statusreg = 2 then 1 else 0 end) as int) as test1_ok
+                ,cast(sum(case when mdm_statusreg = 2 then 1 else 0 end) as int) as test2_ok
+					FROM production_master.tbl_oldvaluetrace
+      """)
+
+      result_status_mdm.show()
+      val result_status_mdm_2 = result_status_mdm.collectAsList()
+
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "setRowStatusDeleteAsDeleted(false) - no marca eliminado", "setRowStatusDeleteAsDeleted = false, no marca como eliminado", "test1_ok = 1", s"test1_ok = ${result_status_mdm_2.get(0).getAs[Int]("test1_ok") }", result_status_mdm_2.get(0).getAs[Int]("test1_ok")== 1)
+      Control.RegisterTestPlanFeature("setRowStatusDeleteAsDeleted", IdTestPlan)
+      IdTestPlan = Control.RegisterTestPlan(TestPlanGroup, "setRowStatusDeleteAsDeleted(false) - 7 status = 2", "setRowStatusDeleteAsDeleted = false, 7 status = 2", "test2_ok = 7", s"test1_ok = ${result_status_mdm_2.get(0).getAs[Int]("test2_ok") }", result_status_mdm_2.get(0).getAs[Int]("test2_ok")== 7)
+      Control.RegisterTestPlanFeature("setRowStatusDeleteAsDeleted", IdTestPlan)
       
      
       Control.FinishProcessOK
